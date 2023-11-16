@@ -1,0 +1,1725 @@
+---
+title: "3  Objetos em R"
+author: "raymundo"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## 3.1 Vetores em R
+Vamos recapitular um pouco do que vimos anteriormento sobre vetores. Os vetores são um bloco de construção básica para programação em R. Vetores são muito versáteis, formando a base para construções mais complexas, como matrizes, listas e data frames. Eles desempenham um papel central na manipulação de dados.
+
+Um vetor é uma estrutura de dados fundamental que consiste em uma **sequência ordenada de elementos do mesmo tipo**. Esses elementos podem ser números inteiros, números de ponto flutuante, caracteres, valores lógicos ou qualquer outro tipo de dado.
+
+Em termos mais simples, **um vetor é como uma “caixa” que pode conter vários valores do mesmo tipo**. Cada valor dentro do vetor é chamado de elemento. Os elementos de um vetor podem ser acessados individualmente por meio de um índice que indica sua posição na sequência. Em R o primeiro elemento de um vetor é acessado pelo índice `[1]`, em outras linguagens, como em Python, esse índice é `[0]`.
+
+3.1.1 Criação de Vetores e Manipulação de Propriedades
+Um vetor em R é uma sequência ordenada de elementos do mesmo tipo. Você pode criar um vetor usando a função `c()`, que combina elementos em um único vetor. Por exemplo:
+
+```{r, error=TRUE}
+# Criando um vetor de números inteiros
+vetor_inteiro <- c(2, 4, 6, 8, 10)
+
+# Criando um vetor de números reais
+vetor_real <- c(3.14, 1.618, 2.718, 3.48, 1.9)
+
+# Criando um vetor de caracteres
+vetor_caracteres <- c("maçã", "banana", "laranja")
+
+# Criando um vetor misto
+vetor_misto <- c(1, 2, "maçã", "banana", "laranja")
+```
+
+Para sabermos o comprimento de um vetor utilizamos a função `length()`.
+```{r, error=TRUE}
+length(vetor_inteiro)
+```
+
+```{r, error=TRUE}
+length(vetor_real)
+```
+
+```{r, error=TRUE}
+length(vetor_caracteres)
+```
+
+```{r, error=TRUE}
+length(vetor_misto)
+```
+
+Para sabermos a classe de um vetor utilizamos a função `class()`.
+```{r, error=TRUE}
+class(vetor_inteiro)
+```
+
+```{r, error=TRUE}
+class(vetor_real)
+```
+
+```{r, error=TRUE}
+class(vetor_caracteres)
+```
+
+```{r, error=TRUE}
+class(vetor_misto)
+```
+
+### 3.1.2 Operações Aritméticas Vetoriais
+Operações aritméticas em vetores são realizadas elemento por elemento, facilitando cálculos eficientes. Por exemplo:
+
+```{r, error=TRUE}
+# Soma de vetores
+soma_vetores <- vetor_inteiro + vetor_real
+soma_vetores
+```
+
+```{r, error=TRUE}
+# Subtração de vetores
+subtracao_vetores <- vetor_real - vetor_inteiro
+subtracao_vetores
+```
+
+```{r, error=TRUE}
+# Multiplicação de vetores
+multiplicacao_vetores <- vetor_inteiro * 2
+multiplicacao_vetores
+```
+
+```{r, error=TRUE}
+# Divisão de vetores
+divisao_vetores <- vetor_real / 3
+divisao_vetores
+```
+
+### 3.1.3 Aplicação da Regra da Reciclagem
+A regra da reciclagem permite aplicar operações entre **vetores de tamanhos diferentes**. Essa regra permite que vetores de tamanhos distintos sejam combinados de maneira coerente em operações **aritméticas ou lógicas**. O vetor menor é “reciclado” ou replicado várias vezes para se ajustar ao tamanho do vetor maior, permitindo que as operações sejam realizadas de forma consistente em todos os elementos.
+
+Para compreender melhor a regra da reciclagem, considere a seguinte operação:
+```{r, error=TRUE}
+vetor_a <- c(1, 2)
+vetor_b <- c(10, 20, 30)
+resultado <- vetor_a + vetor_b
+```
+
+```{r, error=TRUE}
+resultado
+```
+
+```{r, error=TRUE}
+length(vetor_a)
+```
+
+```{r, error=TRUE}
+length(vetor_b)
+```
+Note que o vetor `vetor_a` tem apenas dois elementos, enquanto o vetor `vetor_b` tem três elementos. Ao realizar a operação de adição, a regra da reciclagem faz com que o vetor `vetor_a` seja **replicado** para corresponder ao tamanho do vetor `vetor_b`. Isso resulta em `vetor_a` transformado em `c(1, 2, 1)` e, então, a operação de adição é realizada elemento a elemento:
+
+```{r, error=TRUE}
+c(1, 2, 1) + c(10, 20, 30)
+```
+
+
+
+```{r, error=TRUE}
+
+```
+
+
+
+Vale ressaltar que a regra da reciclagem funciona quando o comprimento do vetor maior é um múltiplo inteiro do comprimento do vetor menor. Caso contrário, um aviso ou erro será gerado.
+
+3.1.4 Exploração de Vetores Lógicos
+Vetores lógicos desempenham um papel crucial na programação e análise de dados, permitindo a seleção e filtragem de elementos com base em condições específicas. Um vetor lógico contém valores booleanos (TRUE ou FALSE), onde cada elemento indica se uma determinada condição é verdadeira ou falsa para o elemento correspondente no vetor original.
+
+3.1.4.1 Aplicação de Vetores Lógicos: Filtragem e Seleção
+Os vetores lógicos são frequentemente usados para filtrar e selecionar elementos de um vetor com base em uma condição. Suponha que temos um vetor de idades e queremos selecionar apenas as idades maiores que 18:
+
+idades <- c(16, 21, 14, 30, 25)
+condicao <- idades > 18
+condicao
+
+[1] FALSE  TRUE FALSE  TRUE  TRUE
+idades_maiores <- idades[condicao]
+idades_maiores
+
+[1] 21 30 25
+## Também poderiamos incluir a condição 
+## diretamente no vetor que queremos filtrar
+
+idades_maiores <- idades[idades > 18]
+idades_maiores
+
+[1] 21 30 25
+3.1.4.2 Operações Lógicas em Vetores Lógicos
+Além da filtragem, os vetores lógicos podem ser combinados com operações lógicas. Por exemplo, é possível usar operadores como & (AND) e | (OR) para criar condições mais complexas:
+
+idades <- c(16, 21, 14, 30, 25, 45)
+condicao1 <- idades > 18
+condicao2 <- idades < 30
+condicao_final <- condicao1 & condicao2
+idades_selecionadas <- idades[condicao_final]
+idades_selecionadas
+
+[1] 21 25
+## Também poderiamos incluir a condição 
+## diretamente no vetor que queremos filtrar
+idades_selecionadas <- idades[condicao_final]
+idades_selecionadas <- idades[idades > 18 & idades < 30]
+
+3.1.5 Tratamento de Informações Faltantes
+Ao lidar com dados do mundo real, é comum encontrar diversos tipos de informações faltantes, como valores ausentes (NA), valores que não são um número (NaN). O tratamento adequado desses valores é essencial para garantir a integridade das análises estatísticas.
+
+3.1.5.1 Valores Ausentes (NA)
+O valor NA (Not Available) é usado em R para representar informações ausentes. É fundamental identificar e tratar esses valores ao realizar análises estatísticas.
+
+3.1.5.1.1 Identificação de Valores NA
+Para identificar valores NA, você pode usar a função is.na():
+
+dados <- c(1, NA, 3, 4, NA)
+valores_faltantes <- is.na(dados)
+
+3.1.5.1.2 Remoção de Valores NA
+As funções na.omit() e na.exclude removem os valores NA de um vetor, mas pode levar à perda de outros dados associados:
+
+dados <- c(1, NA, 3, 4, NA)
+dados_sem_na <- na.omit(dados)
+dados_sem_na
+
+[1] 1 3 4
+attr(,"na.action")
+[1] 2 5
+attr(,"class")
+[1] "omit"
+dados_sem_na_exclude <- na.exclude(dados)
+dados_sem_na_exclude
+
+[1] 1 3 4
+attr(,"na.action")
+[1] 2 5
+attr(,"class")
+[1] "exclude"
+3.1.5.1.3 Preenchimento de Valores NA
+dados <- c(1, NA, 3, 4, NA)
+dados[is.na(dados)] <- 0
+dados
+
+[1] 1 0 3 4 0
+3.1.5.2 Valores que Não São um Número (NaN)
+O valor NaN (Not a Number) é usado para representar resultados matemáticos inválidos, como a divisão por zero ou a raiz quadrada de um número negativo.
+
+3.1.5.2.1 Identificação de Valores NaN
+A função is.nan() identifica valores NaN:
+
+resultado <- 0 / 0
+resultado
+
+[1] NaN
+valor_nao_eh_numero <- is.nan(resultado)
+valor_nao_eh_numero
+
+[1] TRUE
+3.1.6 Vetores nomeados
+Podemos atribuir um “nome” para cada elemento de um vetor. Com isso, podemos selecionar elementos nomeados do nosso vetor.
+
+idades <- c(20, 28, 35)
+names(idades)
+
+NULL
+names(idades) <- c("João", "Aline", "Márcio") 
+names(idades)
+
+[1] "João"   "Aline"  "Márcio"
+idades
+
+  João  Aline Márcio 
+    20     28     35 
+idades["Aline"]
+
+Aline 
+   28 
+idades[c("Aline", "João")]
+
+Aline  João 
+   28    20 
+3.2 Matrizes
+As matrizes e arrays são estruturas de dados bidimensionais e multidimensionais, respectivamente. Suas propriedades e funções permitem realizar uma variedade de operações, desde cálculos matriciais até resolução de sistemas lineares e decomposições espectrais.
+
+3.2.1 Criação e Manipulação de Matrizes em R
+A maneira mais simples para criarmos uma matriz em R é através das funções cbind() e rbind(), nas quais podemos concatenar vetores pelas colunas (columns) ou linhas (rows), respectivamente.
+
+vetor_a = c(1,2,3,4)
+vetor_b = c(5,6,7,8)
+
+matriz_linha = rbind(vetor_a, 
+                     vetor_b)
+matriz_linha
+
+        [,1] [,2] [,3] [,4]
+vetor_a    1    2    3    4
+vetor_b    5    6    7    8
+class(matriz_linha)
+
+[1] "matrix" "array" 
+is.matrix(matriz_linha)
+
+[1] TRUE
+matriz_coluna= cbind(vetor_a, 
+                     vetor_b)
+matriz_coluna
+
+     vetor_a vetor_b
+[1,]       1       5
+[2,]       2       6
+[3,]       3       7
+[4,]       4       8
+class(matriz_coluna)
+
+[1] "matrix" "array" 
+is.matrix(matriz_coluna)
+
+[1] TRUE
+Matrizes também podem ser criadas através da função matrix(), que permite especificar os elementos, o número de linhas e colunas, e se os elementos devem ser preenchidos por linha ou por coluna.
+
+A <- matrix(c(1:9), 
+            ncol = 3,
+            byrow = TRUE)
+A
+
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+[3,]    7    8    9
+B <- matrix(c(1:9), 
+            ncol = 3, 
+            byrow = FALSE)
+B
+
+     [,1] [,2] [,3]
+[1,]    1    4    7
+[2,]    2    5    8
+[3,]    3    6    9
+3.2.2 Seleção de Elementos em Matrizes no R
+A seleção de elementos em matrizes no R é uma operação fundamental para acessar e manipular dados específicos contidos na matriz. As técnicas de seleção permitem obter valores individuais, linhas, colunas ou subconjuntos da matriz com base em critérios específicos. Vamos explorar as diferentes formas de seleção de elementos em matrizes.
+
+3.2.2.1 Seleção de Elementos Específicos
+Podemos selecionar elementos específicos de uma matriz informando o número da linha e da coluna correspondentes.
+
+A <- matrix(c(2, -1, 3, 
+              1, 4, 1, 
+              5, -2, 7), 
+            ncol = 3, 
+            byrow = TRUE)
+elemento_1_2 <- A[1, 2]  # Seleciona o elemento na primeira linha e segunda coluna 
+elemento_1_2
+
+[1] -1
+elemento_3_3 <- A[3, 3]  # Seleciona o elemento na terceira linha e terceira coluna 
+elemento_3_3
+
+[1] 7
+3.2.2.2 Seleção de Linhas ou Colunas Inteiras
+Podemos selecionar todas as entradas de uma linha ou coluna especificada.
+
+coluna_2 <- A[, 2]  # Seleciona a segunda coluna inteira 
+coluna_2
+
+[1] -1  4 -2
+linha_1 <- A[1, ]   # Seleciona a primeira linha inteira 
+linha_1
+
+[1]  2 -1  3
+3.2.2.3 Seleção com Base em Condições
+Podemos selecionar elementos com base em condições específicas. A função which() é útil para selecionar elementos em matrizes com base em condições específicas. Ela retorna os índices dos elementos que atendem à condição fornecida.
+
+## Exemplo 1: Seleção de Elementos Maiores que um Valor
+B
+
+     [,1] [,2] [,3]
+[1,]    1    4    7
+[2,]    2    5    8
+[3,]    3    6    9
+elementos_maior_que_3 <- B[which(B > 3)]
+elementos_maior_que_3
+
+[1] 4 5 6 7 8 9
+## Exemplo 2: Seleção de Elementos Ímpares
+elementos_impares <- B[which(B %% 2 != 0)]
+elementos_impares
+
+[1] 1 3 5 7 9
+## Exemplo 3: Seleção de Elementos Negativos da Segunda Coluna
+elementos_negativos_coluna_2 <- A[, 2][which(A[, 2] < 0)] 
+elementos_negativos_coluna_2
+
+[1] -1 -2
+## Exenplo 4: Seleção de Elementos por Linha
+elementos_linha_1_maior_que_2 <- B[1, which(B[1, ] > 2)]
+elementos_linha_1_maior_que_2
+
+[1] 4 7
+3.2.2.4 Remoção de Linhas/Colunas (A[-linhas, -colunas])
+Podemos remover linhas ou colunas da matriz, criando uma nova matriz sem as linhas ou colunas especificadas.
+
+A
+
+     [,1] [,2] [,3]
+[1,]    2   -1    3
+[2,]    1    4    1
+[3,]    5   -2    7
+A_sem_terceira_coluna <- A[, -3]  # Remove a terceira coluna da matriz
+A_sem_terceira_coluna
+
+     [,1] [,2]
+[1,]    2   -1
+[2,]    1    4
+[3,]    5   -2
+A_sem_primeiras_duas_linhas <- A[-(1:2), ]  # Remove as duas primeiras linhas da matriz
+
+A_sem_primeiras_duas_linhas
+
+[1]  5 -2  7
+A_sem_linha_coluna <- A[-1, -2]  # Remove a primeira linha e segunda coluna
+
+A_sem_linha_coluna
+
+     [,1] [,2]
+[1,]    1    1
+[2,]    5    7
+3.2.3 Operações Matriciais e Funções de Matrizes
+As operações matriciais e funções associadas desempenham um papel fundamental na manipulação e análise de dados em matrizes. Elas permitem realizar cálculos matemáticos essenciais para diversas aplicações, incluindo álgebra linear e estatísticas.
+
+3.2.3.1 Soma e Subtração (A + B e A - B)
+A adição e subtração de matrizes envolvem a combinação de elementos correspondentes nas matrizes A e B. As dimensões das matrizes devem ser compatíveis para que essas operações sejam válidas. Para verificarmos a dimensão de uma matriz utilizamos a função dim().
+
+A <- matrix(c(4, -3, 7, 
+              10, 1, 1, 
+              -5, 2, 3), 
+            ncol = 3, 
+            byrow = TRUE)
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+dim(A) 
+
+[1] 3 3
+B <- matrix(c(2, -1, 3,
+              1, 4, 1, 
+              5, -2, 7), 
+            ncol = 3, 
+            byrow = TRUE)
+B
+
+     [,1] [,2] [,3]
+[1,]    2   -1    3
+[2,]    1    4    1
+[3,]    5   -2    7
+dim(B)
+
+[1] 3 3
+soma <- A + B
+soma
+
+     [,1] [,2] [,3]
+[1,]    6   -4   10
+[2,]   11    5    2
+[3,]    0    0   10
+dim(soma)
+
+[1] 3 3
+subtracao <- A - B
+subtracao
+
+     [,1] [,2] [,3]
+[1,]    2   -2    4
+[2,]    9   -3    0
+[3,]  -10    4   -4
+dim(subtracao)
+
+[1] 3 3
+3.2.3.2 Soma das Colunas (colSums(A)) e Soma das Linhas (rowSums(A))
+Essas funções retornam vetores com as somas das colunas e das linhas da matriz A, respectivamente.
+
+soma_colunas_A <- colSums(A)
+soma_colunas_A
+
+[1]  9  0 11
+soma_linhas_A <- rowSums(A)
+soma_linhas_A
+
+[1]  8 12  0
+3.2.3.3 Média das Colunas (colMeans()) e Média das Linhas (rowMeans())
+As funções colMeans() e rowMeans() fornecem as médias das colunas e das linhas de uma matriz, respectivamente.
+
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+colMeans(A)
+
+[1] 3.000000 0.000000 3.666667
+rowMeans(B)
+
+[1] 1.333333 2.000000 3.333333
+3.2.3.4 Multiplicação por Escalar (k * A)
+A multiplicação por um escalar 
+ envolve a multiplicação de todos os elementos da matriz A pelo valor de 
+.
+
+k <- 2
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+multiplicacao_escalar <- k * A
+multiplicacao_escalar
+
+     [,1] [,2] [,3]
+[1,]    8   -6   14
+[2,]   20    2    2
+[3,]  -10    4    6
+3.2.3.5 Produto Elemento a Elemento (A * B)
+O produto elemento a elemento envolve a multiplicação dos elementos correspondentes nas matrizes A e B. As dimensões das matrizes devem ser idênticas para que essa operação seja válida.
+
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+B
+
+     [,1] [,2] [,3]
+[1,]    2   -1    3
+[2,]    1    4    1
+[3,]    5   -2    7
+produto_elemento_a_elemento <- A * B
+produto_elemento_a_elemento
+
+     [,1] [,2] [,3]
+[1,]    8    3   21
+[2,]   10    4    1
+[3,]  -25   -4   21
+3.2.3.6 Produto Matricial (A %*% B)
+O produto matricial é uma operação fundamental na álgebra linear. É obtido multiplicando as linhas da matriz A pelas colunas da matriz B e somando os resultados. As dimensões das matrizes devem ser compatíveis para essa operação.
+
+produto_matricial <- A %*% B
+produto_matricial
+
+     [,1] [,2] [,3]
+[1,]   40  -30   58
+[2,]   26   -8   38
+[3,]    7    7    8
+3.2.3.7 Transposta (t(A))
+A transposta de uma matriz A é obtida trocando suas linhas por colunas e vice-versa. Ela é denotada por 
+ e é usada em várias operações, como multiplicação matricial e decomposições.
+
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+transposta_A <- t(A)
+transposta_A
+
+     [,1] [,2] [,3]
+[1,]    4   10   -5
+[2,]   -3    1    2
+[3,]    7    1    3
+3.2.3.8 Determinante (det(A))
+O determinante de uma matriz A é um valor escalar, e é utilizado para resolver sistemas de equações lineares, calcular inversas de matrizes e determinar propriedades de transformações geométricas.
+
+determinante_A <- det(A)
+determinante_A
+
+[1] 284
+3.2.3.9 Inversa (solve(A))
+A inversa de uma matriz A é uma matriz B tal que 
+ é a matriz identidade. Nem todas as matrizes têm inversa, e a função solve() calcula a inversa da matriz, quando possível.
+
+inversa_A <- solve(A)
+inversa_A
+
+             [,1]       [,2]        [,3]
+[1,]  0.003521127 0.08098592 -0.03521127
+[2,] -0.123239437 0.16549296  0.23239437
+[3,]  0.088028169 0.02464789  0.11971831
+3.2.3.10 Diagonal (diag(A))
+A função diag(A) retorna os elementos da diagonal principal da matriz A.
+
+A
+
+     [,1] [,2] [,3]
+[1,]    4   -3    7
+[2,]   10    1    1
+[3,]   -5    2    3
+diagonal_A <- diag(A)
+diagonal_A
+
+[1] 4 1 3
+3.2.3.11 Autovalores e Autovetores (eigen(A))
+Os autovalores e autovetores de uma matriz A são fundamentais em álgebra linear e em várias aplicações. A função eigen() retorna uma lista contendo os autovalores e autovetores de A.
+
+autovalores_autovetores_A <- eigen(A)
+autovalores_autovetores_A
+
+eigen() decomposition
+$values
+[1] 1.851362+7.91586i 1.851362-7.91586i 4.297276+0.00000i
+
+$vectors
+                      [,1]                  [,2]         [,3]
+[1,] -0.0984470-0.5752367i -0.0984470+0.5752367i 0.2529012+0i
+[2,] -0.7184472+0.0000000i -0.7184472+0.0000000i 0.8853306+0i
+[3,]  0.3728112+0.0652405i  0.3728112-0.0652405i 0.3901676+0i
+3.2.3.12 Produto Matricial Transposto (crossprod(A, B)) e Produto Matricial de A e B Transposto (tcrossprod(A, B))
+Essas funções realizam o produto matricial de A e B, considerando suas transpostas.
+
+O produto cruzado é também conhecido como “produto matricial interno” e é utilizado para diversos ajustes de modelos, análise multivariada, etc. Dada uma matriz A e uma matriz B, o produto interno entre elas é denotado como 
+ , e é calculado pela função crossprod(A, B).
+
+produto_transposto <- crossprod(A, B)
+produto_transposto
+
+     [,1] [,2] [,3]
+[1,]   -7   46  -13
+[2,]    5    3    6
+[3,]   30   -9   43
+O produto matricial externo também é conhecido como “produto matricial externo transposto” e é utilizada na mesmas ocasiões do primeiro. Dada uma matriz A e uma matriz B, o produto externo transposto entre elas é denotado como 
+ , e é calculado pela função tcrossprod(A, B).
+
+produto_transposto_t <- tcrossprod(A, B)
+produto_transposto_t
+
+     [,1] [,2] [,3]
+[1,]   32   -1   75
+[2,]   22   15   55
+[3,]   -3    6   -8
+3.2.3.13 Nomes de Linhas e Colunas (rownames(A), colnames(A))
+As funções rownames() e colnames() permitem atribuir nomes às linhas e colunas de uma matriz, facilitando a identificação de elementos em análises e visualizações.
+
+rownames(A) <- c("Linha1", "Linha2", "Linha3")
+colnames(A) <- c("Coluna1", "Coluna2", "Coluna3")
+
+3.2.3.14 Matrizes Triangulares no R: Funções upper.tri() e lower.tri()
+Matrizes triangulares desempenham são úteis quando o objetivo é economizar espaço de armazenamento e realizar cálculos mais eficientes. No R, as funções upper.tri() e lower.tri() são usadas para identificar os elementos acima e abaixo da diagonal principal de uma matriz, respectivamente.
+
+3.2.3.14.1 Identificando Elementos Acima da Diagonal Principal (upper.tri())
+A função upper.tri() retorna uma matriz de elementos lógicos que indica quais elementos de uma matriz estão acima da diagonal principal. Os elementos TRUE indicam que o elemento correspondente está acima da diagonal, enquanto os elementos FALSE indicam que o elemento está na diagonal ou abaixo dela.
+
+A <- matrix(1:9, nrow = 3)
+upper_elements <- upper.tri(A)
+upper_elements
+
+      [,1]  [,2]  [,3]
+[1,] FALSE  TRUE  TRUE
+[2,] FALSE FALSE  TRUE
+[3,] FALSE FALSE FALSE
+A[upper.tri(A)]
+
+[1] 4 7 8
+3.2.3.14.2 Identificando Elementos Abaixo da Diagonal Principal (lower.tri())
+Da mesma forma, a função lower.tri() retorna uma matriz de elementos lógicos que indica quais elementos estão abaixo da diagonal principal.
+
+lower_elements <- lower.tri(A, diag = T)
+lower_elements
+
+     [,1]  [,2]  [,3]
+[1,] TRUE FALSE FALSE
+[2,] TRUE  TRUE FALSE
+[3,] TRUE  TRUE  TRUE
+A[lower.tri(A)]
+
+[1] 2 3 6
+3.3 Arrays
+Arrays são estruturas multidimensionais úteis para armazenar e manipular dados em várias dimensões, são usados em diversas áreas, como processamento de imagens, simulações numéricas, análise de dados multidimensionais e modelagem estatística. Eles são essenciais para lidar com dados que possuem mais de duas dimensões, onde as matrizes não são suficientes para representar a complexidade dos dados. Eles podem ser criados usando a função array(), onde você especifica os elementos do array e suas dimensões.
+
+3.3.1 Criando Arrays
+Podemos criar um array usando a função array() da seguinte maneira:
+
+# Criando um array 2x3x4
+arr <- array(1:24, dim = c(2, 3, 4))
+arr
+
+, , 1
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+
+, , 2
+
+     [,1] [,2] [,3]
+[1,]    7    9   11
+[2,]    8   10   12
+
+, , 3
+
+     [,1] [,2] [,3]
+[1,]   13   15   17
+[2,]   14   16   18
+
+, , 4
+
+     [,1] [,2] [,3]
+[1,]   19   21   23
+[2,]   20   22   24
+3.3.2 Acessando Elementos
+Os elementos de um array são acessados usando índices que indicam a posição em cada dimensão. Por exemplo, para acessar o elemento na segunda linha, terceira coluna e quarta “profundidade” de um array arr, devemos fazer:
+
+elemento <- arr[2, 3, 4]
+elemento
+
+[1] 24
+Para acessarmos todos os elementos da primeira camada podemos fazer o seguinte:
+
+arr[, , 1]
+
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+3.3.3 Operações com Arrays
+Assim como com vetores e matrizes, você pode realizar várias operações com arrays:
+
+Soma e Subtração: Arrays podem ser somados e subtraídos elemento a elemento, desde que tenham as mesmas dimensões.
+
+Multiplicação por Escalar: Você pode multiplicar um array por um escalar, o que multiplicará cada elemento do array pelo escalar.
+
+Produto Elemento a Elemento: Dois arrays com as mesmas dimensões podem ser multiplicados elemento a elemento.
+
+Operações Estatísticas: Funções como sum(), mean(), max(), min() podem ser aplicadas aos elementos do array, opcionalmente especificando a dimensão ao longo da qual a operação deve ser realizada.
+
+# Criando dois arrays
+arr1 <- array(1:12, dim = c(3, 2, 2))
+arr2 <- array(13:24, dim = c(3, 2, 2))
+
+# Soma de arrays
+soma <- arr1 + arr2
+
+# Produto element-wise
+produto <- arr1 * arr2
+
+# Média ao longo da terceira dimensão
+media <- mean(arr1, dim = 3)
+
+3.4 Listas
+Em programação, muitas vezes nos deparamos com a necessidade de armazenar diferentes tipos de dados em uma única estrutura. As listas em R são uma solução flexível para essa situação. Ao contrário de vetores e matrizes , onde os elementos devem ser do mesmo tipo, as listas permitem que você combine elementos de tipos diferentes em uma única estrutura. Essa versatilidade torna as listas uma escolha valiosa para armazenar dados complexos e heterogêneos.
+
+3.4.1 Criando Listas
+A criação de uma lista em R é simples e flexível. Você pode usar a função list() para criar uma lista vazia e, em seguida, atribuir elementos a ela.
+
+# Criando uma lista com diferentes tipos de elementos
+minha_lista <- list(
+  nome = "Alice",
+  idade = 15,
+  notas = c(90, 85, 95),
+  ativo = TRUE, 
+  País = "das Maravilhas", 
+  amigos = "Cheshire", 
+  frase = "How do I know I'm mad?"
+)
+minha_lista
+
+$nome
+[1] "Alice"
+
+$idade
+[1] 15
+
+$notas
+[1] 90 85 95
+
+$ativo
+[1] TRUE
+
+$País
+[1] "das Maravilhas"
+
+$amigos
+[1] "Cheshire"
+
+$frase
+[1] "How do I know I'm mad?"
+3.4.2 Acessando Elementos da Lista
+Você pode acessar os elementos de uma lista usando o operador de índice [[]] ou o operador $ (quando estamos em uma lista nomeada). O operador [[]] é usado quando você deseja acessar um elemento específico pelo seu nome.
+
+# Acessando elementos da lista
+nome <- minha_lista$nome
+nome
+
+[1] "Alice"
+idade <- minha_lista[["idade"]]
+idade
+
+[1] 15
+notas <- minha_lista$notas
+notas
+
+[1] 90 85 95
+3.4.3 Manipulando Listas
+As listas oferecem muitas possibilidades de manipulação. Você pode adicionar, remover e modificar elementos, bem como alterar seus nomes.
+
+# Adicionando um novo elemento à lista
+minha_lista$cidade <- "São Paulo"
+minha_lista$cidade
+
+[1] "São Paulo"
+# Modificando um elemento existente
+minha_lista$idade <- 31
+minha_lista
+
+$nome
+[1] "Alice"
+
+$idade
+[1] 31
+
+$notas
+[1] 90 85 95
+
+$ativo
+[1] TRUE
+
+$País
+[1] "das Maravilhas"
+
+$amigos
+[1] "Cheshire"
+
+$frase
+[1] "How do I know I'm mad?"
+
+$cidade
+[1] "São Paulo"
+# Removendo um elemento da lista
+minha_lista$notas <- NULL
+minha_lista
+
+$nome
+[1] "Alice"
+
+$idade
+[1] 31
+
+$ativo
+[1] TRUE
+
+$País
+[1] "das Maravilhas"
+
+$amigos
+[1] "Cheshire"
+
+$frase
+[1] "How do I know I'm mad?"
+
+$cidade
+[1] "São Paulo"
+3.4.4 Aninhamento de Listas
+Uma característica poderosa das listas é a capacidade de aninhar outras listas dentro delas. Isso permite que você crie estruturas de dados hierárquicas e organizadas.
+
+# Aninhando listas
+endereco <- list(
+  rua = "Rua Principal",
+  numero = 123,
+  cidade = "São Paulo"
+)
+
+minha_lista$endereco <- endereco
+minha_lista
+
+$nome
+[1] "Alice"
+
+$idade
+[1] 31
+
+$ativo
+[1] TRUE
+
+$País
+[1] "das Maravilhas"
+
+$amigos
+[1] "Cheshire"
+
+$frase
+[1] "How do I know I'm mad?"
+
+$cidade
+[1] "São Paulo"
+
+$endereco
+$endereco$rua
+[1] "Rua Principal"
+
+$endereco$numero
+[1] 123
+
+$endereco$cidade
+[1] "São Paulo"
+3.5 Data Frames em R
+Data Frames são estruturas de dados bidimensionais em R, semelhantes a tabelas, que podem armazenar diferentes tipos de dados em suas colunas. Eles são amplamente utilizados para análise e manipulação de dados.
+
+3.5.1 Criação de Data Frames
+Para criar um Data Frame em R, podemos utilizar a função data.frame(). Cada argumento da função representa uma coluna do Data Frame.
+
+# Exemplo de criação de Data Frame
+meu_data_frame <- data.frame(
+  nome = c("Alice", "Bob", "Carol", "Ana", "João", "Carlos", "Patrícia", "Leonardo"),
+  idade = c(25, 30, 28, 20, 27, 50, 60, 45),
+  salario = c(5000, 6000, 5500, 8000, 2000, 3500, 10000, 3800 ), 
+  meio_de_transporte = c('onibus', 'bicicleta', 'onibus', 'carro', 'carro', 'onibus', 'onibus', 'bicicleta')
+)
+
+## Nomes de colunas do nosso data.frame não possuem espaço, podem ser separadas por "." ou "_".
+
+3.5.2 Adcionando variáveis (colunas)
+Para adcionar novas colunas em um data.frame podemos simplesmente atribuir seus valores através do seguinte código:
+
+meu_data_frame$genero <- c("F", "M", "F", "F", "M", "M", "F", "M")
+
+3.5.3 Acessando Colunas
+Você pode acessar as colunas de um data.frame usando o operador $ ou colchetes [].
+
+# Acessar coluna usando o operador $
+meu_data_frame$nome
+
+[1] "Alice"    "Bob"      "Carol"    "Ana"      "João"     "Carlos"   "Patrícia"
+[8] "Leonardo"
+# Acessar coluna usando colchetes []
+meu_data_frame[, "idade"]
+
+[1] 25 30 28 20 27 50 60 45
+3.5.4 Subconjuntos de Data Frames
+Para criar subconjuntos de Data Frames, você pode usar a função subset() ou colchetes [] com condições lógicas.
+
+subconjunto_df <- meu_data_frame[meu_data_frame$idade > 28, ]  # Seleciona pessoas com idade maior que 28
+subconjunto_df
+
+      nome idade salario meio_de_transporte genero
+2      Bob    30    6000          bicicleta      M
+6   Carlos    50    3500             onibus      M
+7 Patrícia    60   10000             onibus      F
+8 Leonardo    45    3800          bicicleta      M
+# Usando a função subset()
+subconjunto_df <- subset(meu_data_frame, idade > 28)
+subconjunto_df
+
+      nome idade salario meio_de_transporte genero
+2      Bob    30    6000          bicicleta      M
+6   Carlos    50    3500             onibus      M
+7 Patrícia    60   10000             onibus      F
+8 Leonardo    45    3800          bicicleta      M
+subconjunto_combinado <- meu_data_frame[meu_data_frame$idade > 25 & meu_data_frame$idade < 30, ]
+subconjunto_combinado
+
+   nome idade salario meio_de_transporte genero
+3 Carol    28    5500             onibus      F
+5  João    27    2000              carro      M
+Podemos acessar a classe individualmente de uma coluna do nosso data.frame utilizando class().
+
+class(meu_data_frame$nome)
+
+[1] "character"
+class(meu_data_frame$idade)
+
+[1] "numeric"
+Podemos acessar a estrutura dos nossos dados utilizando a função str().
+
+str(meu_data_frame)
+
+'data.frame':   8 obs. of  5 variables:
+ $ nome              : chr  "Alice" "Bob" "Carol" "Ana" ...
+ $ idade             : num  25 30 28 20 27 50 60 45
+ $ salario           : num  5000 6000 5500 8000 2000 3500 10000 3800
+ $ meio_de_transporte: chr  "onibus" "bicicleta" "onibus" "carro" ...
+ $ genero            : chr  "F" "M" "F" "F" ...
+As dimensões de um data.frame podem ser dadas por dim().
+
+dim(meu_data_frame)
+
+[1] 8 5
+Para sabermos o número de observações em um data.frame podemos utilizar a função nrow().
+
+nrow(meu_data_frame)
+
+[1] 8
+Para obtermos o número de colunas em um data.frame podemos utilizar a função ncol().
+
+ncol(meu_data_frame)
+
+[1] 5
+3.5.5 Função summary()
+A função summary() é usada para obter um resumo estatístico das variáveis em um Data Frame. Ela fornece estatísticas como média, mediana, mínimo, máximo e quartis para cada coluna numérica.
+
+summary(meu_data_frame)
+
+     nome               idade          salario      meio_de_transporte
+ Length:8           Min.   :20.00   Min.   : 2000   Length:8          
+ Class :character   1st Qu.:26.50   1st Qu.: 3725   Class :character  
+ Mode  :character   Median :29.00   Median : 5250   Mode  :character  
+                    Mean   :35.62   Mean   : 5475                     
+                    3rd Qu.:46.25   3rd Qu.: 6500                     
+                    Max.   :60.00   Max.   :10000                     
+    genero         
+ Length:8          
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   
+3.5.6 Função by()
+A função by() é usada para aplicar uma função a subconjuntos de um Data Frame, com base em uma ou mais variáveis. Ela é útil para realizar operações em grupos de dados.
+
+# Exemplo de uso da função by()
+resultado <- by(meu_data_frame$salario, meu_data_frame$idade, mean)
+resultado
+
+meu_data_frame$idade: 20
+[1] 8000
+------------------------------------------------------------ 
+meu_data_frame$idade: 25
+[1] 5000
+------------------------------------------------------------ 
+meu_data_frame$idade: 27
+[1] 2000
+------------------------------------------------------------ 
+meu_data_frame$idade: 28
+[1] 5500
+------------------------------------------------------------ 
+meu_data_frame$idade: 30
+[1] 6000
+------------------------------------------------------------ 
+meu_data_frame$idade: 45
+[1] 3800
+------------------------------------------------------------ 
+meu_data_frame$idade: 50
+[1] 3500
+------------------------------------------------------------ 
+meu_data_frame$idade: 60
+[1] 10000
+resultado <- by(meu_data_frame$salario, meu_data_frame$genero, median)
+resultado
+
+meu_data_frame$genero: F
+[1] 6750
+------------------------------------------------------------ 
+meu_data_frame$genero: M
+[1] 3650
+3.5.7 Funções para Explorar Data Frames
+head(): Mostra as primeiras linhas do Data Frame.
+tail(): Mostra as últimas linhas do Data Frame.
+summary(): Fornece um resumo estatístico das colunas numéricas.
+str(): Mostra a estrutura do Data Frame, incluindo tipos de dados.
+3.5.8 Manipulação de Data Frames
+Adição de colunas: meu_data_frame$nova_coluna <- valores
+Remoção de colunas: meu_data_frame$coluna_a_ser_removida <- NULL
+Filtragem de linhas: subconjunto <- meu_data_frame[meu_data_frame$idade > 25, ]
+Ordenação: ordenado <- meu_data_frame[order(meu_data_frame$idade), ]
+3.6 Fatores
+Fatores são uma estrutura de dados especial em R usada para representar variáveis categóricas, ou seja, variáveis que assumem um conjunto limitado e definido de valores. Os fatores são especialmente úteis para armazenar informações categóricas de maneira eficiente e para realizar análises estatísticas em dados categóricos.
+
+3.6.1 Criação de Fatores
+Você pode criar um fator em R usando a função factor(). É necessário fornecer um vetor de valores categóricos e, opcionalmente, os níveis que esses valores podem assumir.
+
+# Exemplo de criação de fator
+genero <- factor(c("Masculino", "Feminino", "Masculino", "Feminino"))
+
+3.6.2 Transformação em fatores
+Muitas vezes podemos estar interessados em transformar uma variável em um fator, para isso, utilizamos a função as.factor.
+
+meu_data_frame$genero
+
+[1] "F" "M" "F" "F" "M" "M" "F" "M"
+meu_data_frame$genero = as.factor(meu_data_frame$genero)
+
+meu_data_frame$genero
+
+[1] F M F F M M F M
+Levels: F M
+3.6.3 Níveis de Fatores
+Os níveis de um fator são os valores únicos que a variável categórica pode assumir. Se você não fornecer os níveis explicitamente, o R inferirá os níveis a partir dos valores presentes. Além disso, os níveis serão ordenados em ordem alfanumérica, caso omitidos. É importante passarmos os níveis (levels) quando lidamos com variáveis ordinais.
+
+# Definindo fator com níveis específicos
+cores <- factor(c("Vermelho", "Verde", "Azul"), levels = c("Vermelho", "Verde", "Azul", "Amarelo"))
+cores
+
+[1] Vermelho Verde    Azul    
+Levels: Vermelho Verde Azul Amarelo
+3.6.4 Acessando Níveis e Valores de Fatores
+Você pode acessar os níveis de um fator usando a função levels() e os valores do fator como um vetor usando o fator diretamente. Para sabermos a quantidade de níveis de um fator podemos utilizar a função nlevels()
+
+# Acessar níveis de um fator
+niveis_cores <- levels(cores)
+niveis_cores
+
+[1] "Vermelho" "Verde"    "Azul"     "Amarelo" 
+# Acessar o número de níveis de um fator
+n_niveis_cores <- nlevels(cores)
+n_niveis_cores
+
+[1] 4
+# Acessar valores do fator
+valores_cores <- cores
+valores_cores
+
+[1] Vermelho Verde    Azul    
+Levels: Vermelho Verde Azul Amarelo
+3.7 Tabelas de Dupla Entrada
+Tabelas de dupla entrada, também conhecidas como tabelas de contingência, util para analisar a relação entre duas variáveis categóricas. Elas mostram a frequência ou contagem de ocorrências conjuntas dessas variáveis e são frequentemente usadas para entender associações e padrões nos dados.
+
+3.7.1 Criando Tabelas de Dupla Entrada
+Para criar uma tabela de dupla entrada em R, você pode usar a função table().
+
+# Exemplo de criação de tabela de dupla entrada
+sexo <- c("Masculino", "Feminino", "Masculino", "Masculino", "Feminino")
+cidade <- c("A", "B", "A", "B", "A")
+tabela_contingencia <- table(sexo, cidade)
+tabela_contingencia
+
+           cidade
+sexo        A B
+  Feminino  1 1
+  Masculino 2 1
+tabela_contingencia2 <- table(meu_data_frame$meio_de_transporte, meu_data_frame$genero)
+tabela_contingencia2
+
+           
+            F M
+  bicicleta 0 2
+  carro     1 1
+  onibus    3 1
+Visualizando Tabelas de Dupla Entrada:
+
+Você pode visualizar a tabela de dupla entrada diretamente ou usar a função ftable() para obter uma exibição mais formatada.
+
+# Visualizar tabela de dupla entrada
+print(tabela_contingencia)
+
+           cidade
+sexo        A B
+  Feminino  1 1
+  Masculino 2 1
+# Exibição formatada da tabela
+tabela_formatada <- ftable(tabela_contingencia)
+print(tabela_formatada)
+
+          cidade A B
+sexo                
+Feminino         1 1
+Masculino        2 1
+3.7.2 Analisando Tabelas de Dupla Entrada
+Você pode usar várias funções para analisar e obter informações úteis a partir de tabelas de dupla entrada.
+
+Marginais: Obtém as marginais (somas das linhas e colunas) da tabela.
+marginais_linhas <- margin.table(tabela_contingencia, 1)  # Somas das linhas
+marginais_colunas <- margin.table(tabela_contingencia, 2)  # Somas das colunas
+
+Teste Qui-Quadrado: chisq.test() realiza o teste qui-quadrado para avaliar a independência das variáveis.
+qui_quadrado <- chisq.test(tabela_contingencia)
+
+Warning in chisq.test(tabela_contingencia): Chi-squared approximation may be
+incorrect
+print(qui_quadrado)
+
+
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  tabela_contingencia
+X-squared = 0, df = 1, p-value = 1
+Proporções Relativas: prop.table() calcula proporções relativas dentro das categorias.
+proporcoes_relativas_linha <- prop.table(tabela_contingencia, margin = 1)  # Proporções por linha
+proporcoes_relativas_linha
+
+           cidade
+sexo                A         B
+  Feminino  0.5000000 0.5000000
+  Masculino 0.6666667 0.3333333
+proporcoes_relativas_coluna <- prop.table(tabela_contingencia, margin = 2)  # Proporções por linha
+proporcoes_relativas_coluna
+
+           cidade
+sexo                A         B
+  Feminino  0.3333333 0.5000000
+  Masculino 0.6666667 0.5000000
+3.7.3 Lendo dados disponíveis no R
+Para vermos os banco de dados disponíveis no R podemos utilizar a função data(), e para ler um deles basta chamar seu nome como argumento da função, por exemplo: data(USArrests).
+
+3.8 Exercício
+Para os dados de USArrests faça o que se pede.
+
+Imprima na tela as 9 primeiras observações.
+Imprima as últimas 3 observações.
+Quantas observações temos?
+Quantas variáveis temos?
+Apresente o sumário dos dados.
+Apresente a estrutura dos dados.
+Indique os estados cujo número de Murder está entre 10 e 15.
+Qual a média de Assault para os estados cuja variável Rape está no IQR (
+)?
+3.9 Estruturas alternativas ao Data Frame
+Embora data.frames sejam estruturas muito poderosas para análise de dados, outras estruturas são mais modernas e permitem maior performance para análise de dados em termos de velocidade de processamento e até mesmo na facilidade da sintaxe. Duas alternativas são: data.table e tibble. Veremos as duas em detalhes a seguir.
+
+3.9.1 data.table: Manipulação Eficiente de Grandes Conjuntos de Dados
+O pacote data.table é uma biblioteca poderosa no R, projetada especificamente para manipulação eficiente de grandes conjuntos de dados. Ele oferece um conjunto de recursos que melhoram consideravelmente o desempenho e a flexibilidade das operações em relação às estruturas de dados convencionais.
+
+3.9.1.1 Principais Características do data.table
+Sintaxe Otimizada: Uma das características principais do “data.table” é sua sintaxe otimizada. A operação básica do “data.table” usa a notação [i, j, by], onde i filtra linhas, j seleciona colunas e by agrupa resultados. Isso permite que você realize várias operações complexas em uma única linha de código.
+
+Eficiência em Memória: O “data.table” realiza muitas operações diretamente na memória, evitando a cópia excessiva de dados, minimizando o consumo de memória e melhorando o desempenho.
+
+Chaves e Indexação: As chaves são um conceito fundamental no “data.table”. Elas permitem que você especifique quais colunas serão usadas para ordenar e indexar o conjunto de dados. Isso acelera significativamente operações de junção e seleção.
+
+Compatibilidade com Sintaxe de Base R: Embora tenha sua própria sintaxe otimizada, o “data.table” também é compatível com a sintaxe de base R, o que facilita a transição para os usuários familiarizados com o R padrão.
+
+3.9.1.2 Criando e Manipulando Data.Tables
+Para criar um “data.table”, você pode usar a função data.table(). Vamos explorar exemplos mais detalhados.
+
+library(data.table)
+
+# Criar um data.table
+meu_data_table <- data.table(
+  nome = c("Alice", "Bob", "Carol", "Ana", "João", "Carlos", "Patrícia", "Leonardo"),
+  idade = c(25, 30, 28, 20, 27, 50, 60, 45),
+  salario = c(5000, 6000, 5500, 8000, 2000, 3500, 10000, 3800 ), 
+  meio_de_transporte = c('onibus', 'bicicleta', 'onibus', 'carro', 'carro', 'onibus', 'onibus', 'bicicleta'))
+meu_data_table
+
+       nome idade salario meio_de_transporte
+1:    Alice    25    5000             onibus
+2:      Bob    30    6000          bicicleta
+3:    Carol    28    5500             onibus
+4:      Ana    20    8000              carro
+5:     João    27    2000              carro
+6:   Carlos    50    3500             onibus
+7: Patrícia    60   10000             onibus
+8: Leonardo    45    3800          bicicleta
+class(meu_data_table)
+
+[1] "data.table" "data.frame"
+Para importarmos um data.table podemos utilizar a função fread(), epara salvarmos, podemos utilizar a função fwrite().
+
+3.9.1.3 Sintaxe e Operações
+A sintaxe básica do “data.table” envolve o uso das notações [i, j, by].
+
+# Selecionar colunas e filtrar linhas
+resultado <- meu_data_table[idade > 25, .(nome, salario)]
+resultado
+
+       nome salario
+1:      Bob    6000
+2:    Carol    5500
+3:     João    2000
+4:   Carlos    3500
+5: Patrícia   10000
+6: Leonardo    3800
+# Agregar dados 
+agregado <- meu_data_table[, .(media_salario = mean(salario)),]
+agregado
+
+   media_salario
+1:          5475
+# Agregar dados por idade
+agregado_idade <- meu_data_table[, .(media_salario = mean(salario)), by = idade]
+agregado_idade
+
+   idade media_salario
+1:    25          5000
+2:    30          6000
+3:    28          5500
+4:    20          8000
+5:    27          2000
+6:    50          3500
+7:    60         10000
+8:    45          3800
+# Agregar dados por meio_de_transporte
+agregado_mt <- meu_data_table[, .(media_salario = mean(salario)), by = meio_de_transporte]
+agregado_mt
+
+   meio_de_transporte media_salario
+1:             onibus          6000
+2:          bicicleta          4900
+3:              carro          5000
+3.9.2 Tibble: Uma Abordagem Moderna para Manipulação de Dados
+No ambiente estatístico e analítico do R, a manipulação e análise de dados são atividades cruciais. O pacote “tibble” oferece uma abordagem moderna e conveniente para trabalhar com conjuntos de dados, aprimorando muitos dos aspectos do tradicional “data.frame”. O tibble faz parte do tidyverse, e foi projetado para atender às necessidades de análise de dados eficiente, mantendo a coerência dos tipos de dados e melhorando a experiência geral do usuário.
+
+3.9.2.1 Principais Características do Tibble
+Sintaxe Intuitiva para Criação: A criação de um “tibble” é similar ao data.frame e data.table, oferecendo uma sintaxe intuitiva e direta. Você pode criar um “tibble” usando a função tibble() e atribuir colunas com nomes claros. Em Tibble você pode utilizar espaços para nomear variáveis.
+require(tibble)
+
+Loading required package: tibble
+require(magrittr)
+
+Loading required package: magrittr
+require(dplyr)
+
+Loading required package: dplyr
+
+Attaching package: 'dplyr'
+The following objects are masked from 'package:data.table':
+
+    between, first, last
+The following objects are masked from 'package:stats':
+
+    filter, lag
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+meu_tibble <- tibble(
+  nome = c("Alice", "Bob", "Carol", "Ana", "João", "Carlos", "Patrícia", "Leonardo"),
+  idade = c(25, 30, 28, 20, 27, 50, 60, 45),
+  salario = c(5000, 6000, 5500, 8000, 2000, 3500, 10000, 3800 ), 
+  meio_de_transporte = c('onibus', 'bicicleta', 'onibus', 'carro', 'carro', 'onibus', 'onibus', 'bicicleta'))
+meu_tibble
+
+# A tibble: 8 × 4
+  nome     idade salario meio_de_transporte
+  <chr>    <dbl>   <dbl> <chr>             
+1 Alice       25    5000 onibus            
+2 Bob         30    6000 bicicleta         
+3 Carol       28    5500 onibus            
+4 Ana         20    8000 carro             
+5 João        27    2000 carro             
+6 Carlos      50    3500 onibus            
+7 Patrícia    60   10000 onibus            
+8 Leonardo    45    3800 bicicleta         
+glimpse(meu_tibble)
+
+Rows: 8
+Columns: 4
+$ nome               <chr> "Alice", "Bob", "Carol", "Ana", "João", "Carlos", "…
+$ idade              <dbl> 25, 30, 28, 20, 27, 50, 60, 45
+$ salario            <dbl> 5000, 6000, 5500, 8000, 2000, 3500, 10000, 3800
+$ meio_de_transporte <chr> "onibus", "bicicleta", "onibus", "carro", "carro", …
+2 . Manipulação de Colunas: A adição, renomeação e remoção de colunas são tarefas simples com o “tibble”. Você pode usar o operador $ para acessar as colunas e o operador %>% para encadear operações.
+
+meu_tibble$nova_coluna <- c(1, 2, 3, 4, 5, 6, 7, 8)
+meu_tibble
+
+# A tibble: 8 × 5
+  nome     idade salario meio_de_transporte nova_coluna
+  <chr>    <dbl>   <dbl> <chr>                    <dbl>
+1 Alice       25    5000 onibus                       1
+2 Bob         30    6000 bicicleta                    2
+3 Carol       28    5500 onibus                       3
+4 Ana         20    8000 carro                        4
+5 João        27    2000 carro                        5
+6 Carlos      50    3500 onibus                       6
+7 Patrícia    60   10000 onibus                       7
+8 Leonardo    45    3800 bicicleta                    8
+meu_tibble <- mutate(meu_tibble, `minha coluna` = 1:8)
+
+meu_tibble <-  rename(meu_tibble, idade_anos = idade)
+meu_tibble
+
+# A tibble: 8 × 6
+  nome     idade_anos salario meio_de_transporte nova_coluna `minha coluna`
+  <chr>         <dbl>   <dbl> <chr>                    <dbl>          <int>
+1 Alice            25    5000 onibus                       1              1
+2 Bob              30    6000 bicicleta                    2              2
+3 Carol            28    5500 onibus                       3              3
+4 Ana              20    8000 carro                        4              4
+5 João             27    2000 carro                        5              5
+6 Carlos           50    3500 onibus                       6              6
+7 Patrícia         60   10000 onibus                       7              7
+8 Leonardo         45    3800 bicicleta                    8              8
+meu_tibble_sem_salario <- select(meu_tibble, -salario)
+meu_tibble_sem_salario
+
+# A tibble: 8 × 5
+  nome     idade_anos meio_de_transporte nova_coluna `minha coluna`
+  <chr>         <dbl> <chr>                    <dbl>          <int>
+1 Alice            25 onibus                       1              1
+2 Bob              30 bicicleta                    2              2
+3 Carol            28 onibus                       3              3
+4 Ana              20 carro                        4              4
+5 João             27 carro                        5              5
+6 Carlos           50 onibus                       6              6
+7 Patrícia         60 onibus                       7              7
+8 Leonardo         45 bicicleta                    8              8
+3.9.2.2 Operações e Uso do Tibble
+O “tibble” se integra perfeitamente com as operações do tidyverse, tornando a manipulação de dados mais eficaz e legível. Podemos usar operações como filtragem, ordenação e agregação de forma simples e concisa.
+
+# Filtrar e ordenar
+resultado <- filter(meu_tibble, idade_anos > 25) 
+arrange(resultado, desc(salario))
+
+# A tibble: 6 × 6
+  nome     idade_anos salario meio_de_transporte nova_coluna `minha coluna`
+  <chr>         <dbl>   <dbl> <chr>                    <dbl>          <int>
+1 Patrícia         60   10000 onibus                       7              7
+2 Bob              30    6000 bicicleta                    2              2
+3 Carol            28    5500 onibus                       3              3
+4 Leonardo         45    3800 bicicleta                    8              8
+5 Carlos           50    3500 onibus                       6              6
+6 João             27    2000 carro                        5              5
+# Agregar por idade e calcular média de salários
+agregado_por_idade <-  group_by(meu_tibble, idade_anos) 
+
+summarize(agregado_por_idade, media_salario = mean(salario))
+
+# A tibble: 8 × 2
+  idade_anos media_salario
+       <dbl>         <dbl>
+1         20          8000
+2         25          5000
+3         27          2000
+4         28          5500
+5         30          6000
+6         45          3800
+7         50          3500
+8         60         10000
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```
+
+```{r, error=TRUE}
+
+```

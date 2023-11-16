@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="raymundo" />
+
+<meta name="date" content="2023-09-21" />
+
+<title>1 Documentação, Organização de códigos e Sistemas de versionamento</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CE302</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01_markdown_git.html">Parte 01</a>
+</li>
+<li>
+  <a href="02_basicR.html">Parte 02</a>
+</li>
+<li>
+  <a href="index.html">Relatório</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">1 Documentação, Organização de códigos e
+Sistemas de versionamento</h1>
+<h4 class="author">raymundo</h4>
+<h4 class="date">2023-09-21</h4>
+
+</div>
+
+
+<div id="markdown" class="section level2">
+<h2>1.1 Markdown</h2>
+<p><strong>Markdown é uma linguagem de marcação leve</strong><a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, criada
+por John Gruber em 2004, que permite formatação de texto de forma
+simples e rápida, sem a necessidade de conhecimentos avançados de
+programação ou design. É amplamente utilizado em diversas plataformas
+para criar documentos, páginas web, blogs, e-mails e muito mais.</p>
+<p>O Markdown foi projetado para ser fácil de ler e escrever, utilizando
+uma sintaxe simples e intuitiva. Compatível com HTML, ele pode ser
+convertido diretamente para outras linguagens de marcação, facilitando a
+publicação em diferentes plataformas.</p>
+<p>O uso do Markdown tem se popularizado principalmente entre
+escritores, programadores, blogueiros e criadores de conteúdo online sem
+a complexidade de outras linguagens de marcação, como HTML.</p>
+<p>Neste capítulo, veremos os conceitos básicos do Markdown e como
+utilizá-lo para <strong>criar conteúdo com formatação atraente e
+organizada</strong>.</p>
+<div id="editores-de-markdown" class="section level3">
+<h3>1.1.1 Editores de Markdown</h3>
+<p>Antes de começarmos a escrever em Markdown, é útil saber que podemos
+utilizar qualquer editor de texto simples para criar arquivos Markdown.
+No entanto, existem editores específicos que oferecem recursos
+adicionais, como visualização em tempo real, realce de sintaxe e
+pré-visualização.</p>
+<p>Alguns editores de Markdown populares são:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Visual Studio Code</strong>: Um editor de código
+altamente configurável que possui extensões para suporte ao Markdown.
+Além disso, o Visual Studio Code oferece uma pré-visualização em tempo
+real à medida que você digita seu conteúdo Markdown.</p></li>
+<li><p><strong>Atom</strong>: Outro editor de código fonte aberto com
+suporte ao Markdown e uma comunidade ativa de desenvolvedores. O Atom
+também fornece pacotes que aprimoram a experiência de escrita em
+Markdown.</p></li>
+<li><p><strong>Typora</strong>: Um editor Markdown com visualização em
+tempo real e uma interface de escrita amigável. O Typora é conhecido por
+sua abordagem “<em>What You See Is What You Get</em>” (WYSIWYG), o que
+significa que a visualização em tempo real mostra o documento final como
+apareceria após ser renderizado.</p></li>
+<li><p><strong>StackEdit</strong>: Uma ferramenta online que permite
+escrever e salvar seus documentos Markdown na nuvem. O StackEdit também
+possui uma visualização em tempo real para facilitar a visualização do
+resultado final. <a href="https://stackedit.io/app#">Teste
+Aqui</a></p></li>
+<li><p><strong>RStudio/Posit</strong>: RStudio é uma IDE (<em>Integrated
+Development Environment</em>) muito utilizada por programadores e
+cientistas de dados em projetos envolvendo a linguagem R. O RStudio
+possui um ambiente dedicado para edição de documentos R Markdown, que
+combina a facilidade do Markdown com a capacidade de incorporar análises
+e gráficos gerados pelo R.</p></li>
+</ol>
+<p>Arquivos puramente em Markdown apresentam a extensão
+<code>.md</code>. Porém, quando utilizamos RMarkdown ou Quarto sua
+extensão se torna <code>.Rmd</code> ou <code>.qmd</code>,
+respectivamente.</p>
+</div>
+<div id="sintaxe-básica" class="section level3">
+<h3>1.1.2 Sintaxe Básica</h3>
+<div id="títulos" class="section level4">
+<h4>1.1.2.1 Títulos</h4>
+<p>Para criar títulos em Markdown, podemos utilizar a sintaxe de
+hashtags (<code>#</code>). A quantidade de hashtags determina o nível do
+título.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre class="bash"><code># Título de Nível 1
+## Título de Nível 2
+### Título de Nível 3 </code></pre>
+<p><strong>Resultado</strong></p>
+<h1 id="título-de-nível-1">Título de Nível 1</h1>
+<h2 id="título-de-nível-2">Título de Nível 2</h2>
+<h3 id="título-de-nível-3">Título de Nível 3</h3>
+</blockquote>
+</div>
+<div id="parágrafos-e-quebras-de-linha" class="section level4">
+<h4>1.1.2.2 Parágrafos e Quebras de Linha</h4>
+<p>Para criar parágrafos, basta digitar o texto normalmente. Para criar
+uma quebra de linha, insira dois espaços no final do parágrafo.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>Isso é um parágrafo.
+
+Isso é outro parágrafo.</code></pre>
+<p><strong>Resultado</strong></p>
+<p>Isso é um parágrafo.</p>
+<p>Isso é outro parágrafo.</p>
+</blockquote>
+</div>
+<div id="ênfase" class="section level4">
+<h4>1.1.2.3 Ênfase</h4>
+<p>Para destacar palavras ou frases, você pode utilizar o asterisco
+(<code>*</code>) ou o sublinhado (<code>_</code>).</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>*Itálico* ou _Itálico_
+
+**Negrito** ou __Negrito__</code></pre>
+<p><strong>Resultado</strong></p>
+<p><em>Itálico</em> ou <em>Itálico</em></p>
+<p><strong>Negrito</strong> ou <strong>Negrito</strong></p>
+</blockquote>
+</div>
+<div id="listas" class="section level4">
+<h4>1.1.2.4 Listas</h4>
+<div id="lista-não-ordenada" class="section level5">
+<h5>1.1.2.4.1 Lista Não Ordenada</h5>
+<p>Para criar uma lista não ordenada, utilize o asterisco
+(<code>*</code>), o sinal de mais (<code>+</code>) ou o traço
+(<code>-</code>) seguido do item.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>- Item 1
+- Item 2
+- Item 3</code></pre>
+<pre><code>+ Item 1
++ Item 2
++ Item 3</code></pre>
+<pre><code>* Item 1
+* Item 2
+* Item 3</code></pre>
+<p><strong>Resultado</strong></p>
+<ul>
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3</li>
+</ul>
+</blockquote>
+</div>
+<div id="lista-ordenada" class="section level5">
+<h5>1.1.2.4.2 Lista Ordenada</h5>
+<p>Para criar uma lista ordenada, digitamos o número seguido de um
+ponto.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>1.  Item 1
+2.  Item 2
+3.  Item 3</code></pre>
+<p><strong>Resultado</strong></p>
+<ol style="list-style-type: decimal">
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Se os números forem colocados fora de ordem, os itens ainda serão
+numerados corretamente.</p>
+</blockquote>
+</div>
+</div>
+<div id="lista-aninhada" class="section level4">
+<h4>1.1.2.5 Lista Aninhada</h4>
+<p>Para criar uma lista aninhada, simplesmente digitamos uma tabulação
+antes do indicador de lista (<code>*</code>, <code>+</code>,
+<code>-</code>, <code>1.</code>).</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>*  Item 1
+   +  Item 1.1</code></pre>
+<p><strong>Resultado</strong></p>
+<ul>
+<li>Item 1
+<ul>
+<li>Item 1.1</li>
+</ul></li>
+</ul>
+</blockquote>
+</div>
+<div id="links" class="section level4">
+<h4>1.1.2.6 Links</h4>
+<p>Para adicionar um link, utilizamos a sintaxe
+<code>[texto](URL)</code>.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>[Google.com](google.com)</code></pre>
+<p><strong>Resultado</strong></p>
+<p><a href="google.com">Google.com</a></p>
+</blockquote>
+<blockquote>
+<p>Para incluir links rapidamente também podemos utilizar
+<code>&lt;link&gt;</code>.</p>
+</blockquote>
+</div>
+<div id="imagens" class="section level4">
+<h4>1.1.2.7 Imagens</h4>
+<p>Para inserirmos uma imagem, utilizamos a sintaxe
+<code>![texto alternativo](URL da imagem)</code>.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>![Logo do Markdown](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/312px-Markdown-mark.svg.png?20190322184628)</code></pre>
+<p><strong>Resultado</strong></p>
+<div class="figure">
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/312px-Markdown-mark.svg.png?20190322184628"
+alt="" />
+<p class="caption">Logo do Markdown</p>
+</div>
+</blockquote>
+</div>
+<div id="citações" class="section level4">
+<h4>1.1.2.8 Citações</h4>
+<p>Para adcionar uma citação, utilizamos o sinal de maior que
+(<code>&gt;</code>).</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>E nessa loucura de dizer que não te quero  
+Vou negando as aparências  
+Disfarçando as evidências  
+(Evidências, 
+Chitãozinho &amp; Xororó)</code></pre>
+<p><strong>Resultado</strong></p>
+<blockquote>
+<p>E nessa loucura de dizer que não te quero</p>
+<p>Vou negando as aparências</p>
+<p>Disfarçando as evidências</p>
+<p>(Evidências, Chitãozinho &amp; Xororó)</p>
+</blockquote>
+</blockquote>
+</div>
+</div>
+<div id="funcionalidades-avançadas-do-markdown" class="section level3">
+<h3>1.1.3 Funcionalidades Avançadas do Markdown</h3>
+<p>Agora que já aprendemos os conceitos básicos do Markdown, vamos
+explorar algumas funcionalidades mais avançadas que tornam essa
+linguagem ainda mais poderosa e versátil.</p>
+<div id="referência-cruzada" class="section level4">
+<h4>1.1.3.1 Referência cruzada</h4>
+<p>As referências cruzadas permitem que você crie <em>links</em> para
+seções específicas dentro do seu documento Markdown. Isso é
+especialmente útil para documentos extensos, onde você deseja facilitar
+a navegação do leitor. Para criar uma referência cruzada precisamos
+atribuir um identificador único a um título usando a sintaxe
+<code>{#identificador}</code> e, em seguida, criar o link utilizando o
+mesmo identificador precedido de <code>#</code>.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>## Seção 1 {#sec-01}
+
+Este é o conteúdo da seção 1.
+
+Para referenciar esta seção, [clique aqui](#sec-01).</code></pre>
+<p><strong>Resultado</strong></p>
+<h2 id="sec-01">1.2 Seção 1</h2>
+<p>Este é o conteúdo da seção 1.</p>
+<p>Para referenciar esta seção, <a href="#sec-01">clique aqui</a>.</p>
+</blockquote>
+<p>Outra opção para referenciamento é utilizando o <code>@</code>.</p>
+<blockquote>
+<pre><code>## Seção 2 {#sec-02}
+
+Este é o conteúdo da seção 2.
+
+Como visto na @sec-02, ... .</code></pre>
+<p><strong>Resultado</strong></p>
+<p>1.3 Seção 2 {#sec-02} Este é o conteúdo da seção 2.</p>
+<p>Como visto na <a href="@sec-02">Seção 1.3</a>, … .</p>
+</blockquote>
+<blockquote>
+<p>Para uma melhor organização das referências cruzadas em um projeto
+categorizamos figuras como <code>fig-</code>, tabelas como
+<code>tab-</code> e seções como <code>sec-</code>.</p>
+</blockquote>
+</div>
+<div id="tabelas" class="section level4">
+<h4>1.3.0.1 Tabelas</h4>
+<p>As tabelas permitem organizar dados em formato tabular. Para criar
+uma tabela em Markdown, utilizamos o caractere de pipe (<code>|</code>)
+para separar as colunas e o hífen (<code>-</code>) na segunda linha para
+definir o alinhamento das células.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>| Nome   | Idade | Profissão       |
+|--------|-------|-----------------|
+| João   | 30    | Estatístico     |
+| Maria  | 28    | Designer        |
+| Pedro  | 35    | Desenvolvedor   |</code></pre>
+<p><strong>Resultado</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Nome</th>
+<th>Idade</th>
+<th>Profissão</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>João</td>
+<td>30</td>
+<td>Estatístico</td>
+</tr>
+<tr class="even">
+<td>Maria</td>
+<td>28</td>
+<td>Designer</td>
+</tr>
+<tr class="odd">
+<td>Pedro</td>
+<td>35</td>
+<td>Desenvolvedor</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+<div id="blocos-de-código" class="section level4">
+<h4>1.3.0.2 Blocos de Código</h4>
+<p>Para exibir blocos de código, utilizamos três acentos graves
+(<code>```</code>) seguidos do nome da linguagem de programação. Isso
+destacará a sintaxe de acordo com a linguagem escolhida.</p>
+<p>Quando estamos utilizando Quarto, portanto, um arquivo
+<code>.qmd</code> o código incluído dentro do bloco delimitado será
+executado de acordo com a linguagem definida. Isto é, se o código dentro
+do bloco é um código em R, será executado como em R, se é um código em
+Python, será executado em Python, se é um código em Mermaid, será
+executado em Mermaid, e assim por diante.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>
+```r
+1 + 1</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="python"><code>1 + 1</code></pre>
+<pre><code>## 2</code></pre>
+<p><strong>Resultado</strong></p>
+<pre><code>1 + 1</code></pre>
+<p>[1] 2</p>
+<pre><code>1 + 1</code></pre>
+</blockquote>
+</div>
+<div id="linhas-horizontais" class="section level4">
+<h4>1.3.0.3 Linhas Horizontais</h4>
+<p>Para criar uma linha horizontal, utilize três hífens
+(<code>---</code>).</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>Texto acima da linha horizontal.
+
+---
+
+Texto abaixo da linha horizontal.</code></pre>
+<p><strong>Resultado</strong></p>
+<p>Texto acima da linha horizontal.</p>
+<hr />
+<p>Texto abaixo da linha horizontal.</p>
+</blockquote>
+</div>
+<div id="fórmulas-matemáticas" class="section level4">
+<h4>1.3.0.4 Fórmulas Matemáticas</h4>
+<p>Se você precisa escrever fórmulas matemáticas, é possível utilizar a
+notação LaTeX dentro de um par de cifrões (<code>$$</code>). Isso
+permitirá que o Markdown renderize a fórmula corretamente.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>A equação quadrática é definida como $$ax^2 + bx + c = 0.$$</code></pre>
+<p><strong>Resultado</strong></p>
+<p>A equação quadrática é definida como <span
+class="math display">\[ax^2 + bx + c = 0.\]</span></p>
+</blockquote>
+<p>Quando queremos utilizar alguma fórmula matemática dentro de um texto
+utilizamos apenas um cifrão <code>$</code> de cada lado da equação.</p>
+<blockquote>
+<p>Exemplo</p>
+<p><strong>Código</strong></p>
+<pre><code>A equação quadrática é definida como $ax^2 + bx + c = 0.$</code></pre>
+<p><strong>Resultado</strong></p>
+<p>A equação quadrática é definida como <span class="math inline">\(ax^2
++ bx + c = 0.\)</span></p>
+</blockquote>
+<blockquote>
+<p>Para saber mais sobre como escrever equações em LaTex acesse a <a
+href="http://fap.if.usp.br/~vvuolo/A%20-%20HOME%20-%20Fisica/Apostiladelatex.pdf">Apostila
+Online</a>.</p>
+</blockquote>
+</div>
+</div>
+<div id="cheat-sheet" class="section level3">
+<h3>1.3.1 Cheat-Sheet</h3>
+<p><a
+href="https://gysi.quarto.pub/ce302/cheatsheet/md_cheatsheet.html">Clique
+aqui</a> para a cheat-sheet so material de Markdown.</p>
+</div>
+</div>
+<div id="organização" class="section level2">
+<h2>1.4 Organização</h2>
+<p>As boas práticas de programação são essenciais para desenvolver
+código de qualidade, que seja fácil de entender, manter e evoluir. Uma
+das áreas importantes dentro das boas práticas é a organização dos
+arquivos, que ajuda a tornar o projeto mais coeso e legível.</p>
+<p>1.4.1 Nomenclatura Adequada A nomenclatura adequada dos arquivos é
+essencial para uma organização eficiente. Ao criar arquivos para
+projetos de análise de dados, independente da linguagem, devemos
+escolher nomes descritivos que reflitam o conteúdo ou a finalidade do
+arquivo. Por exemplo, <code>limpeza_dados.R</code> ou
+<code>analise_exploratoria.R</code> são nomes mais informativos do que
+<code>arquivo1.R</code> ou <code>script_final.R</code>.</p>
+<p>Quando lidamos com uma sequência nas quais os códigos devem ser
+executados prefira salvar os códigos com nomes que indiquem essa ordem.
+Por exemplo, se há necessidade de que os dados sejam <em>limpos</em>
+antes de iniciarmos uma <em>análise exploratória</em> devemos salvar os
+códigos com os seguintes nomes <code>01_limpeza_dados.R</code> e
+<code>02_analise_exploratoria.R</code>, indicando a ordem na qual os
+códigos devem ser executados.</p>
+<p>Ao longo do curso, utilizaremos nomes consistentes para facilitar a
+compreensão e a busca de arquivos relacionados.</p>
+<div id="estrutura-de-diretórios" class="section level3">
+<h3>1.4.2 Estrutura de Diretórios</h3>
+<p>A organização dos arquivos em diretórios lógicos é crucial para
+projetos de análise de dados. Considere uma estrutura de diretórios que
+abranja etapas comuns da análise, como <code>dados</code> para armazenar
+os dados brutos, <code>codigo</code> para conter os códigos de análise e
+<code>resultados</code> para guardar os resultados da análise.</p>
+<p>Exemplo de estrutura de diretórios:</p>
+<blockquote>
+<p>meu_projeto/</p>
+<p>|– dados/</p>
+<p>|– codigos/</p>
+<p>|– resultados/</p>
+</blockquote>
+<p>Também podemos ter essa mesma estrutura em inglês:</p>
+<blockquote>
+<p>my_project/</p>
+<p>|– data/</p>
+<p>|– code/</p>
+<p>|– results/</p>
+</blockquote>
+<p>Mantendo uma estrutura organizada torna mais fácil encontrar e
+gerenciar os arquivos relevantes para cada etapa da análise em cada um
+dos projetos.</p>
+<p>Obviamente, cada pasta pode conter sub-pastas, por exemplo, em
+projetos onde temos muitos dados brutos e dados processados podemos
+subdividir a pasta <code>data</code> em <code>raw</code> e
+<code>clean</code>, ou <code>input</code> e <code>output</code>.</p>
+<blockquote>
+<p>my_project/</p>
+<p>|– data/</p>
+<div class="line-block">  |– raw/</div>
+<div class="line-block">  |– clean/</div>
+<p>|– code/</p>
+<p>|– results/</p>
+</blockquote>
+<blockquote>
+<p>my_project/</p>
+<p>|– data/</p>
+<div class="line-block">  |– input/</div>
+<div class="line-block">  |– output/</div>
+<p>|– code/</p>
+<p>|– results/</p>
+</blockquote>
+<p>1.4.3 Módulos e Funções Reutilizáveis Em diversas linguagens, como R,
+Python, Perl, C, etc, podemos criar funções reutilizáveis para realizar
+tarefas específicas. Separe o código em módulos e funções para facilitar
+a manutenção e a reutilização em diferentes partes da análise.</p>
+<p>Por exemplo, podemos criar um módulo <code>limpeza_dados.R</code> que
+contenha funções para lidar com a limpeza e preparação dos dados brutos.
+Dessa forma, essas funções podem ser reutilizadas em outras análises
+futuras, economizando tempo e esforço.</p>
+<p>Também devemos nomear os arquivos de módulos e funções através de um
+prefixo que identifique que aquele arquivo contém funções e módulos ao
+invés das análises específicas para o projeto em questão. Por exemplo,
+identifique com o prefixo <code>mod_</code>, obtendo o arquivo
+<code>mod_limpeza_dados.R</code>.</p>
+</div>
+<div id="divisão-por-responsabilidade" class="section level3">
+<h3>1.4.4 Divisão por Responsabilidade</h3>
+<p>Agrupe os arquivos de acordo com suas responsabilidades na análise.
+Por exemplo, separe os scripts que realizam a limpeza dos dados dos
+scripts que executam a análise estatística. Além disso, crie um arquivo
+específico para a geração de gráficos e visualizações dos
+resultados.</p>
+<p>Essa abordagem facilita a manutenção do código, já que cada arquivo é
+responsável por uma tarefa específica.</p>
+</div>
+<div id="documentação" class="section level3">
+<h3>1.4.5 Documentação</h3>
+<p>A documentação adequada é essencial para entender a análise de dados,
+independente da linguagem. Sempre comente o código de forma clara e
+inclua explicações para as etapas mais importantes da análise.</p>
+<p>Também podemos considerar a utilização de arquivos do tipo <em>R
+Markdown</em> ou <em>Quarto</em> para criar relatórios interativos que
+combinem código, gráficos e texto explicativo em um único documento.
+Essa prática é excelente para comunicar os resultados da análise de
+forma mais clara e visual.</p>
+</div>
+<div id="versionamento-com-git" class="section level3">
+<h3>1.4.6 Versionamento com Git</h3>
+<p>Utilize o Git para controlar as versões do código e acompanhar o
+histórico de alterações. O versionamento é especialmente útil em
+análises de dados, pois permite que você explore diferentes abordagens e
+compare os resultados de diferentes versões do código.</p>
+<p>1.4.7 Exemplo de Estrutura Completa do Projeto &gt;my_projeto/ &gt;
+&gt;|– data/ &gt; &gt;| |– raw/ &gt; &gt;| |– clean/ &gt; &gt;|–
+scripts/ &gt; &gt;| |– 00_limpeza_dados.R &gt; &gt;| |–
+01_analise_estatistica.R &gt; &gt;| |– 02_visualizacao_resultados.R &gt;
+&gt;| |– mod_limpeza_dados.R &gt; &gt;|– results/ &gt; &gt;| |–
+relatorio_analise.html &gt; &gt;| |– graficos/ &gt; &gt;| |–
+grafico1.png &gt; &gt;| |– grafico2.png</p>
+</div>
+</div>
+<div id="sistemas-de-versionamento" class="section level2">
+<h2>1.5 Sistemas de Versionamento</h2>
+<p><strong>Versionamento de Código</strong> refere-se ao controle
+cuidadoso das alterações feitas em um projeto de <em>software</em> ao
+longo do tempo. Isso é realizado através de um sistema de controle de
+versão, como o Git, que registra todas as modificações no código-fonte
+do projeto. Cada conjunto de mudanças é registrado em uma versão,
+permitindo que os desenvolvedores acessem e revertam as alterações
+conforme necessário.</p>
+<p>Um sistema de controle de versão é uma ferramenta essencial para o
+desenvolvimento colaborativo, permitindo que várias pessoas trabalhem em
+um mesmo projeto sem conflitos e de maneira mais organizada. O Git é um
+exemplo de sistema de versionamento de códigos, que pode ser hospedado
+no GitHub, por exemplo.</p>
+<div id="git" class="section level3">
+<h3>1.5.1 Git</h3>
+<p><strong>Git</strong> é um sistema de controle de versão distribuído.
+Foi criado por Linus Torvalds em 2005 e é amplamente utilizado na
+indústria de desenvolvimento de software. O Git permite que
+desenvolvedores rastreiem mudanças no código-fonte ao longo do tempo,
+facilitando o trabalho em equipe e a colaboração. Ele oferece recursos
+para criar ramos (ramificações) do código, mesclá-los e reverter
+alterações, permitindo que os desenvolvedores experimentem diferentes
+abordagens sem afetar a versão principal do projeto. O Git é executado
+localmente no computador do desenvolvedor e não requer uma conexão com a
+internet, a menos que você queira sincronizar com um repositório remoto,
+como o GitHub.</p>
+<p>1.5.2 GitHub O <strong>GitHub</strong> é uma plataforma de hospedagem
+de código-fonte e colaboração baseada em Git. Lançado em 2008, o GitHub
+tornou-se rapidamente um dos maiores repositórios de código-fonte do
+mundo. Ele permite que os desenvolvedores hospedem seus repositórios Git
+na nuvem e colaborem com outros membros da equipe ou contribuidores
+externos. O GitHub facilita o compartilhamento de código, rastreamento
+de problemas (issues), solicitações de pull (pull requests) e revisão de
+código. Além disso, fornece uma interface amigável para visualizar
+histórico de alterações, ramos, problemas e outras informações
+importantes relacionadas ao desenvolvimento do software.</p>
+</div>
+<div id="importância-do-versionamento-de-código" class="section level3">
+<h3>1.5.3 Importância do Versionamento de Código</h3>
+<p><strong>1. Rastreamento de Alterações</strong>: Com o versionamento
+de código, é possível rastrear todas as modificações feitas no projeto,
+incluindo quem realizou cada alteração e quando. Isso facilita a
+identificação de problemas e a compreensão do histórico do projeto.</p>
+<p><strong>2. Reversão Segura</strong>: Caso um erro seja introduzido no
+código, é possível reverter para uma versão anterior que esteja
+funcionando corretamente. Isso é especialmente útil em situações de bugs
+críticos ou mudanças indesejadas.</p>
+<p><strong>3. Colaboração Eficiente</strong>: Equipes de desenvolvimento
+podem trabalhar em paralelo em diferentes partes do projeto, sem
+interferir no trabalho um do outro. O versionamento permite que cada
+desenvolvedor trabalhe em sua própria cópia (branch) do código antes de
+integrá-lo ao projeto principal.</p>
+<p><strong>4. Testes e Experimentações</strong>: É possível criar
+branches para testar novos recursos, correções ou experimentações sem
+impactar o código principal. Esses branches podem ser compartilhados com
+colegas para revisão antes de serem incorporados.</p>
+<p><strong>5. Backup e Segurança</strong>: Os repositórios versionados
+atuam como um backup seguro para o código-fonte do projeto. Em caso de
+falha no hardware ou perda de dados local, as versões remotas do código
+podem ser recuperadas.</p>
+</div>
+<div id="criando-uma-conta-no-github" class="section level3">
+<h3>1.5.4 Criando uma Conta no GitHub</h3>
+<p><strong>GitHub</strong> é uma plataforma popular para hospedar
+projetos versionados usando o Git. Siga os seguintes passos para criar
+uma conta:</p>
+<ol style="list-style-type: decimal">
+<li><p>Acesse o site oficial do GitHub em <a href="https://github.com/"
+class="uri">https://github.com/</a>.</p></li>
+<li><p>Clique em “Sign Up” ou “Criar conta”.</p></li>
+<li><p>Preencha seus dados, incluindo nome de usuário, endereço de
+e-mail e senha.</p></li>
+<li><p>Selecione um plano de conta.</p></li>
+<li><p>Conclua o processo de criação de conta seguindo as instruções na
+tela.</p></li>
+</ol>
+<blockquote>
+<p>Utilize seu e-mail <span class="citation">@ufpr</span> para criação
+da conta para ter acesso a conta Pro.</p>
+</blockquote>
+</div>
+<div id="mantendo-projetos-e-colaborando-no-github"
+class="section level3">
+<h3>1.5.5 Mantendo Projetos e Colaborando no GitHub</h3>
+<p><strong>1. Repositórios</strong>: Após criar uma conta no GitHub,
+você pode criar um novo repositório ou clonar (fazer uma cópia local) um
+repositório existente para começar a trabalhar no projeto.</p>
+<p><strong>2. Commits</strong>: Os <code>commits</code> são registros
+das alterações feitas no código. Ao fazer um commit, é importante
+fornecer uma mensagem clara e concisa que explique o que foi alterado.
+Isso ajuda na compreensão das mudanças realizadas em cada versão.</p>
+<p><strong>3. Branches</strong>: Os <code>branches</code> permitem que
+você crie cópias do seu repositório para trabalhar em funcionalidades
+específicas ou correções. Branches são úteis para desenvolver recursos
+em paralelo sem afetar o projeto principal. Quando um trabalho em um
+branch estiver concluído, ele pode ser mesclado ao projeto principal
+através de um <code>pull request</code>.</p>
+<p><strong>4. Pull Requests</strong>: Um pull request é uma solicitação
+para mesclar as alterações de um branch ao projeto principal. É uma
+etapa crucial para a colaboração, pois permite que outros membros da
+equipe revisem as mudanças, façam comentários e discutam as alterações
+antes de serem integradas ao código principal.</p>
+<p><strong>5. Forks</strong>: Quando você deseja contribuir para um
+projeto mantido por outra pessoa, pode criar um <code>fork</code>, que é
+uma cópia independente do repositório original em sua conta do GitHub.
+Após fazer as alterações em seu fork, você pode enviar um pull request
+para o repositório original, sugerindo que suas mudanças sejam
+incorporadas ao projeto principal.</p>
+</div>
+<div id="comandos-básicos-do-git" class="section level3">
+<h3>1.5.6 Comandos Básicos do Git</h3>
+<p>Aqui estão os comandos essenciais do Git que ajudarão você a começar
+com o versionamento de código:</p>
+<p><strong>1. <code>git init</code></strong>: Inicializa um novo
+repositório Git em um diretório vazio ou converte um projeto existente
+em um repositório Git.</p>
+<p><strong>2. <code>git clone</code></strong>: Cria uma cópia local de
+um repositório Git existente. Você pode clonar um repositório do GitHub
+ou de outro servidor Git.</p>
+<p><strong>3. <code>git add</code></strong>: Adiciona arquivos ao índice
+(staging area) para serem incluídos no próximo commit. Use “git add .”
+para adicionar todos os arquivos modificados.</p>
+<p><strong>4. <code>git commit</code></strong>: Registra as alterações
+adicionadas ao índice como uma nova versão no histórico do repositório.
+Lembre-se de fornecer uma mensagem significativa usando o parâmetro
+“-m”.</p>
+<p><strong>5. <code>git status</code></strong>: Exibe o estado atual do
+seu repositório, mostrando os arquivos modificados, adicionados e
+aqueles que ainda não foram monitorados pelo Git.</p>
+<p><strong>6. <code>git log</code></strong>: Mostra o histórico de
+commits do repositório, incluindo os autores, datas e mensagens de
+commit.</p>
+<p><strong>7. <code>git branch</code></strong>: Lista todas as branches
+do repositório. O branch atual é marcado com um asterisco.</p>
+<p><strong>8. <code>git checkout</code></strong>: Permite alternar entre
+branches. Use “git checkout -b nome-do-branch” para criar e alternar
+para um novo branch.</p>
+<p><strong>9. <code>git merge</code></strong>: Mescla as alterações de
+um branch específico no branch atual. Use após realizar um pull request
+ou ao concluir o trabalho em um branch paralelo.</p>
+<p><strong>10. <code>git pull</code></strong>: Puxa as alterações do
+repositório remoto para o seu repositório local. É uma combinação dos
+comandos “git fetch” e “git merge”.</p>
+<p><strong>11. <code>git push</code></strong>: Envia as alterações do
+seu repositório local para o repositório remoto (por exemplo, GitHub).
+Use “git push origin nome-do-branch” para enviar um branch
+específico.</p>
+<p><strong>12. <code>git remote</code></strong>: Exibe informações sobre
+os repositórios remotos conectados ao seu projeto.</p>
+<p><strong>13. <code>git fetch</code></strong>: Busca as alterações do
+repositório remoto, mas não as mescla automaticamente em seu repositório
+local.</p>
+<p><strong>14. <code>git rm</code></strong>: Remove arquivos do
+repositório e os prepara para serem removidos do controle de versão.</p>
+<p><strong>15. <code>git diff</code></strong>: Mostra as diferenças
+entre o código no diretório de trabalho e as alterações confirmadas.</p>
+</div>
+<div id="cheat-sheet-git" class="section level3">
+<h3>1.5.7 Cheat-Sheet Git</h3>
+<p><a
+href="https://gysi.quarto.pub/ce302/cheatsheet/git_cheatsheet.html">Clique
+aqui</a> para a cheat-sheet do material de Git.</p>
+</div>
+<div id="cheat-sheet-rstudio-git" class="section level3">
+<h3>1.5.8 Cheat-Sheet RStudio &amp; Git</h3>
+<p><a
+href="https://gysi.quarto.pub/ce302/cheatsheet/gitR_cheatsheet.html">Clique
+aqui</a> para a cheat-sheet do material de Git &amp; Rstudio.</p>
+</div>
+</div>
+<div id="recursos-extras" class="section level2">
+<h2>1.6 Recursos extras</h2>
+<p>Alguns recursos extras que podem ser utilizados:</p>
+<ul>
+<li><p><a href="https://commonmark.org/">Aprenda Markdown em 60
+segundos</a></p></li>
+<li><p><a href="https://holtzy.github.io/Pimp-my-rmd/">Melhore seu
+<code>.Rmd</code></a></p></li>
+<li><p><a href="https://docs.github.com/pt/get-started/using-git">Como
+usar o GitHub</a></p></li>
+<li><p><a href="https://learngitbranching.js.org/?locale=pt_BR">Mais
+sobre o GitHub</a></p></li>
+</ul>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>conjunto de sinais e códigos aplicados a um texto ou a
+dados para para definir formatos, maneiras de exibição e padrões. Ao
+contrário de linguagens de programação, não possui estruturas de
+controle como os comandos condicionais e de repetição.<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

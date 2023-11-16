@@ -1,0 +1,529 @@
+---
+# title: ""
+# date: 2023-10-05
+# author:
+#   - name: Deisy Morselli Gysi
+#     id: dm
+#     email: deisy.gysi@ufpr.br
+#     affiliation: 
+#       - name: Universidade Federal do Paraná
+#         city: Curitiba
+#         state: PR
+#         url: https://deisygysi.github.io/
+lang: pt
+title-block-style: none
+
+fig-align: center
+fig-width: 10
+fig-height: 12
+
+toc: true
+toc-depth: 5
+toc-title: ""
+
+# bibliography: refs.bib
+# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+theme: 
+  light: yeti
+  dark: slate
+code-fold: false
+execute: 
+  warning: false
+  error: false
+format: 
+  html:
+    code-fold: false
+    highlight-style: dracula
+    fontcolor: '#F2F2F2'
+    linkcolor: '#BFBFBF'
+  pdf: 
+    highlight-style: dracula
+---
+
+# 5  Funções e Expressões
+
+## 5.1 Funções 
+
+Uma função é um conjunto de instruções que realizam uma tarefa específica quando chamadas. Elas desempenham um papel crucial na programação, permitindo a modularização e **reutilização do código**. As funções em `R` seguem uma estrutura geral:
+
+``` {r}
+nome_da_funcao <- function(argumentos) {
+  # Corpo da função
+  # Instruções para realizar a tarefa
+  return(resultado) # Resultado da função
+}
+```
+
+* **nome_da_funcao**: É o nome atribuído à função, que deve ser descritivo e significativo.
+
+* **argumentos**: São os parâmetros que a função recebe como entrada. Eles podem ser opcionais ou obrigatórios, dependendo da função.
+
+* **Corpo da função**: É onde as operações desejadas são definidas usando R.
+
+* **return(resultado)**: A função pode opcionalmente retornar um resultado calculado. Se não especificado, a função retorna implicitamente o último valor calculado. É uma boa prática explicitamente definir o que a função deve retornar.
+
+### 5.1.1 Exemplo
+Suponha que temos interesse em calcular a média de uma determinada variável em um banco de dados e gostaríamos de aplicar essa função diversas vezes. Vamos demonstrar isso utilizando o banco de dados “iris”.
+
+```{r}
+data("iris")
+
+media_sepal_len = round(sum(iris$Sepal.Length)/length(iris$Sepal.Length),2)
+media_sepal_len
+```
+
+```{r}
+media_sepal_wid = round(sum(iris$Sepal.Width)/length(iris$Sepal.Width),2)
+media_sepal_wid
+```
+
+```{r}
+media_petal_len = round(sum(iris$Petal.Length)/length(iris$Petal.Length),2)
+media_petal_len
+```
+
+```{r}
+media_petal_wid = round(sum(iris$Petal.Width)/length(iris$Petal.Width),2)
+media_petal_wid
+```
+
+Temos de repetir a mesma operação quatro vezes. Poderiamos simplesmente criar uma função chamada *`média`* e não precisar repetir o mesmo procedimento multiplas vezes. Vamos definir nossa primeira função em R.
+
+```{r}
+minha_media <- function(vetor_de_dados){
+  media = sum(vetor_de_dados)/length(vetor_de_dados)
+  media = round(media, 2)
+  return(media)
+}
+
+minha_media(iris$Sepal.Length)
+```
+
+Suponha que tenhamos interesse em que o número de casas decimais seja definido pelo usuário:
+
+```{r}
+minha_media_arredond <- function(vetor_de_dados, arredondamento = 5){
+  media = sum(vetor_de_dados)/length(vetor_de_dados)
+  media = round(media, arredondamento)
+  return(media)
+}
+
+minha_media(iris$Sepal.Length)
+```
+
+```{r}
+minha_media_arredond(iris$Sepal.Length)
+```
+
+Podemos estar interessados em calcular o Desvio Padrão Amostral.
+```{r}
+meu_desvio_padrao_amostral <- function(vetor) {
+  media <- minha_media_arredond(vetor) 
+  diferenca <- vetor - media  # Calcula as diferenças em relação à média
+  quadrados <- diferenca^2  # Calcula os quadrados das diferenças
+  variancia <- sum(quadrados) / (length(vetor) - 1)  # Calcula a variância
+  desvio_padrao <- sqrt(variancia)  # Calcula o desvio padrão
+  return(desvio_padrao)
+}
+
+meu_desvio_padrao_amostral(iris$Sepal.Length)
+```
+
+Com o desvio padrão amostral e a média podemos calcular o coeficiente de variação (CV). O CV é dado por
+$$CV = \frac{Desvio \ Padrão}{Média} X 100$$
+
+Podemos implementar essa função, e para isso, podemos utilizar as duas funções que implementamos anteriormente.
+
+```{r}
+meu_coeficiente_variacao <- function(vetor, arredondamento = 2) {
+  media <- minha_media_arredond(vetor, arredondamento = arredondamento)  # Calcula a média
+  desvio_padrao <- meu_desvio_padrao_amostral(vetor)  # Calcula o desvio padrão
+  coeficiente_variacao <- (desvio_padrao / media) * 100  # Calcula o CV em porcentagem
+  coeficiente_variacao = round(coeficiente_variacao, arredondamento)
+  return(coeficiente_variacao)
+}
+
+meu_coeficiente_variacao(iris$Sepal.Length, arredondamento = 2)
+```
+
+Suponha que temos interesse em retornar ao usuário mais do que um valor, no nosso exemplo do CV temos interesse em retornar a média, o desvio padrão e o CV. Podemos fazer isso de diversas maneiras, aqui veremos apenas duas: retornar um data.frame e uma lista nomeada.
+
+```{r}
+meu_coeficiente_variacao2 <- function(vetor, arredondamento = 2) {
+  media <- minha_media_arredond(vetor, arredondamento = arredondamento)  # Calcula a média
+  desvio_padrao <- meu_desvio_padrao_amostral(vetor)  # Calcula o desvio padrão
+  coeficiente_variacao <- (desvio_padrao / media) * 100  # Calcula o CV em porcentagem
+  coeficiente_variacao = round(coeficiente_variacao, arredondamento)
+  return(data.frame(CV = coeficiente_variacao, 
+                    média = media, 
+                    dp = desvio_padrao))
+  
+}
+
+meu_coeficiente_variacao2(iris$Sepal.Length, arredondamento = 2)
+```
+
+```{r}
+meu_coeficiente_variacao3 <- function(vetor, arredondamento = 2) {
+  media <- minha_media_arredond(vetor, arredondamento = arredondamento)  # Calcula a média
+  desvio_padrao <- meu_desvio_padrao_amostral(vetor)  # Calcula o desvio padrão
+  coeficiente_variacao <- (desvio_padrao / media) * 100  # Calcula o CV em porcentagem
+  coeficiente_variacao = round(coeficiente_variacao, arredondamento)
+  return(list(CV = coeficiente_variacao, 
+              média = media, 
+              dp = desvio_padrao))
+  
+}
+
+meu_coeficiente_variacao3(iris$Sepal.Length, arredondamento = 2)
+```
+
+
+### 5.1.2 Mensagens
+
+No R existem diversos tipos de mensagem que podem ser geradas dentro de uma função, as principais são as *messages* e os *warnings*.
+
+As mensagens em R são usadas para fornecer informações ou feedback ao usuário durante a execução de uma função ou script. Elas são úteis para comunicar detalhes sobre o progresso do código ou resultados intermediários.
+
+```{r}
+x <- -5
+if (x < 0) {
+  message("O valor de x é negativo.")
+}
+```
+
+Os warnings são mensagens que alertam o usuário sobre situações que não são necessariamente erros, mas que podem indicar problemas ou comportamentos inesperados em um código. Eles são geralmente usados para chamar a atenção do usuário para possíveis questões que precisam ser consideradas. No entanto, o código continuará sendo executado após a exibição de um aviso.
+
+```{r}
+x <- -5
+if (x < 0) {
+  warning("O valor de x é negativo.")
+}
+```
+
+Também podemos forçar a parada da função caso seja um erro.
+
+```{r, eval=FALSE}
+x <- -5
+if (x < 0) {
+  stop("O valor de x é negativo.")
+}
+
+```
+
+## 5.2 Controle de Fluxo
+
+O controle de fluxo refere-se às estruturas que permitem tomada de decisões e execução de diferentes blocos com base em condições específicas. Podemos usar várias construções para controlar o fluxo de execução, as principais são: Estruturas Condionais e Estruturas de Repetição. Na aula de hoje focaremos apenas nas estruturas condicionais e na próxima em estruturas de repetição.
+
+### 5.2.1 Estruturas Condicionais (If-else)
+
+As estruturas condicionais permitem a execução um bloco de código se uma condição for verdadeira e outro bloco de código se a condição for falsa.
+
+A estrutura é basicamente:
+
+```{r, eval=FALSE}
+if (condicao) {
+  # Código a ser executado se a condição for verdadeira
+} else {
+  # Código a ser executado se a condição for falsa
+}
+```
+
+Exemplo:
+
+```{r}
+idade <- 25
+
+if (idade >= 18) {
+  cat("Você é maior de idade.\n")
+} else {
+  cat("Você é menor de idade.\n")
+}
+```
+
+As estruturas condicionais podem ser aninhadas, por exemplo, podemos ter interesse em classificar as notas dos alunos em diferentes faixas, como “A”, “B”, “C” ou “D”, com base na pontuação. As notas são geralmente classificadas de acordo com um intervalo específico de pontos. Notas acima de 90 são consideradas A, notas entre 80 e 90 são B, notas entre 70 e 80 são C, ou D caso contrário.
+
+```{r}
+pontuacao = 90
+
+if (pontuacao >= 90) {
+  nota = "A"
+} else {
+  if (pontuacao >= 80) {
+    nota = "B"
+  } else {
+    if (pontuacao >= 70) {
+      nota = "C"
+    } else {
+      nota = "D"
+    }
+  }
+}
+
+nota
+```
+
+Poderíamos estar interessados em realizar esse procedimento múltiplas vezes, e uma forma de resolvermos esse problema podemos simplesmente passar para uma função:
+
+```{r}
+classifica_nota <- function(pontuacao) {
+  if (pontuacao >= 90) {
+    nota <- "A"
+  } else {
+    if (pontuacao >= 80) {
+      nota <- "B"
+    } else {
+      if (pontuacao >= 70) {
+        nota <- "C"
+      } else {
+        nota <- "D"
+      }
+    }
+  }
+  cat(paste("A nota do aluno é:", nota))
+  return(nota)
+}
+
+pontuacao_aluno <- 85
+nota <- classifica_nota(pontuacao_aluno)
+```
+
+Podemos estar interessado em criar uma função para determinarmos o **Quadrante de um Ponto no Plano Cartesiano**, essa função recebe como entrada dois valores, as coordenadas (x, y).
+
+```{r}
+quadrante <- function(x, y) {
+  if (x > 0) {
+    if (y > 0) {
+      quadrante = "Quadrante 1"
+      
+      cat(paste0("O ponto (", x, ", ", y, ") pertence ao ",  quadrante))
+      return(quadrante)
+    } else {
+      quadrante = "Quadrante 4"
+      
+      cat(paste0("O ponto (", x, ", ", y, ") pertence ao ",  quadrante))
+    }
+  } else {
+    if (y > 0) {
+      quadrante = "Quadrante 2"
+      
+      cat(paste0("O ponto (", x, ", ", y, ") pertence ao ",  quadrante))
+    } else {
+      quadrante = "Quadrante 3"
+      
+      cat(paste0("O ponto (", x, ", ", y, ") pertence ao ",  quadrante))
+    }
+  }
+}
+
+
+quadrante(1, 1)
+```
+
+```{r}
+quadrante(-1, 1)
+```
+
+```{r}
+quadrante(1, -1)
+```
+
+```{r}
+quadrante(-1, -1)
+```
+
+### 5.2.2 If_else e ifelse
+
+Muitas vezes precisamos codificar valores de uma variável dentro de um banco de dados. Para isso, podemos utilizar as funções `if_else` ou `ifelse`.
+
+Suponha que queremos classificar o comprimento das pétalas em “longa”ou “curta”, para isso podemos fazer como segue:
+
+```{r}
+require(magrittr)
+```
+
+```{r}
+require(dplyr)
+```
+
+```{r}
+iris %<>% 
+  mutate(cat_petal.len = ifelse(Petal.Length > mean(Petal.Length), "Longa", "Curta"))
+
+iris %<>% 
+  mutate(cat_petal.len2 = if_else(Petal.Length > mean(Petal.Length), "Longa", "Curta"))
+```
+
+### 5.2.3 Switch
+
+O comando `switch` é outra construção de controle de fluxo que permite escolher entre várias alternativas com base em um valor especificado. É útil quando você precisa executar um bloco de código diferente para diferentes valores de uma variável. A sintaxe básica do switch em R é a seguinte:
+
+```{r, eval=FALSE}
+switch(expressao, caso1, caso2, ..., casoN)
+```
+
+```{r}
+dia_da_semana <- "segunda"
+
+mensagem <- switch(dia_da_semana,
+  "segunda" = "Hoje é segunda-feira.",
+  "terca" = "Hoje é terça-feira.",
+  "quarta" = "Hoje é quarta-feira.",
+  "quinta" = "Hoje é quinta-feira.",
+  "sexta" = "Hoje é sexta-feira.",
+  "sabado" = "Hoje é sábado.",
+  "domingo" = "Hoje é domingo.",
+  "Outro" = "Dia não reconhecido."
+)
+
+cat(mensagem)
+```
+
+### 5.2.4 `case_when` 
+
+Similar ao `ifelse`, temos o `case_when` quando nosso interesse está em codificar variáveis de um banco de dados.
+
+Tomemos como exemplo as medidas das sépalas, agora queremos agrupar em três categorias:
+
+* X < média - 1 desvio
+
+* média - 1 desvio < X < média + 1 desvio
+
+* X > média + 1 desvio
+
+```{r}
+iris$cat_sepal = 
+  case_when((iris$Sepal.Length < mean(iris$Sepal.Length) - sd(iris$Sepal.Length)) ~ "X < media - 1 sd", 
+            (iris$Sepal.Length < mean(iris$Sepal.Length) + sd(iris$Sepal.Length)) ~ "X < media + 1 sd", 
+            .default = "X > media + 1 sd")
+```
+
+### 5.2.5 Exercícios
+
+1. **Classificação do Combustível do Meio de Transporte**: Crie uma função chamada `classifica_combustivel` que recebe o nome de um meio de transporte como argumento e retorna o tipo de combustível que esse meio de transporte utiliza. Considere os seguintes meios de transporte e seus respectivos tipos de combustível:
+
+* Carro: Gasolina ou Diesel
+
+* Moto: Gasolina
+
+* Bicicleta: Humana (sem combustível)
+
+* Ônibus: Diesel ou Gás Natural
+
+* Trem: Eletricidade ou Diesel
+
+* Avião: Querosene
+
+* Barco: Diesel ou Gasolina
+
+```{r}
+classifica_combustivel <- function(meio_de_transporte) {
+  meio_de_transporte <- tolower(meio_de_transporte)  # Converter para minúsculas para facilitar a comparação
+  
+  if (meio_de_transporte %in% c("carro", "moto")) {
+    return("Gasolina ou Diesel")
+  } else if (meio_de_transporte == "bicicleta") {
+    return("Humana (sem combustível)")
+  } else if (meio_de_transporte %in% c("ônibus", "trem")) {
+    return("Diesel ou Gás Natural")
+  } else if (meio_de_transporte == "avião") {
+    return("Querosene")
+  } else if (meio_de_transporte == "barco") {
+    return("Diesel ou Gasolina")
+  } else {
+    return("Meio de transporte não reconhecido.")
+  }
+}
+
+# Exemplos de uso da função
+cat("Meio de transporte: Carro\n")
+cat("Tipo de combustível: ", classifica_combustivel("Carro"), "\n\n")
+
+cat("Meio de transporte: Bicicleta\n")
+cat("Tipo de combustível: ", classifica_combustivel("Bicicleta"), "\n\n")
+
+cat("Meio de transporte: Avião\n")
+cat("Tipo de combustível: ", classifica_combustivel("Avião"), "\n\n")
+
+cat("Meio de transporte: Trem\n")
+cat("Tipo de combustível: ", classifica_combustivel("Trem"), "\n\n")
+
+cat("Meio de transporte: Patins\n")
+cat("Tipo de combustível: ", classifica_combustivel("Patinete"), "\n")
+
+```
+
+2. **Conversão de Temperatura**: Crie uma função chamada `converte_temperatura` que recebe uma temperatura em graus Celsius ou Fahrenheit como argumento e converte para graus Celsius ou Fahrenheit. A função recebe dois argumentos: A temperatura e a unidade de medida correspondente.
+```{r}
+converte_temperatura <- function(temperatura, unidade) {
+  unidade <- tolower(unidade)  # Converter para minúsculas para facilitar a comparação
+  
+  if (unidade == "c") {
+    # Converter de Celsius para Fahrenheit
+    temperatura_fahrenheit <- round((temperatura * 9/5) + 32, 2)
+    return(paste(temperatura, "°C é igual a", temperatura_fahrenheit, "°F"))
+  } else if (unidade == "f") {
+    # Converter de Fahrenheit para Celsius
+    temperatura_celsius <- round((temperatura - 32) * 5/9, 2)
+    return(paste(temperatura, "°F é igual a", temperatura_celsius, "°C"))
+  } else {
+    return("Unidade de temperatura não reconhecida. Use 'C' para Celsius ou 'F' para Fahrenheit.")
+  }
+}
+
+# Exemplos de uso da função
+cat("Temperatura: 25°C\n")
+cat(converte_temperatura(25, "C"), "\n\n")
+
+cat("Temperatura: 75°F\n")
+cat(converte_temperatura(75, "F"), "\n\n")
+
+cat("Temperatura: 100K\n")
+cat(converte_temperatura(100, "K"), "\n")
+
+```
+
+3. **Calculadora de IMC**: Crie uma função chamada `calcula_imc` que recebe o peso (em quilogramas) e a altura (em metros) de uma pessoa como argumentos e calcula o Índice de Massa Corporal (IMC). Com base no IMC calculado, a função deve retornar uma mensagem que classifica a pessoa em uma das seguintes categorias: “Abaixo do Peso”, “Peso Normal”, “Sobrepeso” ou “Obesidade”.
+
+```{r}
+calcula_imc <- function(peso, altura) {
+  # Calcular o IMC
+  imc <- peso / altura^2
+  
+  # Classificar com base no IMC
+  if (imc < 18.5) {
+    return("Abaixo do Peso")
+  } else if (imc >= 18.5 && imc < 25) {
+    return("Peso Normal")
+  } else if (imc >= 25 && imc < 30) {
+    return("Sobrepeso")
+  } else {
+    return("Obesidade")
+  }
+}
+
+# Exemplo de uso da função
+peso_exemplo <- 70  # em kg
+altura_exemplo <- 1.75  # em metros
+
+mensagem_classificacao <- calcula_imc(peso_exemplo, altura_exemplo)
+
+cat("Peso:", peso_exemplo, "kg\n")
+cat("Altura:", altura_exemplo, "m\n")
+cat("Classificação:", mensagem_classificacao, "\n")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

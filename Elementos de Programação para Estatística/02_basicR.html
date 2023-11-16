@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="raymundo" />
+
+<meta name="date" content="2023-09-21" />
+
+<title>2 Conceitos Básicos do Ambiente R e Importação e Exportação de Dados e Objetos</title>
+
+<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CE302</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01_markdown_git.html">Parte 01</a>
+</li>
+<li>
+  <a href="02_basicR.html">Parte 02</a>
+</li>
+<li>
+  <a href="index.html">Relatório</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">2 Conceitos Básicos do Ambiente R e
+Importação e Exportação de Dados e Objetos</h1>
+<h4 class="author">raymundo</h4>
+<h4 class="date">2023-09-21</h4>
+
+</div>
+
+
+<div id="história-e-contexto-do-r" class="section level2">
+<h2>2.1 História e Contexto do R</h2>
+<p>R é um <strong>ambiente estatístico</strong>, cujo desenvolvimento se
+deu início em 1993, quando Ross Ihaka e Robert Gentleman, professores de
+estatística da Universidade de Auckland, perceberam a necessidade de uma
+<strong>linguagem de programação mais acessível e eficiente para análise
+de dados</strong>. O Objetivo era o desenvolvimento de uma ferramenta
+que combinasse a facilidade de uso e a flexibilidade da
+<strong>linguagem S</strong> com a escalabilidade e a extensibilidade
+necessárias para enfrentar os desafios da análise de dados cada vez mais
+complexa.</p>
+<p>O nome “R” foi inspirado nas primeiras letras dos nomes dos
+criadores, mas também remete à ideia de um ambiente estatístico e
+reutilizável, referindo-se às características da linguagem S na qual o R
+foi baseado.</p>
+<p>O R é um software de <strong>código aberto</strong><a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a>, sendo isso
+fundamental para o seu crescimento e popularidade. Além de permitir que
+a comunidade global de estatísticos, cientistas de dados, pesquisadores
+e desenvolvedores colaborasse e compartilhasse suas contribuições em
+forma de pacotes, expandindo continuamente as capacidades da
+linguagem.</p>
+<p>O R foi lançado ao público em 1995, sendo inicialmente adotado
+principalmente por pesquisadores e acadêmicos nas áreas de estatística e
+ciências sociais. Contudo, com o a expansão da era do Big Data e o
+crescimento da necessidade de análise de dados em diversas indústrias, o
+R passou a ser empregado em diversas áreas, desde a análise de dados
+financeiros até a ciência ambiental, biologia, <em>marketing</em> e
+muito mais.</p>
+<p>Com o crescimento exponencial de usuários e desenvolvedores de R o
+ecossistema de pacotes no CRAN expandiu-se para incluir milhares de
+pacotes criados por usuários de todo o mundo. Esses pacotes fornecem
+funcionalidades especializadas para praticamente diversas tarefas,
+transformando o R em uma linguagem altamente flexível e poderosa para
+análise de dados.</p>
+<div id="contribuições-e-desenvolvimento-contínuo"
+class="section level3">
+<h3>2.1.1 Contribuições e Desenvolvimento Contínuo</h3>
+<p>Um dos principais pontos positivos do R é a colaboração da comunidade
+de usuários e desenvolvedores. O desenvolvimento do R é mantido por uma
+equipe central, porém qualquer pessoa pode contribuir com melhorias,
+correções de bugs e novos pacotes, resultando em um fluxo constante de
+inovações e melhorias.</p>
+<p>Além disso, o R possui integração com outras linguagens de
+programação, como C, C++, Python e SQL, permitindo a otimização de
+tarefas computacionalmente intensivas e a integração com outros
+ecossistemas de <em>software.</em></p>
+</div>
+</div>
+<div id="características-e-vantagens-do-r" class="section level2">
+<h2>2.2 Características e Vantagens do R</h2>
+<ol style="list-style-type: decimal">
+<li><p><strong>Gratuito e de código aberto</strong>: O R é distribuído
+gratuitamente e permite acesso ao seu código-fonte, incentivando a
+colaboração e transparência.</p></li>
+<li><p><strong>Extensibilidade e Pacotes</strong>: Através do sistema de
+pacotes disponível no CRAN (<em>Comprehensive R Archive Network</em>),
+os usuários podem facilmente estender suas funcionalidades, aproveitando
+inúmeros pacotes criados pela comunidade para tarefas
+especializadas.</p></li>
+<li><p><strong>Visualização de Dados</strong>: Reconhecido por suas
+poderosas capacidades nessa área, o R oferece gráficos e relatórios de
+alta qualidade.</p></li>
+<li><p><strong>Análise Estatística e Manipulação de Dados</strong>: O R
+disponibiliza uma ampla variedade de funções e bibliotecas para análise
+estatística e manipulação de dados, tornando-o popular entre
+estatísticos e cientistas de dados.</p></li>
+<li><p><strong>Documentação e Ajuda</strong>: O R possui extensa
+documentação oficial, bem como inúmeros tutoriais e exemplos disponíveis
+online.</p></li>
+<li><p><strong>Ambiente de Programação e Linguagem</strong>: O R é uma
+linguagem interpretada, executando o código linha por linha e mostrando
+os resultados em tempo real. Sua natureza vetorial possibilita manipular
+e realizar operações eficientes em conjuntos de dados.</p></li>
+<li><p><strong>Objetos e Tipos de Dados</strong>: No R, tudo é um
+objeto, podendo ser vetores, matrizes, data frames, listas e outros
+tipos de dados. É importante entender os diferentes tipos de dados para
+realizar operações apropriadas em cada um deles.</p></li>
+<li><p><strong>Operações Aritméticas e Relacionais</strong>: O R suporta
+operações aritméticas básicas, como adição, subtração, multiplicação e
+divisão, bem como operações relacionais, como maior que, menor que e
+igual a.</p></li>
+<li><p><strong>Estruturas de Controle e Funções</strong>: O R oferece
+estruturas de controle, como loops (<code>for</code>,
+<code>while</code>) e condicionais (<code>if</code>, <code>else</code>,
+<code>ifelse</code>), permitindo repetir tarefas ou executar comandos
+com base em condições específicas. Além disso, as funções são blocos de
+código reutilizáveis que executam tarefas específicas. O R possui uma
+ampla variedade de funções internas e permite a criação de funções
+personalizadas.</p></li>
+</ol>
+</div>
+<div id="o-cran-comprehensive-r-archive-network" class="section level2">
+<h2>2.3 O CRAN (<em>Comprehensive R Archive Network</em>)</h2>
+<p>O CRAN é o principal repositório de pacotes do R, mantido e
+organizado pela comunidade de desenvolvedores de R. Sendo criado para
+fornecer aos usuários do R uma plataforma centralizada para
+compartilhar, distribuir e acessar pacotes (bibliotecas) que estendem as
+funcionalidades do R. O CRAN hospeda cerca de 20.000 de pacotes
+desenvolvidos por usuários, de diversas áreas, desde estatística e
+aprendizado de máquina até ecologia, bioinformática e visualização de
+dados.</p>
+<div id="explorando-o-cran" class="section level3">
+<h3>2.3.1 Explorando o CRAN</h3>
+<p>Podemos explorar o CRAN através do site oficial ou diretamente do
+R.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Navegando no Site do CRAN</strong>: No site oficial do
+CRAN (<a href="https://cran.r-project.org/"
+class="uri">https://cran.r-project.org/</a>) é possível pesquisar por
+palavras-chave, categorias temáticas ou até mesmo pelo nome do pacote
+procurado. Cada pacote possui uma página com informações detalhadas
+sobre sua funcionalidade, documentação, autor e data de
+lançamento.</p></li>
+<li><p><strong>Acessando o CRAN do Ambiente R</strong>: Para pesquisar
+um pacote diretamente no R podemos utilizar a função
+<code>install.packages()</code>, que instalará o pacote escolhido.
+Podemos também utilizar a interface gráfica do RStudio para gerenciar
+pacotes.</p></li>
+</ol>
+<p>Além do CRAN existem outros repositórios de pacotes que oferecem uma
+variedade de bibliotecas desenvolvidas por diferentes comunidades, e
+embora o CRAN seja a principal fonte de pacotes para a maioria dos
+usuários, esses outros repositórios também podem ser úteis,
+especialmente quando se trata de pacotes mais especializados ou em fase
+de desenvolvimento. Os principais repositórios de pacotes do R, além da
+CRAN são:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Bioconductor</strong>: O Bioconductor é um repositório
+focado em bioinformática e análise de dados genômicos. São especialmente
+projetados para lidar com dados de biologia e geralmente requerem algum
+conhecimento em bioinformática para uso efetivo.</p></li>
+<li><p><strong>GitHub ou GitLab</strong>: Muitos pacotes R são
+hospedados em repositórios do GitHub, e é possível instalar esses
+pacotes diretamente do GitHub usando o pacote
+<code>devtools</code>.</p></li>
+</ol>
+</div>
+</div>
+<div id="mecanismos-de-ajuda" class="section level2">
+<h2>2.4 Mecanismos de ajuda</h2>
+<p>Saber buscar ajuda e consultar à documentação oficial de pacotes e
+funções são essenciais para qualquer usuário do R, independentemente do
+nível de experiência. No R cada função apresenta uma documentação
+padrão, além de mecanismos integrados para fornecer ajuda instantânea.
+As principais maneiras de obter ajuda em R são:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>?</code> e <code>help()</code>: No R, o ponto de
+interrogação <code>?</code> e a função <code>help()</code> são
+utilizados para acessar a documentação de funções e pacotes. Por
+exemplo, para obter ajuda sobre a função <code>mean()</code>, você pode
+digitar <code>?mean</code> ou <code>help(mean)</code> no console. Isso
+abrirá a ajuda (documentação) da função <code>mean()</code> com a
+descrição da função, os argumentos que ela recebe, seu uso correto,
+exemplos de uso e informações sobre os valores de retorno. Além disso,
+você pode encontrar links para outras funções relacionadas e exemplos de
+código úteis.</p></li>
+<li><p><code>??</code>, <code>help.search()</code> e
+<code>apropos()</code>: O <code>??</code> é outro operador que permite
+fazer uma pesquisa na documentação do R usando palavras-chave. Por
+exemplo, <code>??plot</code> realizará uma busca por tópicos que
+contenham a palavra “plot” na documentação de funções e pacotes. O
+resultado será uma lista de funções e pacotes relacionados ao termo
+pesquisado. Para realizar a mesma pesquisa usando a função
+<code>help.search()</code>, você pode digitar
+<code>help.search("plot")</code> no console. Isso fornecerá um resultado
+semelhante ao <code>??</code>. Já a função <code>apropos()</code> é útil
+para encontrar funções que contenham uma determinada palavra-chave no
+nome. Por exemplo, <code>apropos("plot")</code> retornará todas as
+funções que possuem “plot” no nome.</p></li>
+<li><p><code>vignette()</code>: Muitos pacotes do R incluem documentos
+chamados “vignettes”, que são tutoriais e guias práticos sobre o uso do
+pacote. Para acessar as vignettes de um pacote específico, podemos
+executar <code>vignette(package = "nomedopacote")</code>. Isso abrirá
+uma lista das vignettes disponíveis para esse pacote.</p></li>
+</ol>
+</div>
+<div id="dicas-para-usar-a-ajuda-no-r" class="section level2">
+<h2>2.5 Dicas para usar a Ajuda no R</h2>
+<ul>
+<li><p>Quando estiver no ambiente RStudio, a ajuda exibida pelo
+<code>?</code> ou <code>help()</code> aparecerá em uma guia de ajuda na
+área de trabalho. Isso permite que você consulte a documentação sem sair
+do ambiente de desenvolvimento.</p></li>
+<li><p>Se você não souber o nome exato de uma função, mas lembrar de uma
+palavra-chave relacionada, pode usar o <code>??</code> ou
+<code>help.search()</code> para encontrar funções que correspondam à
+palavra-chave.</p></li>
+<li><p>A documentação oficial do R geralmente é bem escrita e detalhada,
+com muitos exemplos úteis. É uma boa prática ler a documentação para
+entender completamente como usar uma função ou pacote.</p></li>
+<li><p>Além dos recursos internos de ajuda, também é possível encontrar
+tutoriais e guias online sobre o R. Blogs, sites de tutoriais e fóruns
+da comunidade podem ser ótimas fontes de informações adicionais e
+soluções para problemas específicos.</p></li>
+</ul>
+</div>
+<div
+id="manipulação-de-expressões-e-diferenciação-de-letras-maiúsculas-e-minúsculas."
+class="section level2">
+<h2>2.6 Manipulação de expressões e diferenciação de letras maiúsculas e
+minúsculas.</h2>
+<p>No R, a manipulação de expressões e a diferenciação entre letras
+maiúsculas e minúsculas são aspectos importantes a serem considerados ao
+escrever scripts e trabalhar com objetos na linguagem. Vamos explorar
+esses conceitos em detalhes:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Manipulação de Expressões</strong>: A manipulação de
+expressões refere-se à forma como o R interpreta e processa os comandos
+e expressões de código que são fornecidos pelo usuário. O R é sensível a
+espaços em branco e a outros caracteres especiais que podem afetar a
+execução dos comandos. Algumas considerações importantes são:</li>
+</ol>
+<ul>
+<li><p><strong>Final de linha</strong>: O R considera o final da linha
+como um indicador de que o comando está completo. Se um comando for
+muito longo, você pode usar a notação <code>(...)</code> para continuar
+o comando na próxima linha.</p></li>
+<li><p><strong>Comentários</strong>: O R ignora qualquer texto após o
+símbolo <code>#</code>, permitindo que você insira comentários para
+explicar seu código.</p></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Diferenciação de Letras Maiúsculas e Minúsculas</strong>:
+Uma das peculiaridades do R é que ele diferencia letras maiúsculas e
+minúsculas em nomes de objetos, funções e palavras reservadas. Isso
+significa que <code>variavel</code> e <code>Variavel</code> são tratadas
+como objetos distintos. Portanto, é importante manter a consistência na
+nomeação de objetos e funções.</li>
+</ol>
+<ul>
+<li><p><strong>Nomes de Variáveis e Funções</strong>: Ao nomear suas
+variáveis e funções, é aconselhável usar apenas letras minúsculas e, se
+necessário, separar palavras com underscore (_) ou camelCase. Por
+exemplo: <code>nome_variavel</code>, <code>meu_contador</code>,
+<code>calcularMedia</code>, etc.</p></li>
+<li><p><strong>Palavras Reservadas</strong>: O R possui palavras
+reservadas que são usadas para funções ou operações internas e **não
+devem ser usadas como nomes de objetos*. Algumas palavras reservadas
+incluem <code>if</code>, <code>else</code>, <code>while</code>,
+<code>function</code>, <code>for</code>, entre outras.</p></li>
+</ul>
+</div>
+<div
+id="exemplos-de-manipulação-de-expressões-e-diferenciação-de-letras-maiúsculas-e-minúsculas"
+class="section level2">
+<h2>2.7 Exemplos de Manipulação de Expressões e Diferenciação de Letras
+Maiúsculas e Minúsculas</h2>
+<pre class="r"><code># Exemplo de manipulação de expressões
+x &lt;- 5
+y&lt;-10 # Não recomendado, espaços são mais legíveis
+z &lt;- (x +
+      y) # Continuando o comando em outra linha
+
+x # imprime na tela o valor de x</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>y # imprime o valor de y</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>z # imprime o valor de z</code></pre>
+<pre><code>## [1] 15</code></pre>
+<pre class="r"><code># Exemplo de diferenciação de letras maiúsculas e minúsculas
+variavel &lt;- 42
+Variavel &lt;- 24</code></pre>
+<pre class="r"><code>variavel</code></pre>
+<pre><code>## [1] 42</code></pre>
+<pre class="r"><code>Variavel</code></pre>
+<pre><code>## [1] 24</code></pre>
+</div>
+<div id="convenções-de-nomenclatura-de-variáveis-no-r"
+class="section level2">
+<h2>2.8 Convenções de Nomenclatura de Variáveis no R</h2>
+<p>As convenções de nomenclatura de variáveis são uma parte importante
+da prática de programação, pois tornam o código mais legível,
+consistente e facilitam a colaboração entre os membros da equipe de
+desenvolvimento. No R, existem duas convenções principais de
+nomenclatura de variáveis amplamente utilizadas:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Camel Case e Pascal Case</strong>: Na convenção Camel Case,
+o nome da variável é <strong>escrito como uma frase sem
+espaços</strong>, onde as palavras são unidas e a <strong>primeira letra
+de cada palavra, exceto a primeira, é escrita em maiúscula</strong>. Por
+exemplo: <code>calcularMedia</code>, <code>idadeDoUsuario</code>,
+<code>meuContador</code>.</li>
+</ol>
+<p>O Pascal Case é uma variação do Camel Case, onde a primeira letra de
+cada palavra, incluindo a primeira, é escrita em maiúscula. Por exemplo:
+<code>CalcularMedia</code>, <code>IdadeDoUsuario</code>,
+<code>MeuContador</code>.</p>
+<p>Essas convenções são amplamente utilizadas em outras linguagens de
+programação, como Python, Java e C#.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Snake Case</strong>: No Snake Case, o nome da variável é
+escrito como uma frase sem espaços, onde **as palavras são unidas por
+underscores (_)**. Todas as letras são escritas em minúsculas. Por
+exemplo: <code>calcular_media</code>, <code>idade_do_usuario</code>,
+<code>meu_contador</code>.</li>
+</ol>
+<p>Essa convenção é particularmente útil em ambientes que não
+diferenciam letras maiúsculas e minúsculas, pois ajuda a melhorar a
+legibilidade dos nomes das variáveis.</p>
+<div id="compreensão-de-palavras-reservadas" class="section level3">
+<h3>2.8.1 Compreensão de Palavras Reservadas</h3>
+<p>No R, palavras reservadas são termos que possuem significado especial
+para a linguagem e são usadas para funções, comandos ou operações
+internas. Essas palavras não podem ser usadas como nomes de variáveis,
+funções ou objetos, pois isso causaria conflito com o significado e
+comportamento original dessas palavras na linguagem.</p>
+<p>Exemplos de palavras reservadas no R incluem <code>if</code>,
+<code>else</code>, <code>for</code>, <code>while</code>,
+<code>function</code>, <code>TRUE</code>, <code>FALSE</code>,
+<code>NULL</code>, <code>break</code>, <code>next</code>, entre
+outras.</p>
+<p>É importante compreender as palavras reservadas do R para evitar
+problemas ao nomear suas variáveis e funções. Caso você acidentalmente
+tente utilizar uma palavra reservada como nome de variável, o R emitirá
+um erro e indicará que a palavra é uma palavra reservada e não pode ser
+usada.</p>
+<pre class="r"><code>x &lt;- seq(1:10)
+x</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>for &lt;- seq(1:10)</code></pre>
+<pre><code>## Error: &lt;text&gt;:1:5: unexpected assignment
+## 1: for &lt;-
+##         ^</code></pre>
+<pre class="r"><code>if &lt;- seq(1:20)</code></pre>
+<pre><code>## Error: &lt;text&gt;:1:4: unexpected assignment
+## 1: if &lt;-
+##        ^</code></pre>
+</div>
+</div>
+<div id="execução-recuperação-e-correção-de-comandos"
+class="section level2">
+<h2>2.9 Execução, Recuperação e Correção de Comandos</h2>
+<p>Ao trabalhar com o R, é comum escrever e executar comandos em um
+ambiente interativo, como o console do RStudio. No entanto, erros podem
+ocorrer durante a execução desses comandos. Existem várias formas de
+lidar com a execução, recuperação e correção de comandos no R:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Execução de Comandos</strong>: Para executar um comando,
+basta digitá-lo no console do RStudio ou em um script e pressionar a
+tecla Enter. O R executará o comando e exibirá o resultado, se houver.
+No entanto, se houver algum erro no comando, o R exibirá uma mensagem de
+erro, indicando o tipo e a causa do erro.</p></li>
+<li><p><strong>Recuperação de Comandos</strong>: Em alguns casos, você
+pode querer recuperar comandos anteriores para reexecutá-los ou
+modificá-los. No RStudio, você pode usar as teclas de seta para cima e
+para baixo para navegar pelos comandos anteriores digitados no console.
+Também é possível usar o histórico de comandos, que pode ser acessado
+clicando na guia “History” no ambiente do RStudio.</p></li>
+<li><p><strong>Correção de Comandos</strong>: Se um comando apresentar
+um erro, você pode corrigi-lo diretamente no console ou no script antes
+de reexecutá-lo. É importante observar a mensagem de erro fornecida pelo
+R, pois ela geralmente indica o local do erro e a causa do problema.
+Após fazer as correções necessárias, você pode pressionar a tecla Enter
+para reexecutar o comando.</p></li>
+<li><p><strong>Função traceback()</strong>: A função
+<code>traceback()</code> pode ser útil para depurar o código quando
+ocorrem erros mais complexos. Ela exibe o rastreamento das chamadas de
+função que levaram ao erro, ajudando a identificar em qual parte do
+código o problema ocorreu.</p></li>
+<li><p><strong>Modo Debug</strong>: O RStudio possui um modo de
+depuração (Debug) que pode ser ativado clicando no botão “Debug” ou
+usando a combinação de teclas <code>Ctrl + Shift + D</code>. O modo de
+depuração permite que você execute o código linha por linha, inspecione
+os valores das variáveis em cada etapa e localize a origem de possíveis
+erros.</p></li>
+</ol>
+</div>
+<div id="operadores" class="section level2">
+<h2>2.10 Operadores</h2>
+<div id="operadores-aritméticos" class="section level3">
+<h3>2.10.1 Operadores Aritméticos</h3>
+<pre class="r"><code>x &lt;- 10
+y &lt;- 5</code></pre>
+<ol style="list-style-type: decimal">
+<li><code>+</code> (Adição): Realiza a adição entre dois valores.</li>
+</ol>
+<pre class="r"><code>soma &lt;- x + y
+soma</code></pre>
+<pre><code>## [1] 15</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><code>-</code> (Subtração): Realiza a subtração entre dois
+valores.</li>
+</ol>
+<pre class="r"><code>subtracao &lt;- x - y
+subtracao</code></pre>
+<pre><code>## [1] 5</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><code>*</code> (Multiplicação): Realiza a multiplicação entre dois
+valores.</li>
+</ol>
+<pre class="r"><code>multiplicacao &lt;- x * y
+multiplicacao</code></pre>
+<pre><code>## [1] 50</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><code>/</code> (Divisão): Realiza a divisão entre dois valores.</li>
+</ol>
+<pre class="r"><code>divisao &lt;- x / y
+divisao</code></pre>
+<pre><code>## [1] 2</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><code>^</code> ou <code>**</code> (Exponenciação): Eleva um valor à
+potência de outro.</li>
+</ol>
+<pre class="r"><code>exponenciacao &lt;- x^2
+exponenciacao</code></pre>
+<pre><code>## [1] 100</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li><code>%%</code> (Módulo): Calcula o resto da divisão entre dois
+valores.</li>
+</ol>
+<pre class="r"><code>modulo &lt;- x %% y
+modulo</code></pre>
+<pre><code>## [1] 0</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li><code>%/%</code> (Divisão inteira): Realiza a divisão entre dois
+valores e retorna o resultado como um número inteiro.</li>
+</ol>
+<pre class="r"><code>divisao_inteira &lt;- x %/% y
+divisao_inteira</code></pre>
+<pre><code>## [1] 2</code></pre>
+</div>
+<div id="operadores-relacionais" class="section level3">
+<h3>2.10.2 Operadores Relacionais</h3>
+<pre class="r"><code># Operadores Relacionais
+a &lt;- 10
+b &lt;- 20</code></pre>
+<ol style="list-style-type: decimal">
+<li><code>==</code> (Igual a): Verifica se dois valores são iguais.</li>
+</ol>
+<pre class="r"><code>igual_a &lt;- a == b
+igual_a</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><code>!=</code> (Diferente de): Verifica se dois valores são
+diferentes.</li>
+</ol>
+<pre class="r"><code>diferente_de &lt;- a != b
+diferente_de</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><code>&gt;</code> (Maior que): Verifica se o valor à esquerda é
+maior do que o valor à direita.</li>
+</ol>
+<pre class="r"><code>maior_que &lt;- a &gt; b
+maior_que</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><code>&lt;</code> (Menor que): Verifica se o valor à esquerda é
+menor do que o valor à direita.</li>
+</ol>
+<pre class="r"><code>menor_que &lt;- a &lt; b
+menor_que</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><code>&gt;=</code> (Maior ou igual a): Verifica se o valor à
+esquerda é maior ou igual ao valor à direita.</li>
+</ol>
+<pre class="r"><code>maior_ou_igual_a &lt;- a &gt;= b
+maior_ou_igual_a</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li><code>&lt;=</code> (Menor ou igual a): Verifica se o valor à
+esquerda é menor ou igual ao valor à direita.</li>
+</ol>
+<pre class="r"><code>menor_ou_igual_a &lt;- a &lt;= b
+menor_ou_igual_a</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="vetores-em-r-fundamentos" class="section level2">
+<h2>2.11 Vetores em R: Fundamentos</h2>
+<p>Em R, vetores são estruturas de dados fundamentais que armazenam
+elementos de um mesmo tipo. Eles desempenham um papel crucial na
+linguagem, permitindo o armazenamento eficiente e a manipulação de
+dados. Os aspectos principais de vetores em R são:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Homogeneidade</strong>: Vetores em R contêm elementos do
+mesmo tipo. Isso significa que um vetor não pode conter uma mistura de
+números, caracteres e outros tipos de dados. A homogeneidade é uma
+característica essencial para operações eficientes.</p></li>
+<li><p><strong>Criação de Vetores</strong>: Você pode criar vetores
+usando a função <code>c()</code> (combine) ou a função
+<code>vector()</code>. Por exemplo,
+<code>vetor_numerico &lt;- c(1, 2, 3, 4, 5)</code> cria um vetor
+numérico com os valores de 1 a 5.</p></li>
+</ol>
+<pre class="r"><code>vetor_numerico &lt;- c(1,2,3,4,5)
+vetor_numerico</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>sequencia_1_5 &lt;- seq(1:5)
+sequencia_1_5</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>sequencia_10_100 &lt;- seq(from = 10,
+                        to = 100, 
+                        by = 5)
+sequencia_10_100</code></pre>
+<pre><code>##  [1]  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Acesso a Elementos</strong>: Os elementos de um vetor podem
+ser acessados usando índices. O primeiro elemento tem índice 1, o
+segundo índice 2, e assim por diante. Por exemplo,
+<code>vetor_numerico[3]</code> retorna o terceiro elemento do
+vetor.</li>
+</ol>
+<pre class="r"><code>vetor_numerico[1]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>vetor_numerico[3]</code></pre>
+<pre><code>## [1] 3</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p><strong>Operações em Vetores</strong>: R permite realizar
+operações em vetores de forma conveniente e eficiente. Operações
+aritméticas e relacionais podem ser aplicadas elemento a elemento. Por
+exemplo, <code>vetor_resultado &lt;- vetor_numerico * 2</code>
+multiplica cada elemento por 2.</p></li>
+<li><p><strong>Funções em Vetores</strong>: Muitas funções do R são
+vetorizadas, o que significa que elas podem operar diretamente em
+vetores. Isso evita a necessidade de loops explícitos. Por exemplo,
+<code>mean(vetor_numerico)</code> calcula a média dos elementos do
+vetor.</p></li>
+<li><p><strong>Fatiamento de Vetores</strong>: Além de acessar elementos
+individuais, é possível fatiar vetores para obter subconjuntos. Por
+exemplo, <code>subconjunto &lt;- vetor_numerico[2:4]</code> cria um novo
+vetor contendo os elementos do índice 2 ao 4.</p></li>
+</ol>
+<pre class="r"><code>vetor_numerico[2:4]</code></pre>
+<pre><code>## [1] 2 3 4</code></pre>
+<pre class="r"><code>sequencia_10_100[3:8]</code></pre>
+<pre><code>## [1] 20 25 30 35 40 45</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li><strong>Vetores de Caracteres</strong>: Vetores de caracteres são
+frequentemente usados para representar strings, nomes de variáveis e
+rótulos. Por exemplo,
+<code>vetor_caracteres &lt;- c("maçã", "banana", "laranja")</code>.</li>
+</ol>
+<pre class="r"><code>vetor_caracteres &lt;- c(&quot;maçã&quot;, &quot;banana&quot;, &quot;laranja&quot;)</code></pre>
+<p>Vetores são uma das estruturas de dados mais essenciais em R e
+constituem a base para muitas operações e análises de dados. Eles
+permitem uma abordagem vetorial para a programação, que é eficiente e
+expressiva, tornando o R uma linguagem poderosa para análise estatística
+e manipulação de dados.</p>
+<div
+id="exemplos-de-uso-de-operadores-aritméticos-e-relacionais-em-vetores"
+class="section level3">
+<h3>2.11.1 Exemplos de Uso de Operadores Aritméticos e Relacionais em
+vetores</h3>
+<pre class="r"><code># Operações aritméticas com vetores
+vetor1 &lt;- c(1, 2, 3)
+vetor2 &lt;- c(4, 5, 6)
+
+# Soma 
+soma_vetores &lt;- vetor1 + vetor2
+soma_vetores</code></pre>
+<pre><code>## [1] 5 7 9</code></pre>
+<pre class="r"><code># Subtração
+subtracao_vetores &lt;- vetor1 - vetor2
+subtracao_vetores</code></pre>
+<pre><code>## [1] -3 -3 -3</code></pre>
+<pre class="r"><code># Multiplicação
+multiplicacao_vetores &lt;- vetor1 * vetor2
+multiplicacao_vetores</code></pre>
+<pre><code>## [1]  4 10 18</code></pre>
+<pre class="r"><code># Divisão
+divisao_vetores &lt;- vetor1 / vetor2
+divisao_vetores</code></pre>
+<pre><code>## [1] 0.25 0.40 0.50</code></pre>
+<pre class="r"><code># Exponenciação 
+exponenciacao_numero &lt;- vetor1^2  
+exponenciacao_numero</code></pre>
+<pre><code>## [1] 1 4 9</code></pre>
+<pre class="r"><code># Módulo
+modulo_numero &lt;- vetor1 %% 3 
+modulo_numero</code></pre>
+<pre><code>## [1] 1 2 0</code></pre>
+</div>
+<div id="exemplos-de-uso-de-operadores-relacionais"
+class="section level3">
+<h3>2.11.2 Exemplos de Uso de Operadores Relacionais</h3>
+<pre class="r"><code># Comparação entre vetores
+vetor1 &lt;- c(1, 2, 3, 4)
+vetor2 &lt;- c(4, 5, 6, 7)
+
+# Igualdade
+vetores_iguais &lt;- vetor1 == vetor2  
+vetores_iguais</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># Diferença
+vetores_diferentes &lt;- vetor1 != vetor2
+vetores_diferentes</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+<pre class="r"><code># Maior que
+vetores_maior_que &lt;- vetor1 &gt; vetor2
+vetores_maior_que</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># Menor que
+vetores_menor_que &lt;- vetor1 &lt; vetor2
+vetores_menor_que</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+<pre class="r"><code># Maior ou igual
+vetores_maior_ou_igual_a &lt;- vetor1 &gt;= vetor2
+vetores_maior_ou_igual_a</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># Menor ou igual
+vetores_menor_ou_igual_a &lt;- vetor1 &lt;= vetor2
+vetores_menor_ou_igual_a</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+</div>
+</div>
+<div id="ordens-de-execução-no-r" class="section level2">
+<h2>2.12 Ordens de Execução no R</h2>
+<p>A ordem de execução é uma consideração importante ao escrever scripts
+ou interagir com o console do R. O R executa as operações seguindo uma
+sequência lógica, e entender essa sequência é fundamental para garantir
+que o código seja executado corretamente.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Atribuição de Variáveis</strong>: A primeira etapa na ordem
+de execução é a atribuição de valores a variáveis. A atribuição é
+realizada usando os operadores de atribuição <code>&lt;-</code> ou
+<code>=</code>. Por exemplo, <code>x &lt;- 5</code> atribui o valor 5 à
+variável <code>x</code>. Através da atribuição, você cria objetos que
+serão usados para realizar cálculos e manipulações no restante do
+código.</li>
+</ol>
+<pre class="r"><code>x &lt;- 5
+x</code></pre>
+<pre><code>## [1] 5</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Avaliação de Expressões</strong>: Depois que as variáveis
+são atribuídas, o R avalia as expressões aritméticas, lógicas ou outras
+expressões envolvendo as variáveis. Por exemplo, suponha que temos
+<code>y &lt;- x + 3</code>, o R primeiro avaliará <code>x + 3</code>
+(que é 5 + 3 = 8) e, em seguida, atribuirá o resultado (<code>8</code>)
+à variável <code>y</code>.</li>
+</ol>
+<pre class="r"><code>y &lt;- x + 3
+y</code></pre>
+<pre><code>## [1] 8</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p><strong>Execução de Comandos</strong>: Após as atribuições e
+avaliações, o R executa os comandos. Os comandos são instruções que
+realizam ações específicas, como criar gráficos, calcular estatísticas,
+manipular dados, entre outros. Os comandos são fundamentais para
+executar tarefas específicas no R.</p></li>
+<li><p><strong>Impressão de Resultados</strong>: Em um ambiente
+interativo, o R exibirá automaticamente na saída do console o resultado
+das expressões que não estão atribuídas a uma variável. Se você quiser
+evitar a impressão de resultados indesejados, pode utilizar a função
+<code>invisible()</code> para suprimir a saída.</p></li>
+</ol>
+<pre class="r"><code>x + 3</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>invisible(x + 3)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Controle de Fluxo</strong>: Se o código contém estruturas de
+controle de fluxo, como condicionais (<code>if</code>,
+<code>else</code>) e loops (<code>for</code>, <code>while</code>), o R
+avaliará essas estruturas para decidir quais partes do código executar
+com base nas condições.</li>
+</ol>
+<div id="exemplos-de-atribuição" class="section level3">
+<h3>2.12.1 Exemplos de Atribuição</h3>
+<pre class="r"><code>x &lt;- 5         # Atribui o valor 5 à variável x
+nome &lt;- &quot;João&quot; # Atribui a string &quot;João&quot; à variável nome
+meus_animais &lt;- c(&quot;gato&quot;, &quot; cachorro&quot;, &quot;cachorro&quot;)
+x</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>nome</code></pre>
+<pre><code>## [1] &quot;João&quot;</code></pre>
+<pre class="r"><code>meus_animais</code></pre>
+<pre><code>## [1] &quot;gato&quot;      &quot; cachorro&quot; &quot;cachorro&quot;</code></pre>
+<pre class="r"><code>meus_animais[2] == meus_animais[3]</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>nome &lt;- &quot;Maria&quot;
+idade &lt;- 30
+altura &lt;- 1.65
+vetor &lt;- c(1, 2, 3, 4, 5)
+nome</code></pre>
+<pre><code>## [1] &quot;Maria&quot;</code></pre>
+<pre class="r"><code>idade</code></pre>
+<pre><code>## [1] 30</code></pre>
+<pre class="r"><code>altura</code></pre>
+<pre><code>## [1] 1.65</code></pre>
+<pre class="r"><code>vetor</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>= (sinal de igual)</strong>: Também pode ser usado como
+operador de atribuição. Por exemplo:</li>
+</ol>
+<pre class="r"><code>y = 10         # Atribui o valor 10 à variável y
+y</code></pre>
+<pre><code>## [1] 10</code></pre>
+</div>
+<div id="exemplos-de-ordens-de-execução-e-comandos-de-atribuição"
+class="section level3">
+<h3>2.12.2 Exemplos de Ordens de Execução e Comandos de
+Atribuição:**</h3>
+<pre class="r"><code>a &lt;- 5       # Atribuição primeiro
+b &lt;- a + 3   # Avaliação de expressão (a + 3 = 5 + 3 = 8)
+print(b)     # Impressão do resultado (8)</code></pre>
+<pre><code>## [1] 8</code></pre>
+</div>
+</div>
+<div id="funções-matemáticas-básicas" class="section level2">
+<h2>2.13 Funções Matemáticas Básicas</h2>
+<ul>
+<li><code>sum()</code>: Calcula a soma dos elementos de um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>vetor1</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code>vetor2</code></pre>
+<pre><code>## [1] 4 5 6 7</code></pre>
+<pre class="r"><code>vetor_caracteres</code></pre>
+<pre><code>## [1] &quot;maçã&quot;    &quot;banana&quot;  &quot;laranja&quot;</code></pre>
+<pre class="r"><code>sum(vetor1)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>sum(vetor2)</code></pre>
+<pre><code>## [1] 22</code></pre>
+<pre class="r"><code>sum(vetor_caracteres)</code></pre>
+<pre><code>## Error in sum(vetor_caracteres): &#39;type&#39; inválido (character) do argumento</code></pre>
+<ul>
+<li><code>mean()</code>: Calcula a média aritmética dos elementos de um
+vetor ou matriz.</li>
+</ul>
+<pre class="r"><code>mean(vetor1)</code></pre>
+<pre><code>## [1] 2.5</code></pre>
+<pre class="r"><code>mean(vetor2)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<pre class="r"><code>mean(vetor_caracteres)</code></pre>
+<pre><code>## Warning in mean.default(vetor_caracteres): argumento não é numérico nem lógico:
+## retornando NA</code></pre>
+<pre><code>## [1] NA</code></pre>
+<ul>
+<li><code>median()</code>: Calcula a mediana dos elementos de um vetor
+ou matriz.</li>
+</ul>
+<pre class="r"><code>median(vetor1)</code></pre>
+<pre><code>## [1] 2.5</code></pre>
+<pre class="r"><code>median(vetor2)</code></pre>
+<pre><code>## [1] 5.5</code></pre>
+<pre class="r"><code>median(vetor_caracteres)</code></pre>
+<pre><code>## [1] &quot;laranja&quot;</code></pre>
+<ul>
+<li><code>max()</code>: Retorna o maior valor de um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>max(vetor1)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>max(vetor2)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>max(vetor_caracteres)</code></pre>
+<pre><code>## [1] &quot;maçã&quot;</code></pre>
+<ul>
+<li><code>min()</code>: Retorna o menor valor de um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>min(vetor1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>min(vetor2)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>min(vetor_caracteres)</code></pre>
+<pre><code>## [1] &quot;banana&quot;</code></pre>
+<ul>
+<li><code>sqrt()</code>: Calcula a raiz quadrada de um número ou
+vetor.</li>
+</ul>
+<pre class="r"><code>sqrt(vetor1)</code></pre>
+<pre><code>## [1] 1.000000 1.414214 1.732051 2.000000</code></pre>
+<pre class="r"><code>sqrt(vetor2)</code></pre>
+<pre><code>## [1] 2.000000 2.236068 2.449490 2.645751</code></pre>
+<pre class="r"><code>sqrt(vetor_caracteres)</code></pre>
+<pre><code>## Error in sqrt(vetor_caracteres): non-numeric argument to mathematical function</code></pre>
+<div id="exemplo" class="section level3">
+<h3>2.13.1 Exemplo</h3>
+<pre class="r"><code>dados &lt;- c(10, 15, 20, 25, 30)
+soma &lt;- sum(dados)
+media &lt;- mean(dados)
+mediana &lt;- median(dados)
+valor_maximo &lt;- max(dados)
+valor_minimo &lt;- min(dados)
+raiz_quadrada &lt;- sqrt(25)</code></pre>
+</div>
+</div>
+<div id="funções-de-manipulação-de-dados" class="section level2">
+<h2>2.14 Funções de Manipulação de Dados</h2>
+<pre class="r"><code>vetor3 = c(4,7,2,4,1,5)</code></pre>
+<ul>
+<li><code>length()</code>: Retorna o número de elementos em um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>length(vetor3)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<ul>
+<li><code>sort()</code>: Ordena um vetor ou matriz em ordem
+crescente.</li>
+</ul>
+<pre class="r"><code>sort(vetor3)</code></pre>
+<pre><code>## [1] 1 2 4 4 5 7</code></pre>
+<ul>
+<li><code>rev()</code>: Inverte a ordem dos elementos de um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>rev(vetor3)</code></pre>
+<pre><code>## [1] 5 1 4 2 7 4</code></pre>
+<ul>
+<li><code>unique()</code>: Retorna os elementos únicos de um vetor ou
+matriz.</li>
+</ul>
+<pre class="r"><code>unique(vetor3)</code></pre>
+<pre><code>## [1] 4 7 2 1 5</code></pre>
+<div id="exemplo-1" class="section level3">
+<h3>2.14.1 Exemplo</h3>
+<pre class="r"><code>dados &lt;- c(5, 2, 8, 3, 2)
+dados</code></pre>
+<pre><code>## [1] 5 2 8 3 2</code></pre>
+<pre class="r"><code>tamanho &lt;- length(dados)
+tamanho</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>dados_ordenados &lt;- sort(dados)
+dados_ordenados</code></pre>
+<pre><code>## [1] 2 2 3 5 8</code></pre>
+<pre class="r"><code>dados_invertidos &lt;- rev(dados)
+dados_invertidos</code></pre>
+<pre><code>## [1] 2 3 8 2 5</code></pre>
+<pre class="r"><code>dados_unicos &lt;- unique(dados)
+dados_unicos</code></pre>
+<pre><code>## [1] 5 2 8 3</code></pre>
+</div>
+</div>
+<div id="funções-para-criação-de-sequências" class="section level2">
+<h2>2.15 Funções para Criação de Sequências</h2>
+<ul>
+<li><code>seq()</code>: Cria uma sequência de números em incrementos
+regulares.</li>
+</ul>
+<pre class="r"><code>sequencia = seq(1:10)</code></pre>
+<ul>
+<li><code>rep()</code>: Repete um valor ou vetor várias vezes para criar
+uma sequência.</li>
+</ul>
+<pre class="r"><code>sequencia_repetida = rep(sequencia, 3)
+sequencia_repetida</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10  1  2  3  4  5  6  7  8  9 10  1  2  3  4  5
+## [26]  6  7  8  9 10</code></pre>
+<div id="exemplo-2" class="section level3">
+<h3>2.15.1 Exemplo</h3>
+<pre class="r"><code>sequencia1 &lt;- seq(1, 10, by = 2)  # Cria uma sequência de 1 a 10 com incremento de 2 
+sequencia1</code></pre>
+<pre><code>## [1] 1 3 5 7 9</code></pre>
+<pre class="r"><code>sequencia2 &lt;- rep(c(1, 2), times = 3)  # Repete o vetor c(1, 2) três vezes
+sequencia2</code></pre>
+<pre><code>## [1] 1 2 1 2 1 2</code></pre>
+</div>
+</div>
+<div id="funções-para-criação-de-gráficos" class="section level2">
+<h2>2.16 Funções para Criação de Gráficos</h2>
+<ul>
+<li><code>plot()</code>: Cria um gráfico de dispersão ou linhas.</li>
+</ul>
+<pre class="r"><code>vetor4 = c(1:100)
+vetor5 = sqrt(vetor4)
+
+plot(x = vetor4, 
+     y = vetor5, 
+    las = 1, 
+    pch = 16
+     )</code></pre>
+<p><img src="02_basicR_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
+<ul>
+<li><code>hist()</code>: Cria um histograma para visualização da
+distribuição de dados.</li>
+</ul>
+<pre class="r"><code>hist(vetor4, 
+     las = 1)</code></pre>
+<p><img src="02_basicR_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
+<div id="exemplo-3" class="section level3">
+<h3>2.16.1 Exemplo</h3>
+<pre class="r"><code>x &lt;- c(1, 2, 3, 4, 5)
+y &lt;- c(2, 4, 6, 8, 10)
+plot(x, y, type = &quot;b&quot;)  # Cria um gráfico de linhas e pontos</code></pre>
+<p><img src="02_basicR_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<pre class="r"><code>hist(x)  # Cria um histograma dos dados no vetor x</code></pre>
+<p><img src="02_basicR_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+</div>
+</div>
+<div id="funções-matemáticas" class="section level2">
+<h2>2.17 Funções Matemáticas</h2>
+<ul>
+<li><code>abs()</code>: Retorna o valor absoluto de um número ou de cada
+elemento de um vetor ou matriz.</li>
+</ul>
+<pre class="r"><code>valor_negativo = -5.9
+valor_negativo</code></pre>
+<pre><code>## [1] -5.9</code></pre>
+<pre class="r"><code>abs(valor_negativo)</code></pre>
+<pre><code>## [1] 5.9</code></pre>
+<ul>
+<li><code>round()</code>: Arredonda um número para o inteiro mais
+próximo.</li>
+</ul>
+<pre class="r"><code>round(valor_negativo)</code></pre>
+<pre><code>## [1] -6</code></pre>
+<ul>
+<li><code>ceiling()</code>: Arredonda um número para cima (teto).</li>
+</ul>
+<pre class="r"><code>ceiling(valor_negativo)</code></pre>
+<pre><code>## [1] -5</code></pre>
+<ul>
+<li><code>floor()</code>: Arredonda um número para baixo (piso).</li>
+</ul>
+<pre class="r"><code>floor(valor_negativo)</code></pre>
+<pre><code>## [1] -6</code></pre>
+<ul>
+<li><code>cos()</code>, <code>sin()</code>, <code>tan()</code>: Funções
+trigonométricas.</li>
+</ul>
+<pre class="r"><code>cos(0)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>sin(0)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>tan(0)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<ul>
+<li><code>exp()</code>: Calcula a exponencial de um número ou vetor
+(<span class="math inline">\(e^x\)</span>).</li>
+</ul>
+<pre class="r"><code>exp(1)</code></pre>
+<pre><code>## [1] 2.718282</code></pre>
+<ul>
+<li><code>log()</code>: Calcula o logaritmo natural de um número ou
+vetor.</li>
+</ul>
+<pre class="r"><code>log(10)</code></pre>
+<pre><code>## [1] 2.302585</code></pre>
+<pre class="r"><code>##  log10 calcula o logaritimo na base 10
+log10(10)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<ul>
+<li><code>sum()</code> e <code>prod()</code>: Calculam a soma e o
+produto dos elementos de um vetor ou matriz.</li>
+</ul>
+<pre class="r"><code>vetor1</code></pre>
+<pre><code>## [1] 1 2 3 4</code></pre>
+<pre class="r"><code>sum(vetor1)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>prod(vetor1)</code></pre>
+<pre><code>## [1] 24</code></pre>
+<pre class="r"><code>numero &lt;- -5.8
+valor_absoluto &lt;- abs(numero)
+arredondado &lt;- round(3.14159)
+teto &lt;- ceiling(5.1)
+piso &lt;- floor(5.9)
+cosseno &lt;- cos(pi)
+exponencial &lt;- exp(2)
+soma_valores &lt;- sum(c(1, 2, 3, 4, 5))
+produto_valores &lt;- prod(c(2, 3, 4))</code></pre>
+</div>
+<div id="funções-de-manipulação-de-texto" class="section level2">
+<h2>2.18 Funções de Manipulação de Texto</h2>
+<ul>
+<li><code>paste()</code>: Concatena várias strings em uma única
+string.</li>
+</ul>
+<pre class="r"><code>nomes = c(&quot;Maria&quot;, &quot;Ana&quot;, &quot;Rafaela&quot;)
+
+paste(nomes[1], &quot;e&quot;, nomes[2], &quot;são minhas amigas.&quot;)</code></pre>
+<pre><code>## [1] &quot;Maria e Ana são minhas amigas.&quot;</code></pre>
+<pre class="r"><code>paste(nomes[1], nomes[2], nomes[3], sep = &quot;|&quot;)</code></pre>
+<pre><code>## [1] &quot;Maria|Ana|Rafaela&quot;</code></pre>
+<pre class="r"><code>paste(nomes, collapse = &quot; &quot;)</code></pre>
+<pre><code>## [1] &quot;Maria Ana Rafaela&quot;</code></pre>
+<ul>
+<li><code>toupper()</code>: Converte uma string em letras
+maiúsculas.</li>
+</ul>
+<pre class="r"><code>toupper(nomes)</code></pre>
+<pre><code>## [1] &quot;MARIA&quot;   &quot;ANA&quot;     &quot;RAFAELA&quot;</code></pre>
+<ul>
+<li><code>tolower()</code>: Converte uma string em letras
+minúsculas.</li>
+</ul>
+<pre class="r"><code>tolower(nomes)</code></pre>
+<pre><code>## [1] &quot;maria&quot;   &quot;ana&quot;     &quot;rafaela&quot;</code></pre>
+<ul>
+<li><code>substr()</code>: Extrai uma subcadeia de caracteres de uma
+string.</li>
+</ul>
+<pre class="r"><code>substr(x = nomes[1], start = 1,stop = 3)</code></pre>
+<pre><code>## [1] &quot;Mar&quot;</code></pre>
+<ul>
+<li><code>gsub()</code>: Substitui padrões em uma string por outros
+valores.</li>
+</ul>
+<pre class="r"><code>gsub(pattern = &quot;G&quot;, 
+     replacement = &quot;R&quot;,
+     x = &quot;Gato&quot;)</code></pre>
+<pre><code>## [1] &quot;Rato&quot;</code></pre>
+<div id="exemplo-4" class="section level3">
+<h3>2.18.1 Exemplo</h3>
+<pre class="r"><code>nome1 &lt;- &quot;João&quot;
+nome2 &lt;- &quot;Maria&quot;
+frase &lt;- paste(&quot;Olá,&quot;, nome1, &quot;e&quot;, nome2)  # Concatenação de strings
+frase_upper &lt;- toupper(frase)
+frase_lower &lt;- tolower(frase)
+subcadeia &lt;- substr(frase, start = 6, stop = 11)  # Extrai a subcadeia &quot;João e&quot;
+frase_substituida &lt;- gsub(&quot;João&quot;, &quot;Pedro&quot;, frase)  # Substitui &quot;João&quot; por &quot;Pedro&quot;</code></pre>
+</div>
+</div>
+<div id="informações-sobre-diretórios-e-arquivos-em-r"
+class="section level2">
+<h2>2.19 Informações sobre Diretórios e Arquivos em R</h2>
+<p>Antes de realizar operações de importação e exportação de dados, é
+essencial entender o sistema de arquivos e diretórios em que você está
+trabalhando. No R, o diretório de trabalho é o local padrão onde o R
+procura arquivos para importação e salva arquivos exportados. Você pode
+obter informações sobre o diretório de trabalho atual e também alterá-lo
+conforme necessário.</p>
+<ul>
+<li><code>getwd():</code> Retorna o diretório de trabalho atual, ou
+seja, o diretório em que o R procura por arquivos e onde salvará os
+resultados.</li>
+</ul>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;C:/Users/Convidado/Documents/Estatistica/Elementos de Programação para Estatística&quot;</code></pre>
+<ul>
+<li><code>setwd()</code>: Permite alterar o diretório de trabalho para
+um caminho específico. Isso é útil quando você precisa importar ou
+exportar dados em um diretório diferente do padrão.</li>
+</ul>
+<div id="exemplo-5" class="section level3">
+<h3>2.19.1 Exemplo</h3>
+<pre class="r"><code># Verificar o diretório de trabalho atual
+diretorio_atual &lt;- getwd()
+print(diretorio_atual)</code></pre>
+<pre><code>## [1] &quot;C:/Users/Convidado/Documents/Estatistica/Elementos de Programação para Estatística&quot;</code></pre>
+<pre class="r"><code># Alterar o diretório de trabalho para uma pasta específica
+# setwd(&quot;/caminho/para/a/pasta&quot;)</code></pre>
+<p>Além disso, para listar os arquivos e diretórios presentes em um
+determinado local, você pode utilizar a função
+<code>list.files()</code>.</p>
+</div>
+<div id="exemplo-6" class="section level3">
+<h3>2.19.2 Exemplo</h3>
+<pre class="r"><code># Listar os arquivos no diretório de trabalho atual
+arquivos &lt;- list.files()
+print(arquivos)</code></pre>
+<pre><code>##  [1] &quot;_site.yml&quot;            &quot;01_markdown_git.html&quot; &quot;01_markdown_git.Rmd&quot; 
+##  [4] &quot;02_basicR.html&quot;       &quot;02_basicR.Rmd&quot;        &quot;02_basicR_files&quot;     
+##  [7] &quot;04_data_transf.Rmd&quot;   &quot;dados_novos.csv&quot;      &quot;datasets&quot;            
+## [10] &quot;Imagens&quot;              &quot;site_libs&quot;</code></pre>
+</div>
+<div id="funções-para-importação-e-exportação-de-dados-e-objetos"
+class="section level3">
+<h3>2.19.3 Funções para Importação e Exportação de Dados e Objetos</h3>
+<p>O R oferece diversas funções e pacotes para importar e exportar dados
+em diferentes formatos. Algumas das funções mais comuns incluem:</p>
+<ul>
+<li><code>read.csv()</code>: Importa dados de um arquivo CSV
+(Comma-Separated Values) e cria um dataframe. É um formato amplamente
+utilizado para armazenar dados tabulares.</li>
+<li><code>read.table()</code>: Importa dados de um arquivo de texto
+delimitado e cria um dataframe. Esse formato é útil quando os dados
+estão separados por caracteres específicos, como tabulações ou pontos e
+vírgulas.</li>
+<li><code>read.xlsx()</code> (do pacote “readxl”): Importa dados de um
+arquivo Excel (.xlsx) e cria um dataframe. O formato Excel é amplamente
+utilizado para armazenar dados em planilhas.</li>
+<li><code>write.csv()</code>: Exporta um dataframe para um arquivo CSV,
+permitindo compartilhar os resultados em formato legível por outros
+softwares.</li>
+<li><code>write.table()</code>: Exporta um dataframe para um arquivo de
+texto delimitado, permitindo compartilhar os resultados de forma mais
+flexível.</li>
+</ul>
+<p><strong>Exemplo</strong>:</p>
+<pre class="r"><code># Importar dados de um arquivo CSV
+dados &lt;- read.csv(&quot;dados.csv&quot;)</code></pre>
+<pre><code>## Warning in file(file, &quot;rt&quot;): não foi possível abrir o arquivo &#39;dados.csv&#39;: No
+## such file or directory</code></pre>
+<pre><code>## Error in file(file, &quot;rt&quot;): não é possível abrir a conexão</code></pre>
+<pre class="r"><code># Exportar um dataframe para um arquivo CSV
+write.csv(dados, &quot;dados_novos.csv&quot;)</code></pre>
+</div>
+<div
+id="exploração-de-conjuntos-de-dados-integrados-e-edição-dos-mesmos"
+class="section level3">
+<h3>2.19.4 Exploração de Conjuntos de Dados Integrados e Edição dos
+Mesmos</h3>
+<p>O R inclui diversos conjuntos de dados integrados que estão
+disponíveis por padrão. Esses conjuntos são úteis para fins de prática,
+aprendizado e também para a demonstração de recursos da linguagem. Para
+explorar esses conjuntos, você pode usar funções como
+<code>data()</code>, <code>head()</code>, <code>tail()</code> e
+<code>summary()</code>.</p>
+<ul>
+<li><code>data()</code>: Lista os conjuntos de dados integrados
+disponíveis no R. Isso permite que você veja quais conjuntos estão
+disponíveis para importação.</li>
+<li><code>head()</code>: Exibe as primeiras linhas de um dataframe,
+permitindo uma visualização rápida dos dados.</li>
+<li><code>tail()</code>: Exibe as últimas linhas de um dataframe,
+especialmente útil para conjuntos de dados com muitas observações.</li>
+<li><code>summary()</code>: Fornece um resumo estatístico dos dados em
+um dataframe, incluindo medidas como média, mediana, mínimo, máximo e
+quartis.</li>
+</ul>
+<div id="exemplo-7" class="section level5">
+<h5>2.19.4.1 Exemplo</h5>
+<pre class="r"><code># Listar conjuntos de dados integrados disponíveis no R
+data()
+
+# Carregar o conjunto de dados &quot;iris&quot; (conjunto de dados de flores iris)
+data(iris)
+
+# Exibir as primeiras linhas do conjunto de dados &quot;iris&quot;
+head(iris)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<pre class="r"><code># Exibir as últimas linhas do conjunto de dados &quot;iris&quot;
+tail(iris)</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 145          6.7         3.3          5.7         2.5 virginica
+## 146          6.7         3.0          5.2         2.3 virginica
+## 147          6.3         2.5          5.0         1.9 virginica
+## 148          6.5         3.0          5.2         2.0 virginica
+## 149          6.2         3.4          5.4         2.3 virginica
+## 150          5.9         3.0          5.1         1.8 virginica</code></pre>
+<pre class="r"><code># Exibir um resumo estatístico do conjunto de dados &quot;iris&quot;
+summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+<p>Uma vez que os dados são importados ou carregados no R, você pode
+realizar várias operações de edição, transformação e limpeza nos
+dataframes. Isso inclui seleção de colunas, filtragem de dados, criação
+de novas variáveis, cálculos estatísticos e muito mais. O R oferece uma
+ampla variedade de funções e pacotes que permitem manipular dados de
+forma eficiente e eficaz.</p>
+</div>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>software com código-fonte que qualquer pessoa pode
+inspecionar, modificar e aprimorar.<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

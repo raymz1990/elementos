@@ -1,0 +1,585 @@
+---
+# title: ""
+# date: 2023-10-05
+# author:
+#   - name: Deisy Morselli Gysi
+#     id: dm
+#     email: deisy.gysi@ufpr.br
+#     affiliation: 
+#       - name: Universidade Federal do Paraná
+#         city: Curitiba
+#         state: PR
+#         url: https://deisygysi.github.io/
+lang: pt
+title-block-style: none
+
+fig-align: center
+fig-width: 10
+fig-height: 12
+
+toc: true
+toc-depth: 5
+toc-title: ""
+
+# bibliography: refs.bib
+# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+theme: 
+  light: yeti
+  dark: slate
+code-fold: false
+execute: 
+  warning: false
+  error: false
+format: 
+  html:
+    code-fold: false
+    highlight-style: dracula
+    fontcolor: '#F2F2F2'
+    linkcolor: '#BFBFBF'
+  pdf: 
+    highlight-style: dracula
+---
+
+# 6  Estruturas de Repetição: *Loopings*
+
+As estruturas de repetição desempenham um papel crucial na programação, pois permitem que tarefas repetitivas sejam realizadas de maneira mais eficaz ou iterem sobre conjuntos de dados extensos. Além disso, as estruturas de repetição são essenciais para processar grandes volumes de dados, realizar cálculos complexos e criar algoritmos mais poderosos.
+
+Em R existem diversas estruturas de repetição, veremos aqui: `while`, `for` e a família `apply`.
+
+6.0.1 Estrutura `while` 
+
+O loop while é uma das estruturas de repetição mais simples. Ele é usado quando você precisa repetir um bloco de código *enquanto uma condição for verdadeira*. E seu critério de parada é atualizado, i.e., você não sabe de imediato quantas vezes vai precisar repetir o procedimento.
+
+A estrutura básica do while é a seguinte:
+
+```{r, eval=FALSE}
+while (condicao) {
+  # Código a ser repetido enquanto a condição for verdadeira
+}
+```
+
+Imprima na tela `i`, enquanto `i` for menor do que `6`.
+
+```{r}
+i <- 1 # sempre definimos o critério de parada fora do loop
+
+while (i < 6) {
+  print(i)
+  i <- i + 1 # Sempre alteramos o critério 
+  # de parada, senão caímos em um loop infinito
+}
+```
+
+#### 6.0.1.1 `Break` 
+
+Mesmo quando uma condição é verdadeira, podemos ter interesse em parar uma repetição, mesmo que a condição seja `TRUE`. Útil quando não queremos cair em um loop infinito.
+
+Por exemplo, podemos parar o nosso loop caso nosso `i == 4`.
+
+```{r}
+i <- 1
+while (i < 6) {
+  print(i)
+  i <- i + 1
+  if (i == 4) {
+    break
+  }
+}
+```
+
+### 6.0.1.2 `Next`
+
+Outras vezes, podemos pular uma iteração sem encerrar o loop:
+
+```{r}
+i <- 0
+while (i < 6) {
+  i <- i + 1
+  if (i == 3) {
+    next
+  }
+  print(i)
+}
+```
+
+### 6.0.2 Exercício
+
+Suponha o lançamento de um dado não viesado, com seis faces. Quantas vezes devo lançar o dado para obter a face 5?
+```{r}
+set.seed(1234)
+
+dado <- seq(1:6)
+n_lancamento = 0
+sorteio = 0
+
+while (sorteio != 5) {
+  sorteio =  sample(dado, 1)
+  n_lancamento = n_lancamento + 1
+  
+  cat(paste0("\n\nLançamento: ", n_lancamento, "\nValor Sorteado: ", sorteio))
+}
+```
+
+```{r}
+n_lancamento
+```
+
+```{r}
+n_lancamento = 0
+while (sorteio != 7) {
+  sorteio =  sample(dado, 1)
+  n_lancamento = n_lancamento + 1
+  
+  cat(paste0("\n\nLançamento: ", n_lancamento, "\nValor Sorteado: ", sorteio))
+  
+  if(n_lancamento == 20){
+    break
+  }
+}
+```
+
+```{r}
+n_lancamento
+```
+
+Note que em ambos exemplos os valores estão sendo apenas calculados e não estamos guardando em nenhuma variável. Para resolver esse problema podemos simplesmnet guardar o valor sorteado em um vetor.
+
+```{r}
+valor_sorteado = numeric()
+n_lancamento = 0
+while (sorteio != 7) {
+  n_lancamento = n_lancamento + 1
+  valor_sorteado[n_lancamento] =  sample(dado, 1)
+  
+  
+  cat(paste0("\n\nLançamento: ", n_lancamento, "\nValor Sorteado: ", sorteio))
+  
+  if(n_lancamento == 20){
+    break
+  }
+}
+```
+
+```{r}
+valor_sorteado
+```
+
+### 6.0.3 Estrutura `for`
+
+O loop `for` é usado para iterar sobre uma sequência de valores, como um vetor ou uma lista. A estrutura básica é a seguinte:
+```{r, eval=FALSE}
+for (variavel in sequencia) {
+  # Código a ser executado para cada valor da sequência
+}
+```
+
+Suponha que queremos calcular o quadrado dos valores de 1:10. Para isso, podemos utilizar um `for`.
+
+```{r}
+for(i in 1:10) {
+  x1 <- i^2
+  print(x1)
+}
+```
+
+Além disso, podemos ter `for` aninhados.
+
+Suponha agora um experimento que consiste no lançamento de dois dados não viesados de seis faces, e definimos uma variável aleatória como o quadrado da soma das faces superiores dos dois dados. Queremos guardar o valor dos dois dados, a soma das faces superiores e o quadrado da soma.
+
+```{r}
+require(dplyr)
+```
+
+```{r}
+require(magrittr)
+```
+
+```{r}
+dado = c(1:6)
+soma_dois_dados = function(dado1, dado2){
+  soma = dado1 + dado2
+  
+}
+quadrado_soma = function(soma){
+  soma2 = soma^2
+  return(soma2)
+}
+
+resultado = list()
+k = 0 
+for(i in dado){
+  for(j in dado){
+    k = k + 1
+    soma = soma_dois_dados(dado[i], dado[j])
+    somaqd = quadrado_soma(soma)
+    
+    resultado[[k]] = data.frame(dado1 = dado[i], 
+                               dado2 = dado[j], 
+                               soma = soma, 
+                               soma2 = somaqd)
+  }
+}
+
+resultado
+```
+
+```{r}
+resultado %<>% bind_rows()
+resultado
+```
+
+### 6.0.4 Família apply
+
+A família de funções apply em R inclui `apply()`, `lapply()`, `sapply()`, `vapply()`, `tapply()`, `mapply()`, entre outras. Essas funções são usadas para aplicar uma função a elementos de uma lista, vetor, matriz ou array. Ela funciona similar ao `for` em termos de repetições.
+
+* `apply()`: Aplica uma função qualquer a uma matriz, array ou data.frame ao longo de margens específicas (linhas `1` ou colunas `2`). O output de um `apply()` é um vetor.
+
+```{r}
+matriz1 <- matrix(1:6, nrow = 2)
+soma_linhas <- apply(matriz1, 1, sum)
+soma_colunas <- apply(matriz1, 2, sum)
+```
+
+* `lapply()`: Aplica uma função a cada elemento de uma lista e retorna uma lista com os resultados.
+
+```{r}
+minha_lista <- list(a = c(1, 2, 3), b = c(4, 5, 6))
+resultados <- lapply(minha_lista, mean)
+resultados
+```
+
+* `sapply()`: A função sapply() é semelhante ao lapply(), mas tenta simplificar o resultado em um vetor ou matriz sempre que possível. Se todos os resultados forem do mesmo comprimento, será retornado um vetor. Caso contrário, será retornada uma matriz.
+
+```{r}
+minha_lista <- list(a = c(1, 2, 3), b = c(4, 5, 6), c=c(7,6,8))
+resultados <- sapply(minha_lista, mean)
+resultados
+```
+
+* `mapply()`: Aplica uma função a vários argumentos. Ele oferece uma maneira eficiente de realizar essas operações de forma flexível e controlada.
+```{r}
+resultado <- mapply(soma_dois_dados, 
+                    dado, 
+                    dado)
+
+print(resultado)
+```
+
+E se eu quisesse somar *todas as combinações* como no `for` aninhado? Para isso podemos expandir o grid de busca, utilizando o `expand.grid`.
+
+```{r}
+dois_dados = expand.grid(dado, dado)
+dois_dados
+```
+
+```{r}
+resultado <- mapply(soma_dois_dados, 
+                    dois_dados$Var1, 
+                    dois_dados$Var2)
+
+print(resultado)
+```
+
+## 6.1 Exercícios
+
+1. Crie uma função que calcule os `n` primeiros números da sequência de Fibonacci. A sequência de Fibonacci começa com 0 e 1, e os números subsequentes são a soma dos dois anteriores (0, 1, 1, 2, 3, 5, 8, …).
+```{r}
+calcular_fibonacci <- function(n) {
+  fibonacci_sequence <- numeric(n)
+  
+  if (n >= 1) {
+    fibonacci_sequence[1] <- 0
+  }
+  if (n >= 2) {
+    fibonacci_sequence[2] <- 1
+  }
+  
+  for (i in 3:n) {
+    fibonacci_sequence[i] <- fibonacci_sequence[i - 1] + fibonacci_sequence[i - 2]
+  }
+  
+  return(fibonacci_sequence)
+}
+
+# Exemplo de uso
+n <- 10
+resultado <- calcular_fibonacci(n)
+cat("Os primeiros", n, "números da sequência de Fibonacci são:", resultado, "\n")
+
+```
+
+2. Crie uma função que verifique se um número `n` é primo.
+```{r}
+eh_primo <- function(n) {
+  if (n <= 1) {
+    return(FALSE)
+  }
+  
+  for (i in 2:(n-1)) {
+    if (n %% i == 0) {
+      return(FALSE)
+    }
+  }
+  
+  return(TRUE)
+}
+
+# Exemplos de uso
+numeros_exemplos <- c(13, 25, 7, 4, 19)
+
+for (numero in numeros_exemplos) {
+  if (eh_primo(numero)) {
+    cat(numero, "é um número primo.\n")
+  } else {
+    cat(numero, "não é um número primo.\n")
+  }
+}
+
+```
+
+
+
+3. Calcule o 1o. e 2o. Quartil para todas as variáveis numéricas de `mtcars`. Se uma variável não for numérica retorne `NA`. Lembre-se `cyl`, `vs` e `am` são categóricas, e não numéricas.
+```{r}
+# Transformar cyl, vs e am para character
+dados <- mtcars
+
+dados$cyl <- as.character(dados$cyl)
+dados$vs <- as.character(dados$vs)
+dados$am <- as.character(dados$am)
+
+# Função para calcular 1º e 2º quartil para variáveis numéricas
+calcular_quartis <- function(variavel) {
+  if (is.numeric(variavel)) {
+    quartis <- quantile(variavel, c(0.25, 0.5))
+    return(c(quartil_1 = quartis[1], quartil_2 = quartis[2]))
+  } else {
+    return(c(quartil_1 = NA, quartil_2 = NA))
+  }
+}
+
+# Aplicar a função a todas as colunas de mtcars
+resultados_quartis <- sapply(mtcars, calcular_quartis)
+
+# Mostrar os resultados
+print(resultados_quartis)
+```
+
+## 6.2 Paralelização
+
+A paralelização de código é uma técnica utilizada para melhorar a eficiência de programas, especialmente quando lidamos com tarefas intensivas em processamento.
+
+### 6.2.1 Por que Paralelizar um Código? 
+
+A paralelização é necessária para aproveitar ao máximo os recursos de *hardware* disponíveis e melhorar o desempenho de um programa.
+
+1. **Aproveitamento de Recursos**: A maioria dos computadores modernos possui processadores multi-core, o que significa que eles têm várias unidades de processamento disponíveis. Para aproveitar ao máximo esses recursos, podemos dividir uma tarefa em partes menores que podem ser executadas simultaneamente em diferentes núcleos do processador.
+
+2. **Redução de Tempo de Execução**: Tarefas que seriam demoradas se executadas em sequência podem ser aceleradas significativamente por meio da paralelização. Isso é especialmente importante em tarefas que envolvem grandes conjuntos de dados ou cálculos complexos.
+
+3. **Melhoria da Escalabilidade**: Em situações onde a carga de trabalho pode variar, a paralelização permite que o programa adapte a quantidade de recursos necessários. Quando há mais trabalho a ser feito, mais threads[^1] ou processos paralelos podem ser alocados para acelerar o processamento.
+[^1]: Uma thread é uma unidade básica de processamento que pode ser executada em um programa. Ela é uma sequência de instruções que pode ser executada pelo processador de um computador.
+
+4. **Resposta em Tempo Real**: Em certos cenários, como em sistemas de controle ou simulações em tempo real, a paralelização pode ser necessária para garantir que as respostas sejam geradas dentro de limites de tempo estritos.
+
+### 6.2.2 Quando Precisamos Paralelizar um Código? 
+
+Nem todos os programas precisam ser paralelizados. A decisão de quando paralelizar um código depende de vários fatores, incluindo:
+
+1. **Natureza da Tarefa**: Tarefas que podem ser divididas em partes independentes são candidatas naturais para a paralelização. Por exemplo, cálculos em um grande conjunto de dados podem ser paralelizados porque os dados podem ser divididos entre várias unidades de processamento.
+
+2. **Recursos Disponíveis**: A paralelização é mais eficaz quando há recursos de hardware adequados, como processadores multi-core ou clusters de computadores disponíveis. Paralelizar em um ambiente com apenas um núcleo de CPU pode não resultar em benefícios significativos.
+
+3. **Tempo de Execução Crítico**: Se o tempo de execução de um programa é crítico e precisa ser reduzido para cumprir prazos ou requisitos de desempenho, a paralelização pode ser uma solução viável.
+
+4. **Complexidade Computacional**: Tarefas que envolvem cálculos intensivos ou operações repetitivas podem se beneficiar da paralelização para acelerar o processamento.
+
+5. **Escalabilidade Futura**: Se você prevê que a carga de trabalho aumentará no futuro, a paralelização pode ser implementada desde o início para garantir que o programa possa lidar com cargas maiores.
+
+### 6.2.3 Importante
+
+* *Threads* são unidades de execução dentro de um processo, enquanto multiprocessadores são sistemas de *hardware* com vários processadores independentes.
+
+* *Threads* compartilham o mesmo espaço de endereço, enquanto processadores em um multiprocessador executam tarefas independentes com seus próprios espaços de endereço.
+
+### 6.2.4 Medindo a Qualidade da Paralelização
+
+1. **Speedup**: O speedup é uma medida que compara o tempo de execução de um programa paralelizado com o tempo de execução do mesmo programa executado de forma sequencial (em um único processador). O speedup é calculado da seguinte forma:
+$$s = \frac{Tempo \ Sequencial}{Tempo \ em \ Paralelo}$$
+ 
+    * Um *speedup* de 2, por exemplo, indica que o programa paralelizado é duas vezes mais rápido do que o programa sequencial.
+
+2. **Eficiência**: A eficiência é uma medida relacionada ao speedup, mas considera o fator de escalabilidade. Ela é calculada como a razão entre o speedup e o número de threads ou processadores utilizados:
+$$E = \frac{S}{numero \ de \ threads}$$
+ 
+    * A eficiência ideal é 1, o que significa que a adição de mais threads ou processadores resulta em um aumento proporcional no desempenho.
+  
+    * O cálculo da eficiência não leva em consideração o tempo gasto para iniciar e encerrar as threads ou processos, chamado de overhead de paralelização. Em algumas situações, o overhead pode ser significativo e afetar a eficiência geral.
+
+## 6.3 Paralelização em R 
+
+Existem inúmeras bibliotecas capazes de paralelizar códigos em R. As principais são: `parallel`, `doParallel` e a `foreach`. A primeira opção é a mais poderosa e vem integrada com o R, portanto, será o nosso foco aqui.
+
+```{r}
+library(parallel)
+
+# Quantos cores disponíveis?
+detectCores()
+```
+
+```{r}
+# Cria um cluster de processos com 4 núcleos
+cluster <- makeCluster(4)
+
+# Define uma função que será executada em paralelo
+funcao <- function(x) {
+  return(x^2)
+}
+
+# Distribui a tarefa entre os processos no cluster (roda e espera)
+resultados <- clusterApply(cluster, 1:10, funcao)
+
+# Distribui a tarefa entre os processos no cluster (roda sem espera)
+resultados2 <- clusterApplyLB(cluster, 1:10, funcao)
+
+
+# Encerra o cluster
+stopCluster(cluster)
+
+# Resultados contêm os resultados das operações executadas em paralelo
+print(resultados)
+```
+
+A função `clusterCall()` permite que você execute uma função em paralelo em todos os processos de um cluster e recolha os resultados.
+```{r}
+cl <- makeCluster(4)
+## Chama a função em paralelo, 
+## todas as vezes com os mesmos argumentos
+clusterCall(cl, funcao, 1:10) 
+```
+
+```{r}
+## Exporta para todas as threads 
+## os objetos
+clusterExport(cl, "funcao")
+
+
+fc <- function(a,b){
+  return(a+b)
+}
+clusterExport(cl, "fc")
+## Avalia a função nos argumentos definidos
+## Cada thread re-avalia o resultado, mesmos argumentos
+clusterEvalQ(cl, fc(1:10,1:10))
+```
+
+```{r}
+## Avalia a função nos argumentos definidos
+## Cada thread re-avalia o resultado, argumentos distintos
+clusterMap(cl, fc, 1:10, 1:10)
+```
+
+```{r}
+stopCluster(cl)
+```
+
+## 6.4 Exercícios
+Utilizando os dados `GlobalIndicators`, agrupe os **países** em duas categorias: alto e baixo. A primeira categoria deve conter os países com o último HDI > 0.7, a segunda os demais. Em seguida, para todas as variáveis (com excessão das HDIs) calcule: a média, a mediana, o desvio padrão e o intervalo interquartilíco. Teste se há diferença entre os dois grupos para cada uma das variáveis.
+
+*  
+    * Dicas: Crie uma função que receba como argumento o grupo e uma variável.
+ 
+    * Verifique se a distribuição é normal, utilize o `shapiro.test()`. Caso seja, utilize um teste-t (`t.test()`), caso contrário, utilize o teste de Mann-Whitney (`wilcox.test(..., paired = F)`).
+
+```{r}
+require(data.table)
+require(dplyr)
+require(tidyr)
+require(magrittr)
+
+co2 = data.table::fread("./data/GlobalIndicators/co2_production.csv")
+gni = data.table::fread("./data/GlobalIndicators/gross_national_income_per_capital.csv")
+hdi = data.table::fread("./data/GlobalIndicators/human_development_index.csv")
+le = data.table::fread("./data/GlobalIndicators/life_expectancy_by_birth.csv")
+
+df = full_join(co2, gni) %>% 
+  full_join(hdi %>% 
+              select(ISO3, Country, hdi_2021)) %>% 
+  full_join(le) %>% 
+  filter(ISO3 != "") %>% 
+  mutate(grupo = ifelse(hdi_2021 > 0.7, "Alto", "Baixo")) %>%
+  select(-c(ISO3, Country, hdi_2021, hdicode, region, hdi_rank_2021)) %>% 
+  as.data.frame()
+
+
+calcula = function(i, grupo = df$grupo){
+  media   = mean(df[,i], na.rm = TRUE)
+  mediana = median(df[,i], na.rm = TRUE)
+  desvio  = sd(df[,i], na.rm = TRUE)
+  interq = IQR(df[,i], na.rm = TRUE)
+  
+  
+  ### Testando Normalidade por grupo
+  norm_alto = shapiro.test(df[ grupo == "Alto",i])
+  norm_baixo = shapiro.test(df[grupo == "Baixo",i])
+  
+  p_norm_alto = norm_alto$p.value
+  p_norm_baixo = norm_baixo$p.value
+  
+  ## Se ambos forem normais, então fazer o teste t
+  if(all(p_norm_alto > 0.05, p_norm_baixo > 0.05)){
+    ptest = t.test(df[,i] ~ grupo)$p.value
+    test = "t-test"
+  } else{
+    ptest = wilcox.test(df[,i] ~ grupo, paired = F)$p.value
+    test = "Mann Whitney"
+  }
+  
+  # Resultado a ser impresso
+  resultado = data.frame(media = media, 
+                         desvio = desvio, 
+                         mediana = mediana, 
+                         interq = interq, 
+                         shapiro_alto = p_norm_alto, 
+                         shapiro_baixo = p_norm_baixo,
+                         test = test, 
+                         ptest = ptest
+  )
+  return(resultado)
+}
+
+## Fazendo a versão em paralelo
+require(parallel)
+cl <- parallel::makeCluster(4)
+clusterExport(cl, "df")
+t1 = Sys.time() 
+results = clusterApply(cl, 1:96, calcula)
+t2 = Sys.time()
+t2-t1 ## Calcula o tempo gasto
+results %<>% bind_rows() ## Transforma o resultado em um df
+stopCluster(cl)
+
+## Fazendo a mesma coisa utilizando for
+resultado2 = list()
+t1_for = Sys.time()
+for(i in 1:96){
+  resultado2[[i]] = calcula(i)
+}
+t2_for = Sys.time()
+t2_for-t1_for
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

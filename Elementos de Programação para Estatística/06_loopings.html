@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>loopings</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="06_loopings_files/libs/clipboard/clipboard.min.js"></script>
+<script src="06_loopings_files/libs/quarto-html/quarto.js"></script>
+<script src="06_loopings_files/libs/quarto-html/popper.min.js"></script>
+<script src="06_loopings_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="06_loopings_files/libs/quarto-html/anchor.min.js"></script>
+<link href="06_loopings_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="06_loopings_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="06_loopings_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="06_loopings_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="06_loopings_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="06_loopings_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="06_loopings_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+   
+  <ul>
+  <li><a href="#estruturas-de-repetição-loopings" id="toc-estruturas-de-repetição-loopings" class="nav-link active" data-scroll-target="#estruturas-de-repetição-loopings">6 Estruturas de Repetição: <em>Loopings</em></a>
+  <ul>
+  <li><a href="#break" id="toc-break" class="nav-link" data-scroll-target="#break">6.0.1.1 <code>Break</code></a></li>
+  <li><a href="#next" id="toc-next" class="nav-link" data-scroll-target="#next">6.0.1.2 <code>Next</code></a></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício">6.0.2 Exercício</a></li>
+  <li><a href="#estrutura-for" id="toc-estrutura-for" class="nav-link" data-scroll-target="#estrutura-for">6.0.3 Estrutura <code>for</code></a></li>
+  <li><a href="#família-apply" id="toc-família-apply" class="nav-link" data-scroll-target="#família-apply">6.0.4 Família apply</a></li>
+  <li><a href="#exercícios" id="toc-exercícios" class="nav-link" data-scroll-target="#exercícios">6.1 Exercícios</a></li>
+  <li><a href="#paralelização" id="toc-paralelização" class="nav-link" data-scroll-target="#paralelização">6.2 Paralelização</a>
+  <ul>
+  <li><a href="#por-que-paralelizar-um-código" id="toc-por-que-paralelizar-um-código" class="nav-link" data-scroll-target="#por-que-paralelizar-um-código">6.2.1 Por que Paralelizar um Código?</a></li>
+  <li><a href="#quando-precisamos-paralelizar-um-código" id="toc-quando-precisamos-paralelizar-um-código" class="nav-link" data-scroll-target="#quando-precisamos-paralelizar-um-código">6.2.2 Quando Precisamos Paralelizar um Código?</a></li>
+  <li><a href="#importante" id="toc-importante" class="nav-link" data-scroll-target="#importante">6.2.3 Importante</a></li>
+  <li><a href="#medindo-a-qualidade-da-paralelização" id="toc-medindo-a-qualidade-da-paralelização" class="nav-link" data-scroll-target="#medindo-a-qualidade-da-paralelização">6.2.4 Medindo a Qualidade da Paralelização</a></li>
+  </ul></li>
+  <li><a href="#paralelização-em-r" id="toc-paralelização-em-r" class="nav-link" data-scroll-target="#paralelização-em-r">6.3 Paralelização em R</a></li>
+  <li><a href="#exercícios-1" id="toc-exercícios-1" class="nav-link" data-scroll-target="#exercícios-1">6.4 Exercícios</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="06_loopings.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="estruturas-de-repetição-loopings" class="level1">
+<h1>6 Estruturas de Repetição: <em>Loopings</em></h1>
+<p>As estruturas de repetição desempenham um papel crucial na programação, pois permitem que tarefas repetitivas sejam realizadas de maneira mais eficaz ou iterem sobre conjuntos de dados extensos. Além disso, as estruturas de repetição são essenciais para processar grandes volumes de dados, realizar cálculos complexos e criar algoritmos mais poderosos.</p>
+<p>Em R existem diversas estruturas de repetição, veremos aqui: <code>while</code>, <code>for</code> e a família <code>apply</code>.</p>
+<p>6.0.1 Estrutura <code>while</code></p>
+<p>O loop while é uma das estruturas de repetição mais simples. Ele é usado quando você precisa repetir um bloco de código <em>enquanto uma condição for verdadeira</em>. E seu critério de parada é atualizado, i.e., você não sabe de imediato quantas vezes vai precisar repetir o procedimento.</p>
+<p>A estrutura básica do while é a seguinte:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (condicao) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Código a ser repetido enquanto a condição for verdadeira</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Imprima na tela <code>i</code>, enquanto <code>i</code> for menor do que <code>6</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># sempre definimos o critério de parada fora do loop</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;</span> <span class="dv">6</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Sempre alteramos o critério </span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># de parada, senão caímos em um loop infinito</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5</code></pre>
+</div>
+</div>
+<section id="break" class="level4">
+<h4 class="anchored" data-anchor-id="break">6.0.1.1 <code>Break</code></h4>
+<p>Mesmo quando uma condição é verdadeira, podemos ter interesse em parar uma repetição, mesmo que a condição seja <code>TRUE</code>. Útil quando não queremos cair em um loop infinito.</p>
+<p>Por exemplo, podemos parar o nosso loop caso nosso <code>i == 4</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;</span> <span class="dv">6</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">4</span>) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 3</code></pre>
+</div>
+</div>
+</section>
+<section id="next" class="level3">
+<h3 class="anchored" data-anchor-id="next">6.0.1.2 <code>Next</code></h3>
+<p>Outras vezes, podemos pular uma iteração sem encerrar o loop:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;</span> <span class="dv">6</span>) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(i)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 2
+[1] 4
+[1] 5
+[1] 6</code></pre>
+</div>
+</div>
+</section>
+<section id="exercício" class="level3">
+<h3 class="anchored" data-anchor-id="exercício">6.0.2 Exercício</h3>
+<p>Suponha o lançamento de um dado não viesado, com seis faces. Quantas vezes devo lançar o dado para obter a face 5?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dado <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>n_lancamento <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sorteio <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (sorteio <span class="sc">!=</span> <span class="dv">5</span>) {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  sorteio <span class="ot">=</span>  <span class="fu">sample</span>(dado, <span class="dv">1</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  n_lancamento <span class="ot">=</span> n_lancamento <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">Lançamento: "</span>, n_lancamento, <span class="st">"</span><span class="sc">\n</span><span class="st">Valor Sorteado: "</span>, sorteio))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+Lançamento: 1
+Valor Sorteado: 4
+
+Lançamento: 2
+Valor Sorteado: 2
+
+Lançamento: 3
+Valor Sorteado: 6
+
+Lançamento: 4
+Valor Sorteado: 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n_lancamento</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n_lancamento <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (sorteio <span class="sc">!=</span> <span class="dv">7</span>) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  sorteio <span class="ot">=</span>  <span class="fu">sample</span>(dado, <span class="dv">1</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  n_lancamento <span class="ot">=</span> n_lancamento <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">Lançamento: "</span>, n_lancamento, <span class="st">"</span><span class="sc">\n</span><span class="st">Valor Sorteado: "</span>, sorteio))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n_lancamento <span class="sc">==</span> <span class="dv">20</span>){</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+Lançamento: 1
+Valor Sorteado: 4
+
+Lançamento: 2
+Valor Sorteado: 1
+
+Lançamento: 3
+Valor Sorteado: 5
+
+Lançamento: 4
+Valor Sorteado: 6
+
+Lançamento: 5
+Valor Sorteado: 4
+
+Lançamento: 6
+Valor Sorteado: 2
+
+Lançamento: 7
+Valor Sorteado: 6
+
+Lançamento: 8
+Valor Sorteado: 2
+
+Lançamento: 9
+Valor Sorteado: 6
+
+Lançamento: 10
+Valor Sorteado: 6
+
+Lançamento: 11
+Valor Sorteado: 4
+
+Lançamento: 12
+Valor Sorteado: 6
+
+Lançamento: 13
+Valor Sorteado: 6
+
+Lançamento: 14
+Valor Sorteado: 6
+
+Lançamento: 15
+Valor Sorteado: 4
+
+Lançamento: 16
+Valor Sorteado: 4
+
+Lançamento: 17
+Valor Sorteado: 5
+
+Lançamento: 18
+Valor Sorteado: 4
+
+Lançamento: 19
+Valor Sorteado: 3
+
+Lançamento: 20
+Valor Sorteado: 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>n_lancamento</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+</div>
+<p>Note que em ambos exemplos os valores estão sendo apenas calculados e não estamos guardando em nenhuma variável. Para resolver esse problema podemos simplesmnet guardar o valor sorteado em um vetor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>valor_sorteado <span class="ot">=</span> <span class="fu">numeric</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_lancamento <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (sorteio <span class="sc">!=</span> <span class="dv">7</span>) {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  n_lancamento <span class="ot">=</span> n_lancamento <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  valor_sorteado[n_lancamento] <span class="ot">=</span>  <span class="fu">sample</span>(dado, <span class="dv">1</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"</span><span class="sc">\n\n</span><span class="st">Lançamento: "</span>, n_lancamento, <span class="st">"</span><span class="sc">\n</span><span class="st">Valor Sorteado: "</span>, sorteio))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n_lancamento <span class="sc">==</span> <span class="dv">20</span>){</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+Lançamento: 1
+Valor Sorteado: 4
+
+Lançamento: 2
+Valor Sorteado: 4
+
+Lançamento: 3
+Valor Sorteado: 4
+
+Lançamento: 4
+Valor Sorteado: 4
+
+Lançamento: 5
+Valor Sorteado: 4
+
+Lançamento: 6
+Valor Sorteado: 4
+
+Lançamento: 7
+Valor Sorteado: 4
+
+Lançamento: 8
+Valor Sorteado: 4
+
+Lançamento: 9
+Valor Sorteado: 4
+
+Lançamento: 10
+Valor Sorteado: 4
+
+Lançamento: 11
+Valor Sorteado: 4
+
+Lançamento: 12
+Valor Sorteado: 4
+
+Lançamento: 13
+Valor Sorteado: 4
+
+Lançamento: 14
+Valor Sorteado: 4
+
+Lançamento: 15
+Valor Sorteado: 4
+
+Lançamento: 16
+Valor Sorteado: 4
+
+Lançamento: 17
+Valor Sorteado: 4
+
+Lançamento: 18
+Valor Sorteado: 4
+
+Lançamento: 19
+Valor Sorteado: 4
+
+Lançamento: 20
+Valor Sorteado: 4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>valor_sorteado</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 5 2 5 2 6 3 4 4 3 1 3 6 4 2 3 2 5 6 1 6</code></pre>
+</div>
+</div>
+</section>
+<section id="estrutura-for" class="level3">
+<h3 class="anchored" data-anchor-id="estrutura-for">6.0.3 Estrutura <code>for</code></h3>
+<p>O loop <code>for</code> é usado para iterar sobre uma sequência de valores, como um vetor ou uma lista. A estrutura básica é a seguinte:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (variavel <span class="cf">in</span> sequencia) {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Código a ser executado para cada valor da sequência</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Suponha que queremos calcular o quadrado dos valores de 1:10. Para isso, podemos utilizar um <code>for</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x1)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+[1] 4
+[1] 9
+[1] 16
+[1] 25
+[1] 36
+[1] 49
+[1] 64
+[1] 81
+[1] 100</code></pre>
+</div>
+</div>
+<p>Além disso, podemos ter <code>for</code> aninhados.</p>
+<p>Suponha agora um experimento que consiste no lançamento de dois dados não viesados de seis faces, e definimos uma variável aleatória como o quadrado da soma das faces superiores dos dois dados. Queremos guardar o valor dos dois dados, a soma das faces superiores e o quadrado da soma.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(magrittr)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dado <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>soma_dois_dados <span class="ot">=</span> <span class="cf">function</span>(dado1, dado2){</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  soma <span class="ot">=</span> dado1 <span class="sc">+</span> dado2</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>quadrado_soma <span class="ot">=</span> <span class="cf">function</span>(soma){</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  soma2 <span class="ot">=</span> soma<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(soma2)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">0</span> </span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> dado){</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> dado){</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">=</span> k <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    soma <span class="ot">=</span> <span class="fu">soma_dois_dados</span>(dado[i], dado[j])</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    somaqd <span class="ot">=</span> <span class="fu">quadrado_soma</span>(soma)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    resultado[[k]] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">dado1 =</span> dado[i], </span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dado2 =</span> dado[j], </span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>                               <span class="at">soma =</span> soma, </span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>                               <span class="at">soma2 =</span> somaqd)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>resultado</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+  dado1 dado2 soma soma2
+1     1     1    2     4
+
+[[2]]
+  dado1 dado2 soma soma2
+1     1     2    3     9
+
+[[3]]
+  dado1 dado2 soma soma2
+1     1     3    4    16
+
+[[4]]
+  dado1 dado2 soma soma2
+1     1     4    5    25
+
+[[5]]
+  dado1 dado2 soma soma2
+1     1     5    6    36
+
+[[6]]
+  dado1 dado2 soma soma2
+1     1     6    7    49
+
+[[7]]
+  dado1 dado2 soma soma2
+1     2     1    3     9
+
+[[8]]
+  dado1 dado2 soma soma2
+1     2     2    4    16
+
+[[9]]
+  dado1 dado2 soma soma2
+1     2     3    5    25
+
+[[10]]
+  dado1 dado2 soma soma2
+1     2     4    6    36
+
+[[11]]
+  dado1 dado2 soma soma2
+1     2     5    7    49
+
+[[12]]
+  dado1 dado2 soma soma2
+1     2     6    8    64
+
+[[13]]
+  dado1 dado2 soma soma2
+1     3     1    4    16
+
+[[14]]
+  dado1 dado2 soma soma2
+1     3     2    5    25
+
+[[15]]
+  dado1 dado2 soma soma2
+1     3     3    6    36
+
+[[16]]
+  dado1 dado2 soma soma2
+1     3     4    7    49
+
+[[17]]
+  dado1 dado2 soma soma2
+1     3     5    8    64
+
+[[18]]
+  dado1 dado2 soma soma2
+1     3     6    9    81
+
+[[19]]
+  dado1 dado2 soma soma2
+1     4     1    5    25
+
+[[20]]
+  dado1 dado2 soma soma2
+1     4     2    6    36
+
+[[21]]
+  dado1 dado2 soma soma2
+1     4     3    7    49
+
+[[22]]
+  dado1 dado2 soma soma2
+1     4     4    8    64
+
+[[23]]
+  dado1 dado2 soma soma2
+1     4     5    9    81
+
+[[24]]
+  dado1 dado2 soma soma2
+1     4     6   10   100
+
+[[25]]
+  dado1 dado2 soma soma2
+1     5     1    6    36
+
+[[26]]
+  dado1 dado2 soma soma2
+1     5     2    7    49
+
+[[27]]
+  dado1 dado2 soma soma2
+1     5     3    8    64
+
+[[28]]
+  dado1 dado2 soma soma2
+1     5     4    9    81
+
+[[29]]
+  dado1 dado2 soma soma2
+1     5     5   10   100
+
+[[30]]
+  dado1 dado2 soma soma2
+1     5     6   11   121
+
+[[31]]
+  dado1 dado2 soma soma2
+1     6     1    7    49
+
+[[32]]
+  dado1 dado2 soma soma2
+1     6     2    8    64
+
+[[33]]
+  dado1 dado2 soma soma2
+1     6     3    9    81
+
+[[34]]
+  dado1 dado2 soma soma2
+1     6     4   10   100
+
+[[35]]
+  dado1 dado2 soma soma2
+1     6     5   11   121
+
+[[36]]
+  dado1 dado2 soma soma2
+1     6     6   12   144</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>resultado <span class="sc">%&lt;&gt;%</span> <span class="fu">bind_rows</span>()</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>resultado</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   dado1 dado2 soma soma2
+1      1     1    2     4
+2      1     2    3     9
+3      1     3    4    16
+4      1     4    5    25
+5      1     5    6    36
+6      1     6    7    49
+7      2     1    3     9
+8      2     2    4    16
+9      2     3    5    25
+10     2     4    6    36
+11     2     5    7    49
+12     2     6    8    64
+13     3     1    4    16
+14     3     2    5    25
+15     3     3    6    36
+16     3     4    7    49
+17     3     5    8    64
+18     3     6    9    81
+19     4     1    5    25
+20     4     2    6    36
+21     4     3    7    49
+22     4     4    8    64
+23     4     5    9    81
+24     4     6   10   100
+25     5     1    6    36
+26     5     2    7    49
+27     5     3    8    64
+28     5     4    9    81
+29     5     5   10   100
+30     5     6   11   121
+31     6     1    7    49
+32     6     2    8    64
+33     6     3    9    81
+34     6     4   10   100
+35     6     5   11   121
+36     6     6   12   144</code></pre>
+</div>
+</div>
+</section>
+<section id="família-apply" class="level3">
+<h3 class="anchored" data-anchor-id="família-apply">6.0.4 Família apply</h3>
+<p>A família de funções apply em R inclui <code>apply()</code>, <code>lapply()</code>, <code>sapply()</code>, <code>vapply()</code>, <code>tapply()</code>, <code>mapply()</code>, entre outras. Essas funções são usadas para aplicar uma função a elementos de uma lista, vetor, matriz ou array. Ela funciona similar ao <code>for</code> em termos de repetições.</p>
+<ul>
+<li><code>apply()</code>: Aplica uma função qualquer a uma matriz, array ou data.frame ao longo de margens específicas (linhas <code>1</code> ou colunas <code>2</code>). O output de um <code>apply()</code> é um vetor.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>matriz1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>soma_linhas <span class="ot">&lt;-</span> <span class="fu">apply</span>(matriz1, <span class="dv">1</span>, sum)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>soma_colunas <span class="ot">&lt;-</span> <span class="fu">apply</span>(matriz1, <span class="dv">2</span>, sum)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>lapply()</code>: Aplica uma função a cada elemento de uma lista e retorna uma lista com os resultados.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>minha_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">lapply</span>(minha_lista, mean)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>resultados</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$a
+[1] 2
+
+$b
+[1] 5</code></pre>
+</div>
+</div>
+<ul>
+<li><code>sapply()</code>: A função sapply() é semelhante ao lapply(), mas tenta simplificar o resultado em um vetor ou matriz sempre que possível. Se todos os resultados forem do mesmo comprimento, será retornado um vetor. Caso contrário, será retornada uma matriz.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>minha_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">c=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">6</span>,<span class="dv">8</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">sapply</span>(minha_lista, mean)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>resultados</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a b c 
+2 5 7 </code></pre>
+</div>
+</div>
+<ul>
+<li><code>mapply()</code>: Aplica uma função a vários argumentos. Ele oferece uma maneira eficiente de realizar essas operações de forma flexível e controlada.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">mapply</span>(soma_dois_dados, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                    dado, </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                    dado)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resultado)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  2  4  6  8 10 12</code></pre>
+</div>
+</div>
+<p>E se eu quisesse somar <em>todas as combinações</em> como no <code>for</code> aninhado? Para isso podemos expandir o grid de busca, utilizando o <code>expand.grid</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dois_dados <span class="ot">=</span> <span class="fu">expand.grid</span>(dado, dado)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dois_dados</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Var1 Var2
+1     1    1
+2     2    1
+3     3    1
+4     4    1
+5     5    1
+6     6    1
+7     1    2
+8     2    2
+9     3    2
+10    4    2
+11    5    2
+12    6    2
+13    1    3
+14    2    3
+15    3    3
+16    4    3
+17    5    3
+18    6    3
+19    1    4
+20    2    4
+21    3    4
+22    4    4
+23    5    4
+24    6    4
+25    1    5
+26    2    5
+27    3    5
+28    4    5
+29    5    5
+30    6    5
+31    1    6
+32    2    6
+33    3    6
+34    4    6
+35    5    6
+36    6    6</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">mapply</span>(soma_dois_dados, </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                    dois_dados<span class="sc">$</span>Var1, </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                    dois_dados<span class="sc">$</span>Var2)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resultado)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  3  4  5  6  7  8  4  5  6  7  8  9  5  6  7  8  9 10  6
+[26]  7  8  9 10 11  7  8  9 10 11 12</code></pre>
+</div>
+</div>
+</section>
+<section id="exercícios" class="level2">
+<h2 class="anchored" data-anchor-id="exercícios">6.1 Exercícios</h2>
+<ol type="1">
+<li>Crie uma função que calcule os <code>n</code> primeiros números da sequência de Fibonacci. A sequência de Fibonacci começa com 0 e 1, e os números subsequentes são a soma dos dois anteriores (0, 1, 1, 2, 3, 5, 8, …).</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>calcular_fibonacci <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  fibonacci_sequence <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&gt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    fibonacci_sequence[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    fibonacci_sequence[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">3</span><span class="sc">:</span>n) {</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    fibonacci_sequence[i] <span class="ot">&lt;-</span> fibonacci_sequence[i <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> fibonacci_sequence[i <span class="sc">-</span> <span class="dv">2</span>]</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(fibonacci_sequence)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemplo de uso</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">calcular_fibonacci</span>(n)</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Os primeiros"</span>, n, <span class="st">"números da sequência de Fibonacci são:"</span>, resultado, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Os primeiros 10 números da sequência de Fibonacci são: 0 1 1 2 3 5 8 13 21 34 </code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Crie uma função que verifique se um número <code>n</code> é primo.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>eh_primo <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(n<span class="dv">-1</span>)) {</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (n <span class="sc">%%</span> i <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemplos de uso</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>numeros_exemplos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">25</span>, <span class="dv">7</span>, <span class="dv">4</span>, <span class="dv">19</span>)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (numero <span class="cf">in</span> numeros_exemplos) {</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">eh_primo</span>(numero)) {</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(numero, <span class="st">"é um número primo.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(numero, <span class="st">"não é um número primo.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13 é um número primo.
+25 não é um número primo.
+7 é um número primo.
+4 não é um número primo.
+19 é um número primo.</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Calcule o 1o. e 2o. Quartil para todas as variáveis numéricas de <code>mtcars</code>. Se uma variável não for numérica retorne <code>NA</code>. Lembre-se <code>cyl</code>, <code>vs</code> e <code>am</code> são categóricas, e não numéricas.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformar cyl, vs e am para character</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> mtcars</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>dados<span class="sc">$</span>cyl <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dados<span class="sc">$</span>cyl)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>dados<span class="sc">$</span>vs <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dados<span class="sc">$</span>vs)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>dados<span class="sc">$</span>am <span class="ot">&lt;-</span> <span class="fu">as.character</span>(dados<span class="sc">$</span>am)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Função para calcular 1º e 2º quartil para variáveis numéricas</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>calcular_quartis <span class="ot">&lt;-</span> <span class="cf">function</span>(variavel) {</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(variavel)) {</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    quartis <span class="ot">&lt;-</span> <span class="fu">quantile</span>(variavel, <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>))</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">quartil_1 =</span> quartis[<span class="dv">1</span>], <span class="at">quartil_2 =</span> quartis[<span class="dv">2</span>]))</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">quartil_1 =</span> <span class="cn">NA</span>, <span class="at">quartil_2 =</span> <span class="cn">NA</span>))</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar a função a todas as colunas de mtcars</span></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>resultados_quartis <span class="ot">&lt;-</span> <span class="fu">sapply</span>(mtcars, calcular_quartis)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar os resultados</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resultados_quartis)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 mpg cyl    disp    hp  drat      wt    qsec vs am gear carb
+quartil_1.25% 15.425   4 120.825  96.5 3.080 2.58125 16.8925  0  0    3    2
+quartil_2.50% 19.200   6 196.300 123.0 3.695 3.32500 17.7100  0  0    4    2</code></pre>
+</div>
+</div>
+</section>
+<section id="paralelização" class="level2">
+<h2 class="anchored" data-anchor-id="paralelização">6.2 Paralelização</h2>
+<p>A paralelização de código é uma técnica utilizada para melhorar a eficiência de programas, especialmente quando lidamos com tarefas intensivas em processamento.</p>
+<section id="por-que-paralelizar-um-código" class="level3">
+<h3 class="anchored" data-anchor-id="por-que-paralelizar-um-código">6.2.1 Por que Paralelizar um Código?</h3>
+<p>A paralelização é necessária para aproveitar ao máximo os recursos de <em>hardware</em> disponíveis e melhorar o desempenho de um programa.</p>
+<ol type="1">
+<li><p><strong>Aproveitamento de Recursos</strong>: A maioria dos computadores modernos possui processadores multi-core, o que significa que eles têm várias unidades de processamento disponíveis. Para aproveitar ao máximo esses recursos, podemos dividir uma tarefa em partes menores que podem ser executadas simultaneamente em diferentes núcleos do processador.</p></li>
+<li><p><strong>Redução de Tempo de Execução</strong>: Tarefas que seriam demoradas se executadas em sequência podem ser aceleradas significativamente por meio da paralelização. Isso é especialmente importante em tarefas que envolvem grandes conjuntos de dados ou cálculos complexos.</p></li>
+<li><p><strong>Melhoria da Escalabilidade</strong>: Em situações onde a carga de trabalho pode variar, a paralelização permite que o programa adapte a quantidade de recursos necessários. Quando há mais trabalho a ser feito, mais threads[^1] ou processos paralelos podem ser alocados para acelerar o processamento. [^1]: Uma thread é uma unidade básica de processamento que pode ser executada em um programa. Ela é uma sequência de instruções que pode ser executada pelo processador de um computador.</p></li>
+<li><p><strong>Resposta em Tempo Real</strong>: Em certos cenários, como em sistemas de controle ou simulações em tempo real, a paralelização pode ser necessária para garantir que as respostas sejam geradas dentro de limites de tempo estritos.</p></li>
+</ol>
+</section>
+<section id="quando-precisamos-paralelizar-um-código" class="level3">
+<h3 class="anchored" data-anchor-id="quando-precisamos-paralelizar-um-código">6.2.2 Quando Precisamos Paralelizar um Código?</h3>
+<p>Nem todos os programas precisam ser paralelizados. A decisão de quando paralelizar um código depende de vários fatores, incluindo:</p>
+<ol type="1">
+<li><p><strong>Natureza da Tarefa</strong>: Tarefas que podem ser divididas em partes independentes são candidatas naturais para a paralelização. Por exemplo, cálculos em um grande conjunto de dados podem ser paralelizados porque os dados podem ser divididos entre várias unidades de processamento.</p></li>
+<li><p><strong>Recursos Disponíveis</strong>: A paralelização é mais eficaz quando há recursos de hardware adequados, como processadores multi-core ou clusters de computadores disponíveis. Paralelizar em um ambiente com apenas um núcleo de CPU pode não resultar em benefícios significativos.</p></li>
+<li><p><strong>Tempo de Execução Crítico</strong>: Se o tempo de execução de um programa é crítico e precisa ser reduzido para cumprir prazos ou requisitos de desempenho, a paralelização pode ser uma solução viável.</p></li>
+<li><p><strong>Complexidade Computacional</strong>: Tarefas que envolvem cálculos intensivos ou operações repetitivas podem se beneficiar da paralelização para acelerar o processamento.</p></li>
+<li><p><strong>Escalabilidade Futura</strong>: Se você prevê que a carga de trabalho aumentará no futuro, a paralelização pode ser implementada desde o início para garantir que o programa possa lidar com cargas maiores.</p></li>
+</ol>
+</section>
+<section id="importante" class="level3">
+<h3 class="anchored" data-anchor-id="importante">6.2.3 Importante</h3>
+<ul>
+<li><p><em>Threads</em> são unidades de execução dentro de um processo, enquanto multiprocessadores são sistemas de <em>hardware</em> com vários processadores independentes.</p></li>
+<li><p><em>Threads</em> compartilham o mesmo espaço de endereço, enquanto processadores em um multiprocessador executam tarefas independentes com seus próprios espaços de endereço.</p></li>
+</ul>
+</section>
+<section id="medindo-a-qualidade-da-paralelização" class="level3">
+<h3 class="anchored" data-anchor-id="medindo-a-qualidade-da-paralelização">6.2.4 Medindo a Qualidade da Paralelização</h3>
+<ol type="1">
+<li><p><strong>Speedup</strong>: O speedup é uma medida que compara o tempo de execução de um programa paralelizado com o tempo de execução do mesmo programa executado de forma sequencial (em um único processador). O speedup é calculado da seguinte forma: <span class="math display">\[s = \frac{Tempo \ Sequencial}{Tempo \ em \ Paralelo}\]</span></p>
+<ul>
+<li>Um <em>speedup</em> de 2, por exemplo, indica que o programa paralelizado é duas vezes mais rápido do que o programa sequencial.</li>
+</ul></li>
+<li><p><strong>Eficiência</strong>: A eficiência é uma medida relacionada ao speedup, mas considera o fator de escalabilidade. Ela é calculada como a razão entre o speedup e o número de threads ou processadores utilizados: <span class="math display">\[E = \frac{S}{numero \ de \ threads}\]</span></p>
+<ul>
+<li><p>A eficiência ideal é 1, o que significa que a adição de mais threads ou processadores resulta em um aumento proporcional no desempenho.</p></li>
+<li><p>O cálculo da eficiência não leva em consideração o tempo gasto para iniciar e encerrar as threads ou processos, chamado de overhead de paralelização. Em algumas situações, o overhead pode ser significativo e afetar a eficiência geral.</p></li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="paralelização-em-r" class="level2">
+<h2 class="anchored" data-anchor-id="paralelização-em-r">6.3 Paralelização em R</h2>
+<p>Existem inúmeras bibliotecas capazes de paralelizar códigos em R. As principais são: <code>parallel</code>, <code>doParallel</code> e a <code>foreach</code>. A primeira opção é a mais poderosa e vem integrada com o R, portanto, será o nosso foco aqui.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Quantos cores disponíveis?</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">detectCores</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria um cluster de processos com 4 núcleos</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>cluster <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">4</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define uma função que será executada em paralelo</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>funcao <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribui a tarefa entre os processos no cluster (roda e espera)</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">clusterApply</span>(cluster, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, funcao)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribui a tarefa entre os processos no cluster (roda sem espera)</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>resultados2 <span class="ot">&lt;-</span> <span class="fu">clusterApplyLB</span>(cluster, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, funcao)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Encerra o cluster</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cluster)</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Resultados contêm os resultados das operações executadas em paralelo</span></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resultados)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1
+
+[[2]]
+[1] 4
+
+[[3]]
+[1] 9
+
+[[4]]
+[1] 16
+
+[[5]]
+[1] 25
+
+[[6]]
+[1] 36
+
+[[7]]
+[1] 49
+
+[[8]]
+[1] 64
+
+[[9]]
+[1] 81
+
+[[10]]
+[1] 100</code></pre>
+</div>
+</div>
+<p>A função <code>clusterCall()</code> permite que você execute uma função em paralelo em todos os processos de um cluster e recolha os resultados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">4</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Chama a função em paralelo, </span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="do">## todas as vezes com os mesmos argumentos</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterCall</span>(cl, funcao, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) </span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+ [1]   1   4   9  16  25  36  49  64  81 100
+
+[[2]]
+ [1]   1   4   9  16  25  36  49  64  81 100
+
+[[3]]
+ [1]   1   4   9  16  25  36  49  64  81 100
+
+[[4]]
+ [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Exporta para todas as threads </span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="do">## os objetos</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="st">"funcao"</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> <span class="cf">function</span>(a,b){</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(a<span class="sc">+</span>b)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="st">"fc"</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Avalia a função nos argumentos definidos</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Cada thread re-avalia o resultado, mesmos argumentos</span></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterEvalQ</span>(cl, <span class="fu">fc</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+ [1]  2  4  6  8 10 12 14 16 18 20
+
+[[2]]
+ [1]  2  4  6  8 10 12 14 16 18 20
+
+[[3]]
+ [1]  2  4  6  8 10 12 14 16 18 20
+
+[[4]]
+ [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Avalia a função nos argumentos definidos</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Cada thread re-avalia o resultado, argumentos distintos</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterMap</span>(cl, fc, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 2
+
+[[2]]
+[1] 4
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 8
+
+[[5]]
+[1] 10
+
+[[6]]
+[1] 12
+
+[[7]]
+[1] 14
+
+[[8]]
+[1] 16
+
+[[9]]
+[1] 18
+
+[[10]]
+[1] 20</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercícios-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercícios-1">6.4 Exercícios</h2>
+<p>Utilizando os dados <code>GlobalIndicators</code>, agrupe os <strong>países</strong> em duas categorias: alto e baixo. A primeira categoria deve conter os países com o último HDI &gt; 0.7, a segunda os demais. Em seguida, para todas as variáveis (com excessão das HDIs) calcule: a média, a mediana, o desvio padrão e o intervalo interquartilíco. Teste se há diferença entre os dois grupos para cada uma das variáveis.</p>
+<ul>
+<li><ul>
+<li><p>Dicas: Crie uma função que receba como argumento o grupo e uma variável.</p></li>
+<li><p>Verifique se a distribuição é normal, utilize o <code>shapiro.test()</code>. Caso seja, utilize um teste-t (<code>t.test()</code>), caso contrário, utilize o teste de Mann-Whitney (<code>wilcox.test(..., paired = F)</code>).</p></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(data.table)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyr)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(magrittr)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>co2 <span class="ot">=</span> data.table<span class="sc">::</span><span class="fu">fread</span>(<span class="st">"./data/GlobalIndicators/co2_production.csv"</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>gni <span class="ot">=</span> data.table<span class="sc">::</span><span class="fu">fread</span>(<span class="st">"./data/GlobalIndicators/gross_national_income_per_capital.csv"</span>)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>hdi <span class="ot">=</span> data.table<span class="sc">::</span><span class="fu">fread</span>(<span class="st">"./data/GlobalIndicators/human_development_index.csv"</span>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>le <span class="ot">=</span> data.table<span class="sc">::</span><span class="fu">fread</span>(<span class="st">"./data/GlobalIndicators/life_expectancy_by_birth.csv"</span>)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">full_join</span>(co2, gni) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(hdi <span class="sc">%&gt;%</span> </span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(ISO3, Country, hdi_2021)) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(le) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ISO3 <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grupo =</span> <span class="fu">ifelse</span>(hdi_2021 <span class="sc">&gt;</span> <span class="fl">0.7</span>, <span class="st">"Alto"</span>, <span class="st">"Baixo"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(ISO3, Country, hdi_2021, hdicode, region, hdi_rank_2021)) <span class="sc">%&gt;%</span> </span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>calcula <span class="ot">=</span> <span class="cf">function</span>(i, <span class="at">grupo =</span> df<span class="sc">$</span>grupo){</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>  media   <span class="ot">=</span> <span class="fu">mean</span>(df[,i], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>  mediana <span class="ot">=</span> <span class="fu">median</span>(df[,i], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>  desvio  <span class="ot">=</span> <span class="fu">sd</span>(df[,i], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>  interq <span class="ot">=</span> <span class="fu">IQR</span>(df[,i], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a>  <span class="do">### Testando Normalidade por grupo</span></span>
+<span id="cb57-29"><a href="#cb57-29" aria-hidden="true" tabindex="-1"></a>  norm_alto <span class="ot">=</span> <span class="fu">shapiro.test</span>(df[ grupo <span class="sc">==</span> <span class="st">"Alto"</span>,i])</span>
+<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a>  norm_baixo <span class="ot">=</span> <span class="fu">shapiro.test</span>(df[grupo <span class="sc">==</span> <span class="st">"Baixo"</span>,i])</span>
+<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a>  p_norm_alto <span class="ot">=</span> norm_alto<span class="sc">$</span>p.value</span>
+<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a>  p_norm_baixo <span class="ot">=</span> norm_baixo<span class="sc">$</span>p.value</span>
+<span id="cb57-34"><a href="#cb57-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb57-35"><a href="#cb57-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Se ambos forem normais, então fazer o teste t</span></span>
+<span id="cb57-36"><a href="#cb57-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">all</span>(p_norm_alto <span class="sc">&gt;</span> <span class="fl">0.05</span>, p_norm_baixo <span class="sc">&gt;</span> <span class="fl">0.05</span>)){</span>
+<span id="cb57-37"><a href="#cb57-37" aria-hidden="true" tabindex="-1"></a>    ptest <span class="ot">=</span> <span class="fu">t.test</span>(df[,i] <span class="sc">~</span> grupo)<span class="sc">$</span>p.value</span>
+<span id="cb57-38"><a href="#cb57-38" aria-hidden="true" tabindex="-1"></a>    test <span class="ot">=</span> <span class="st">"t-test"</span></span>
+<span id="cb57-39"><a href="#cb57-39" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span>{</span>
+<span id="cb57-40"><a href="#cb57-40" aria-hidden="true" tabindex="-1"></a>    ptest <span class="ot">=</span> <span class="fu">wilcox.test</span>(df[,i] <span class="sc">~</span> grupo, <span class="at">paired =</span> F)<span class="sc">$</span>p.value</span>
+<span id="cb57-41"><a href="#cb57-41" aria-hidden="true" tabindex="-1"></a>    test <span class="ot">=</span> <span class="st">"Mann Whitney"</span></span>
+<span id="cb57-42"><a href="#cb57-42" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-43"><a href="#cb57-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb57-44"><a href="#cb57-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Resultado a ser impresso</span></span>
+<span id="cb57-45"><a href="#cb57-45" aria-hidden="true" tabindex="-1"></a>  resultado <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">media =</span> media, </span>
+<span id="cb57-46"><a href="#cb57-46" aria-hidden="true" tabindex="-1"></a>                         <span class="at">desvio =</span> desvio, </span>
+<span id="cb57-47"><a href="#cb57-47" aria-hidden="true" tabindex="-1"></a>                         <span class="at">mediana =</span> mediana, </span>
+<span id="cb57-48"><a href="#cb57-48" aria-hidden="true" tabindex="-1"></a>                         <span class="at">interq =</span> interq, </span>
+<span id="cb57-49"><a href="#cb57-49" aria-hidden="true" tabindex="-1"></a>                         <span class="at">shapiro_alto =</span> p_norm_alto, </span>
+<span id="cb57-50"><a href="#cb57-50" aria-hidden="true" tabindex="-1"></a>                         <span class="at">shapiro_baixo =</span> p_norm_baixo,</span>
+<span id="cb57-51"><a href="#cb57-51" aria-hidden="true" tabindex="-1"></a>                         <span class="at">test =</span> test, </span>
+<span id="cb57-52"><a href="#cb57-52" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ptest =</span> ptest</span>
+<span id="cb57-53"><a href="#cb57-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-54"><a href="#cb57-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(resultado)</span>
+<span id="cb57-55"><a href="#cb57-55" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-56"><a href="#cb57-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-57"><a href="#cb57-57" aria-hidden="true" tabindex="-1"></a><span class="do">## Fazendo a versão em paralelo</span></span>
+<span id="cb57-58"><a href="#cb57-58" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(parallel)</span>
+<span id="cb57-59"><a href="#cb57-59" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">makeCluster</span>(<span class="dv">4</span>)</span>
+<span id="cb57-60"><a href="#cb57-60" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="st">"df"</span>)</span>
+<span id="cb57-61"><a href="#cb57-61" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">=</span> <span class="fu">Sys.time</span>() </span>
+<span id="cb57-62"><a href="#cb57-62" aria-hidden="true" tabindex="-1"></a>results <span class="ot">=</span> <span class="fu">clusterApply</span>(cl, <span class="dv">1</span><span class="sc">:</span><span class="dv">96</span>, calcula)</span>
+<span id="cb57-63"><a href="#cb57-63" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">=</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb57-64"><a href="#cb57-64" aria-hidden="true" tabindex="-1"></a>t2<span class="sc">-</span>t1 <span class="do">## Calcula o tempo gasto</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of 0.4011729 secs</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&lt;&gt;%</span> <span class="fu">bind_rows</span>() <span class="do">## Transforma o resultado em um df</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Fazendo a mesma coisa utilizando for</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>resultado2 <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>t1_for <span class="ot">=</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">96</span>){</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  resultado2[[i]] <span class="ot">=</span> <span class="fu">calcula</span>(i)</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>t2_for <span class="ot">=</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>t2_for<span class="sc">-</span>t1_for</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time difference of 0.258101 secs</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
